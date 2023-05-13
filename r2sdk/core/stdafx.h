@@ -78,7 +78,7 @@
 //#include "thirdparty/lzham/include/lzham_types.h"
 //#include "thirdparty/lzham/include/lzham.h"
 #endif // !SDKLAUNCHER && !NETCONSOLE && !PLUGINSDK
-/*
+
 #include "thirdparty/spdlog/include/spdlog/spdlog.h"
 #include "thirdparty/spdlog/include/spdlog/async.h"
 #include "thirdparty/spdlog/include/spdlog/sinks/ostream_sink.h"
@@ -87,7 +87,7 @@
 #include "thirdparty/spdlog/include/spdlog/sinks/stdout_color_sinks.h"
 #include "thirdparty/spdlog/include/spdlog/sinks/ansicolor_sink.h"
 #include "thirdparty/spdlog/include/spdlog/sinks/rotating_file_sink.h"
-*/
+
 //#include "thirdparty/curl/include/curl/curl.h"
 
 //#include "common/experimental.h"
@@ -156,14 +156,14 @@ ReturnType CallVFunc(int index, void* thisPtr, Args... args)
 
 inline void LogFunAdr(const char* szFun, uintptr_t nAdr) // Logging function addresses.
 {
-	//spdlog::debug("| {:s}: {:42s}: {:#18x} |\n", "FUN", szFun, nAdr);
+	spdlog::debug("| {:s}: {:42s}: {:#18x} |\n", "FUN", szFun, nAdr);
 }
 inline void LogVarAdr(const char* szVar, uintptr_t nAdr) // Logging variable addresses.
 {
-	//spdlog::debug("| {:s}: {:42s}: {:#18x} |\n", "VAR", szVar, nAdr);
+	spdlog::debug("| {:s}: {:42s}: {:#18x} |\n", "VAR", szVar, nAdr);
 }
 inline void LogConAdr(const char* szCon, uintptr_t nAdr) // Logging constant addresses.
 {
-	//spdlog::debug("| {:s}: {:42s}: {:#18x} |\n", "CON", szCon, nAdr);
+	spdlog::debug("| {:s}: {:42s}: {:#18x} |\n", "CON", szCon, nAdr);
 }
 //#endif // !SDKLAUNCHER && !NETCONSOLE && !PLUGINSDK
