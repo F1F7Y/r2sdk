@@ -9,4 +9,5 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/game)
 
 include_directories(.)
 
-add_subdirectory ("r2launcher")
+add_subdirectory("r2launcher")
+add_subdirectory("r2sdk")
