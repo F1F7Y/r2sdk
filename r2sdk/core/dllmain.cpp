@@ -26,7 +26,7 @@ void SDK_Init()
         spdlog::info("{:s}{:s}{:s}\n", g_svCyanF, svEscaped, g_svReset);
     }
 
-    Systems_PreInit();
+    Systems_Init();
 }
 
 void SDK_Shutdown()

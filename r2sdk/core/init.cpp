@@ -7,6 +7,7 @@
 #include "core/stdafx.h"
 #include "core/logdef.h"
 #include "tier0/fasttimer.h"
+#include "tier1/strtools.h"
 // Tier0
 #include "tier0/platform_internal.h"
 //#include "tier0/commandline.h"
@@ -22,25 +23,11 @@
 //
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
-void Systems_PreInit()
+void Systems_Init()
 {
 	spdlog::info("+---------------------------------------------------------------------+\n");
 	QuerySystemInfo();
 
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
-
-	// Commit the transaction
-	HRESULT hr = DetourTransactionCommit();
-	if (hr != NO_ERROR)
-	{
-		// Failed to hook into the process, terminate
-		Error(eDLL_T::COMMON, 0xBAD0C0DE, "Failed to detour process: error code = %08x\n", hr);
-	}
-}
-
-void Systems_Init()
-{
 	DetourRegister();
 	CFastTimer initTimer;
 
@@ -205,7 +192,6 @@ void QuerySystemInfo()
 
 void CheckCPU() // Respawn's engine and our SDK utilize POPCNT, SSE3 and SSSE3 (Supplemental SSE 3 Instructions).
 {
-	/*
 	const CPUInformation& pi = GetCPUInformation();
 	static char szBuf[1024];
 	if (!pi.m_bSSE3)
@@ -226,18 +212,12 @@ void CheckCPU() // Respawn's engine and our SDK utilize POPCNT, SSE3 and SSSE3 (
 		MessageBoxA(NULL, szBuf, "Unsupported CPU", MB_ICONERROR | MB_OK);
 		ExitProcess(0xFFFFFFFF);
 	}
-	*/
 }
 
 void DetourInit() // Run the sigscan
 {
-	LPSTR pCommandLine = GetCommandLineA();
-
-	bool bLogAdr = (strstr(pCommandLine, "-sig_toconsole") != nullptr);
+	bool bLogAdr = g_svCmdLine.find("-sig_toconsole") != string::npos;
 	bool bInitDivider = false;
-
-	//g_SigCache.SetDisabled((strstr(pCommandLine, "-nosmap") != nullptr));
-	//g_SigCache.LoadCache(SIGDB_FILE);
 
 	for (const IDetour* pDetour : g_DetourVector)
 	{
@@ -256,9 +236,6 @@ void DetourInit() // Run the sigscan
 			spdlog::debug("+---------------------------------------------------------------------+\n");
 		}
 	}
-
-	//g_SigCache.WriteCache(SIGDB_FILE);
-	//g_SigCache.InvalidateMap();
 }
 
 void DetourAddress() // Test the sigscan results

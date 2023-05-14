@@ -3,7 +3,6 @@
 void SDK_Init();
 void SDK_Shutdown();
 
-void Systems_PreInit();
 void Systems_Init();
 void Systems_Shutdown();
 

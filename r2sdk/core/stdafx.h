@@ -110,23 +110,6 @@
 #if !defined(SDKLAUNCHER) && !defined(PLUGINSDK)
 #include "tier0/dbg.h"
 #endif // !SDKLAUNCHER && !NETCONSOLE && !PLUGINSDK
-/*
-#if !defined(SDKLAUNCHER) && !defined (NETCONSOLE) && !defined(PLUGINSDK)
-#if !defined (DEDICATED)
-inline CModule g_GameDll = CModule("r5apex.exe");
-inline CModule g_RadVideoToolsDll = CModule("bink2w64.dll");
-inline CModule g_RadAudioDecoderDll = CModule("binkawin64.dll");
-inline CModule g_RadAudioSystemDll = CModule("mileswin64.dll");
-#if !defined (CLIENT_DLL)
-inline CModule g_SDKDll = CModule("gamesdk.dll");
-#else // This dll is loaded from 'bin/x64_retail//'
-inline CModule g_SDKDll = CModule("client.dll");
-#endif // !CLIENT_DLL
-#else // No DirectX and Miles imports.
-inline CModule g_GameDll = CModule("r5apex_ds.exe");
-inline CModule g_SDKDll = CModule("dedicated.dll");
-#endif // !DEDICATED
-*/
 
 inline CModule g_SDKDll = CModule("r2sdk.dll");
 //inline CModule* g_pGameDll = new CModule("Titanfall2.exe");

@@ -38,9 +38,9 @@ inline std::size_t AddDetour(IDetour* pDetour)
 
 	assert(p.second); // Code bug: duplicate registration!!! (called 'REGISTER(...)' from a header file?).
 	p.second ? g_DetourVector.push_back(pDetour) : delete pDetour;
-
+	
 	return g_DetourVector.size();
 }
 
-REGISTER(VDetour);
+//REGISTER(VDetour);
 #endif // IDETOUR_H
