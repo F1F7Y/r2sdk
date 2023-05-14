@@ -19,11 +19,11 @@ class VPlatform : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		//p_Plat_FloatTime = g_pTier0Dll->GetExportedFunction("Plat_FloatTime");
-		//v_Plat_FloatTime = p_Plat_FloatTime.RCast<double(*)(void)>();
+		p_Plat_FloatTime = g_Tier0Dll.GetExportedFunction("Plat_FloatTime");
+		v_Plat_FloatTime = p_Plat_FloatTime.RCast<double(*)(void)>();
 
-		//p_Plat_MSTime = g_pTier0Dll->GetExportedFunction("Plat_MSTime");
-		//v_Plat_MSTime = p_Plat_MSTime.RCast<uint64_t(*)(void)>();
+		p_Plat_MSTime = g_Tier0Dll.GetExportedFunction("Plat_MSTime");
+		v_Plat_MSTime = p_Plat_MSTime.RCast<uint64_t(*)(void)>();
 	}
 	virtual void GetVar(void) const { }
 	virtual void GetCon(void) const { }
