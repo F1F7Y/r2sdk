@@ -3,14 +3,6 @@
 
 inline CMemory p_LauncherMain;
 inline auto v_LauncherMain = p_LauncherMain.RCast<int(*)(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)>();
-///////////////////////////////////////////////////////////////////////////////
-
-int LauncherMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
-{
-	SpdLog_PostInit();
-	DevMsg(eDLL_T::NONE, "LauncherMain\n");
-	return v_LauncherMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 class VLauncher : public IDetour
@@ -26,14 +18,8 @@ class VLauncher : public IDetour
 	}
 	virtual void GetVar(void) const { }
 	virtual void GetCon(void) const { }
-	virtual void Attach(void) const
-	{
-		DetourAttach((LPVOID*)&v_LauncherMain, &LauncherMain);
-	}
-	virtual void Detach(void) const
-	{
-		DetourDetach((LPVOID*)&v_LauncherMain, &LauncherMain);
-	}
+	virtual void Attach(void) const;
+	virtual void Detach(void) const;
 };
 ///////////////////////////////////////////////////////////////////////////////
 
