@@ -1,4 +1,4 @@
-add_library(r2sdk SHARED "core/dllmain.cpp" "windows/console.cpp" "windows/console.h" "core/init.cpp")
+add_library(r2sdk SHARED "core/dllmain.cpp" "windows/console.cpp" "windows/console.h" "core/init.cpp" "common/experimental.h" "common/pseudodefs.h" "common/x86defs.h")
 
 target_link_libraries(r2sdk detours spdlog)
 
