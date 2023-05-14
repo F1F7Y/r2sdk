@@ -52,8 +52,8 @@
 
 //#include "thirdparty/nlohmann/json.hpp"
 
-//#include "thirdparty/detours/detours.h"
-//#include "thirdparty/detours/idetour.h"
+#include "thirdparty/detours/detours.h"
+#include "thirdparty/detours/idetour.h"
 
 
 #if defined(SDKLAUNCHER)

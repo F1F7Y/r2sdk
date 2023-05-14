@@ -12,4 +12,5 @@ include_directories(.)
 add_subdirectory("r2launcher")
 add_subdirectory("r2sdk")
 
+add_subdirectory("thirdparty/detours")
 add_subdirectory("thirdparty/spdlog")
