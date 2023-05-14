@@ -113,7 +113,7 @@
 
 inline CModule g_SDKDll = CModule("r2sdk.dll");
 //inline CModule* g_pGameDll = new CModule("Titanfall2.exe");
-//inline CModule g_LauncherDll = CModule("launcher.dll");
+inline CModule g_LauncherDll = CModule("launcher.dll");
 //inline CModule* g_pTier0Dll;
 //inline CModule* g_pEngineDll;
 //inline CModule g_ClientDll = CModule("client.dll");

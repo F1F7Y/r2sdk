@@ -11,6 +11,7 @@
 // Tier0
 #include "tier0/platform_internal.h"
 //#include "tier0/commandline.h"
+#include "launcher/IApplication.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -252,4 +253,6 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 {
 	// Tier0
 	REGISTER(VPlatform);
+
+	REGISTER(VApplication);
 }

@@ -42,5 +42,7 @@ inline std::size_t AddDetour(IDetour* pDetour)
 	return g_DetourVector.size();
 }
 
+// [Fifty]: Registering this breaks func addr logging???
+// TODO: Look into this, ask amos?
 //REGISTER(VDetour);
 #endif // IDETOUR_H
