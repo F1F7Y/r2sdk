@@ -10,6 +10,7 @@
 #include "tier1/strtools.h"
 // Tier0
 #include "tier0/platform_internal.h"
+#include "tier0/memstd.h"
 //#include "tier0/commandline.h"
 #include "launcher/IApplication.h"
 #include "launcher/launcher.h"
@@ -254,6 +255,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 {
 	// Tier0
 	REGISTER(VPlatform);
+	REGISTER(VMemStd);
 
 	REGISTER(VApplication);
 	REGISTER(VLauncher);
