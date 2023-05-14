@@ -95,20 +95,20 @@
 #include "common/x86defs.h"
 #include "common/sdkdefs.h"
 
-//#include "public/utility/utility.h"
-//#include "public/utility/memaddr.h"
-//#include "public/utility/module.h"
+#include "public/utility/utility.h"
+#include "public/utility/memaddr.h"
+#include "public/utility/module.h"
 //#include "public/utility/vdf_parser.h"
 
-//#include "core/assert.h"
-//#include "core/termutil.h"
-//#include "core/init.h"
-//#include "tier0/basetypes.h"
-//#include "tier0/platform.h"
-//#include "tier0/annotations.h"
-//#include "tier0/commonmacros.h"
+#include "core/assert.h"
+#include "core/termutil.h"
+#include "core/init.h"
+#include "tier0/basetypes.h"
+#include "tier0/platform.h"
+#include "tier0/annotations.h"
+#include "tier0/commonmacros.h"
 #if !defined(SDKLAUNCHER) && !defined(PLUGINSDK)
-//#include "tier0/dbg.h"
+#include "tier0/dbg.h"
 #endif // !SDKLAUNCHER && !NETCONSOLE && !PLUGINSDK
 /*
 #if !defined(SDKLAUNCHER) && !defined (NETCONSOLE) && !defined(PLUGINSDK)
@@ -128,7 +128,7 @@ inline CModule g_SDKDll = CModule("dedicated.dll");
 #endif // !DEDICATED
 */
 
-//inline CModule* g_pSDKDll = new CModule("r2sdk.dll");
+inline CModule g_SDKDll = CModule("r2sdk.dll");
 //inline CModule* g_pGameDll = new CModule("Titanfall2.exe");
 //inline CModule g_LauncherDll = CModule("launcher.dll");
 //inline CModule* g_pTier0Dll;
@@ -136,7 +136,7 @@ inline CModule g_SDKDll = CModule("dedicated.dll");
 //inline CModule g_ClientDll = CModule("client.dll");
 //inline CModule g_ServerDll = CModule("server.dll");
 
-//inline const string g_ProcessTimestamp = CreateTimedFileName();
+inline const string g_ProcessTimestamp = CreateTimedFileName();
 
 
 #define VAR_NAME(varName)  #varName

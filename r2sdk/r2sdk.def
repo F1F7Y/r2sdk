@@ -1,0 +1,4 @@
+LIBRARY r2sdk
+
+EXPORTS
+    DummyExport @1

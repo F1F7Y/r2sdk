@@ -36,7 +36,7 @@ void Console_Init()
 
 	HANDLE hOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	DWORD dwMode = NULL;
-	/*
+	
 	if (g_svCmdLine.find("-ansicolor") != string::npos)
 	{
 		GetConsoleMode(hOutput, &dwMode);
@@ -52,7 +52,6 @@ void Console_Init()
 		SetConsoleBackgroundColor(0x00000000);
 		AnsiColors_Init();
 	}
-	*/
 }
 
 void Console_Shutdown()
