@@ -12,7 +12,7 @@
 #include "tier0/platform.h"
 #ifndef NETCONSOLE
 //#include "tier0/threadtools.h"
-//#include "tier0/commandline.h"
+#include "tier0/commandline.h"
 #ifndef DEDICATED
 //#include "vgui/vgui_debugpanel.h"
 //#include "gameui/IConsole.h"
@@ -34,7 +34,7 @@ std::mutex g_LogMutex;
 bool HushAsserts()
 {
 #if defined (DBGFLAG_ASSERT) && !defined (NETCONSOLE)
-	static bool s_bHushAsserts = false;// !!CommandLine()->FindParm("-hushasserts");
+	static bool s_bHushAsserts = !!CommandLine()->FindParm("-hushasserts");
 	return s_bHushAsserts;
 #else
 	return true;
