@@ -12,6 +12,7 @@
 #include "tier0/platform_internal.h"
 //#include "tier0/commandline.h"
 #include "launcher/IApplication.h"
+#include "launcher/launcher.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -255,4 +256,5 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(VPlatform);
 
 	REGISTER(VApplication);
+	REGISTER(VLauncher);
 }
