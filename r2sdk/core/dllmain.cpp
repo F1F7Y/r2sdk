@@ -4,6 +4,7 @@
 #include "core/logdef.h"
 
 #include "windows/console.h"
+#include "windows/loadlibrary.h"
 
 void SDK_Init()
 {
@@ -26,6 +27,8 @@ void SDK_Init()
         spdlog::info("{:s}{:s}{:s}\n", g_svCyanF, svEscaped, g_svReset);
     }
 
+    LoadLibrary_Init();
+
     Systems_Init();
 }
 
@@ -33,6 +36,8 @@ void SDK_Shutdown()
 {
     Console_Shutdown();
     SpdLog_Shutdown();
+
+    LoadLibrary_Shutdown();
 
     Systems_Shutdown();
 }
