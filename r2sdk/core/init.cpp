@@ -304,6 +304,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(tier0.dll,VMemStd);
 	REGISTER(tier0.dll,VCommandLine);
 
-	REGISTER(launcher.dll,VApplication);
 	REGISTER(launcher.dll,VLauncher);
+
+	REGISTER(engine.dll, VApplication);
 }
