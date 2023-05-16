@@ -15,7 +15,7 @@ class VCommandLine : public IDetour
 	virtual void GetFun(void) const { }
 	virtual void GetVar(void) const
 	{
-		p_CommandLine = g_Tier0Dll.GetExportedFunction("CommandLine");
+		p_CommandLine = g_pTier0Dll->GetExportedFunction("CommandLine");
 		CommandLine = p_CommandLine.RCast<ICommandLine*(*)(void)>();
 	}
 	virtual void GetCon(void) const { }

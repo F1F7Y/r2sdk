@@ -76,7 +76,7 @@ class VMemStd : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_CreateGlobalMemAlloc = g_Tier0Dll.GetExportedFunction("CreateGlobalMemAlloc");
+		p_CreateGlobalMemAlloc = g_pTier0Dll->GetExportedFunction("CreateGlobalMemAlloc");
 		v_CreateGlobalMemAlloc = p_CreateGlobalMemAlloc.RCast<CStdMemAlloc* (*)(void)>();
 	}
 	virtual void GetVar(void) const { }

@@ -211,7 +211,7 @@ void CCrashHandler::FormatSystemInfo()
 //-----------------------------------------------------------------------------
 void CCrashHandler::FormatBuildInfo()
 {
-	m_svBuffer.append(Format("build_id: %u\n", g_SDKDll.m_pNTHeaders->FileHeader.TimeDateStamp));
+	//m_svBuffer.append(Format("build_id: %u\n", g_pSDKDll->m_pNTHeaders->FileHeader.TimeDateStamp));
 }
 
 //-----------------------------------------------------------------------------

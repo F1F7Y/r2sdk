@@ -31,10 +31,10 @@ class VApplication : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_CSourceAppSystemGroup__PreInit = g_LauncherDll.FindPatternSIMD("48 89 7C 24 18 55 48 8D AC 24 90 FA FF FF 48");
+		p_CSourceAppSystemGroup__PreInit = g_pLauncherDll->FindPatternSIMD("48 89 7C 24 18 55 48 8D AC 24 90 FA FF FF 48");
 		v_CSourceAppSystemGroup__PreInit = p_CSourceAppSystemGroup__PreInit.RCast<bool(*)(void*)>();
 
-		p_CSourceAppSystemGroup__Create = g_LauncherDll.FindPatternSIMD("48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 48");
+		p_CSourceAppSystemGroup__Create = g_pLauncherDll->FindPatternSIMD("48 89 5C 24 08 48 89 74 24 10 48 89 7C 24 18 55 48");
 		v_CSourceAppSystemGroup__Create = p_CSourceAppSystemGroup__Create.RCast<bool(*)(void*)>();
 	}
 	virtual void GetVar(void) const { }

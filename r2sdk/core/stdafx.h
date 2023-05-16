@@ -35,6 +35,7 @@
 #include <filesystem>
 #include <set>
 #include <unordered_set>
+#include <unordered_map>
 
 #include <smmintrin.h>
 
@@ -111,11 +112,18 @@
 #include "tier0/dbg.h"
 #endif // !SDKLAUNCHER && !NETCONSOLE && !PLUGINSDK
 
-inline CModule g_SDKDll = CModule("r2sdk.dll");
+#define REGISTER_MODULE(strModule)                                  \
+	if(AllocateModule(strModule))                                   \
+	{                                                               \
+		DetourScanModule(strModule);                                \
+		DetourAttachModule(strModule);                              \
+	}                                                               \
+
+inline CModule* g_pSDKDll = nullptr;
 //inline CModule* g_pGameDll = new CModule("Titanfall2.exe");
-inline CModule g_LauncherDll = CModule("launcher.dll");
-inline CModule g_Tier0Dll = CModule("tier0.dll");
-//inline CModule* g_pEngineDll;
+inline CModule* g_pLauncherDll = nullptr;
+inline CModule* g_pTier0Dll = nullptr;
+inline CModule* g_pEngineDll = nullptr;
 //inline CModule g_ClientDll = CModule("client.dll");
 //inline CModule g_ServerDll = CModule("server.dll");
 

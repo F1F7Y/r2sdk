@@ -1,9 +1,9 @@
 #ifndef IDETOUR_H
 #define IDETOUR_H
 
-#define ADDDETOUR(x,y) static std::size_t dummy_reg_##y = AddDetour( new x() );
-#define XREGISTER(x,y)  ADDDETOUR(x, y)
-#define REGISTER(x)     XREGISTER(x, __COUNTER__)
+#define ADDDETOUR(det,count,mod) static std::size_t dummy_reg_##count = AddDetour( #mod, new det() );
+#define XREGISTER(det,count,mod) ADDDETOUR(det, count, mod)
+#define REGISTER(mod,det)        XREGISTER(det, __COUNTER__, mod)
 
 class IDetour
 {
@@ -29,17 +29,17 @@ class VDetour : public IDetour
 	virtual void Detach(void) const { }
 };
 
-inline static std::vector<IDetour*> g_DetourVector;
+inline static std::unordered_map<std::string, std::vector<IDetour*>> g_DetourMap;
 inline static std::unordered_set<IDetour*> g_DetourSet;
-inline std::size_t AddDetour(IDetour* pDetour)
+inline std::size_t AddDetour(std::string strModule, IDetour* pDetour)
 {
 	IDetour* pVFTable = reinterpret_cast<IDetour**>(pDetour)[0];
 	auto p = g_DetourSet.insert(pVFTable); // Only register if VFTable isn't already registered.
 
 	assert(p.second); // Code bug: duplicate registration!!! (called 'REGISTER(...)' from a header file?).
-	p.second ? g_DetourVector.push_back(pDetour) : delete pDetour;
-	
-	return g_DetourVector.size();
+	p.second ? g_DetourMap[strModule].push_back(pDetour) : delete pDetour;
+
+	return g_DetourMap[strModule].size();
 }
 
 // [Fifty]: Registering this breaks func addr logging???

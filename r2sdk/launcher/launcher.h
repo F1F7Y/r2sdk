@@ -13,7 +13,7 @@ class VLauncher : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_LauncherMain = g_LauncherDll.GetExportedFunction("LauncherMain");
+		p_LauncherMain = g_pLauncherDll->GetExportedFunction("LauncherMain");
 		v_LauncherMain = p_LauncherMain.RCast<int(*)(HINSTANCE, HINSTANCE, LPSTR, int)>();
 	}
 	virtual void GetVar(void) const { }

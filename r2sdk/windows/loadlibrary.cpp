@@ -24,34 +24,42 @@ void LoadLibrary_Setup()
 
 HMODULE WINAPI HLoadLibraryExA(LPCSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
 {
+	HMODULE hLibrary = g_oLoadLibraryExA(lpLibFileName, hFile, dwFlags);
 	fs::path libPath = fs::path(lpLibFileName);
 	std::string libName = libPath.filename().string();
-	DevMsg(eDLL_T::NONE, "HLoadLibraryExA: %s\n", libName.c_str());
-	return g_oLoadLibraryExA(lpLibFileName, hFile, dwFlags);
+	REGISTER_MODULE(libName.c_str());
+	//DevMsg(eDLL_T::NONE, "HLoadLibraryExA: %s\n", libName.c_str());
+	return hLibrary;
 }
 
 HMODULE WINAPI HLoadLibraryExW(LPCWSTR lpLibFileName, HANDLE hFile, DWORD dwFlags)
 {
+	HMODULE hLibrary = g_oLoadLibraryExW(lpLibFileName, hFile, dwFlags);
 	fs::path libPath = fs::path(lpLibFileName);
 	std::string libName = libPath.filename().string();
-	DevMsg(eDLL_T::NONE, "HLoadLibraryExW: %s\n", libName.c_str());
-	return g_oLoadLibraryExW(lpLibFileName, hFile, dwFlags);
+	REGISTER_MODULE(libName.c_str());
+	//DevMsg(eDLL_T::NONE, "HLoadLibraryExW: %s\n", libName.c_str());
+	return hLibrary;
 }
 
 HMODULE WINAPI HLoadLibraryA(LPCSTR lpLibFileName)
 {
+	HMODULE hLibrary = g_oLoadLibraryA(lpLibFileName);
 	fs::path libPath = fs::path(lpLibFileName);
 	std::string libName = libPath.filename().string();
-	DevMsg(eDLL_T::NONE, "HLoadLibraryA: %s\n", libName.c_str());
-	return g_oLoadLibraryA(lpLibFileName);
+	REGISTER_MODULE(libName.c_str());
+	//DevMsg(eDLL_T::NONE, "HLoadLibraryA: %s\n", libName.c_str());
+	return hLibrary;
 }
 
 HMODULE WINAPI HLoadLibraryW(LPCWSTR lpLibFileName)
 {
+	HMODULE hLibrary = g_oLoadLibraryW(lpLibFileName);
 	fs::path libPath = fs::path(lpLibFileName);
 	std::string libName = libPath.filename().string();
-	DevMsg(eDLL_T::NONE, "HLoadLibraryW: %s\n", libName.c_str());
-	return g_oLoadLibraryW(lpLibFileName);
+	REGISTER_MODULE(libName.c_str());
+	//DevMsg(eDLL_T::NONE, "HLoadLibraryW: %s\n", libName.c_str());
+	return hLibrary;
 }
 
 void LoadLibrary_Init()

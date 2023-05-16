@@ -32,41 +32,44 @@ void Systems_Init()
 	QuerySystemInfo();
 
 	DetourRegister();
-	CFastTimer initTimer;
+	//CFastTimer initTimer;
 
-	initTimer.Start();
-	DetourInit();
-	initTimer.End();
+	//initTimer.Start();
+	//DetourInit();
+	//initTimer.End();
 
 	spdlog::info("+---------------------------------------------------------------------+\n");
-	spdlog::info("{:16s} '{:10.6f}' seconds ('{:12d}' clocks)\n", "Detour->InitDB()", initTimer.GetDuration().GetSeconds(), initTimer.GetDuration().GetCycles());
+	REGISTER_MODULE("r2sdk.dll");
+	REGISTER_MODULE("tier0.dll");
+	REGISTER_MODULE("launcher.dll");
+	//spdlog::info("{:16s} '{:10.6f}' seconds ('{:12d}' clocks)\n", "Detour->InitDB()", initTimer.GetDuration().GetSeconds(), initTimer.GetDuration().GetCycles());
 
-	initTimer.Start();
+	//initTimer.Start();
 
 	// Begin the detour transaction to hook the process
-	DetourTransactionBegin();
-	DetourUpdateThread(GetCurrentThread());
+	//DetourTransactionBegin();
+	//DetourUpdateThread(GetCurrentThread());
 
 	// Hook functions
-	for (const IDetour* pDetour : g_DetourVector)
-	{
-		pDetour->Attach();
-	}
+	//for (const IDetour* pDetour : g_DetourVector)
+	//{
+	//	pDetour->Attach();
+	//}
 
 	// Patch instructions
 	//RuntimePtc_Init();
 
 	// Commit the transaction
-	HRESULT hr = DetourTransactionCommit();
-	if (hr != NO_ERROR)
-	{
-		// Failed to hook into the process, terminate
-		Error(eDLL_T::COMMON, 0xBAD0C0DE, "Failed to detour process: error code = %08x\n", hr);
-	}
+	//HRESULT hr = DetourTransactionCommit();
+	//if (hr != NO_ERROR)
+	//{
+	//	// Failed to hook into the process, terminate
+	//	Error(eDLL_T::COMMON, 0xBAD0C0DE, "Failed to detour process: error code = %08x\n", hr);
+	//}
 
-	initTimer.End();
-	spdlog::info("{:16s} '{:10.6f}' seconds ('{:12d}' clocks)\n", "Detour->Attach()", initTimer.GetDuration().GetSeconds(), initTimer.GetDuration().GetCycles());
-	spdlog::info("+---------------------------------------------------------------------+\n");
+	//initTimer.End();
+	//spdlog::info("{:16s} '{:10.6f}' seconds ('{:12d}' clocks)\n", "Detour->Attach()", initTimer.GetDuration().GetSeconds(), initTimer.GetDuration().GetCycles());
+	//spdlog::info("+---------------------------------------------------------------------+\n");
 
 	//ConVar::StaticInit();
 }
@@ -92,9 +95,12 @@ void Systems_Shutdown()
 	DetourUpdateThread(GetCurrentThread());
 
 	// Unhook functions
-	for (const IDetour* pDetour : g_DetourVector)
+	for (const pair<string, vector<IDetour*>> &Module : g_DetourMap)
 	{
-		pDetour->Detach();
+		for (const IDetour* pDetour : Module.second)
+		{
+			pDetour->Detach();
+		}
 	}
 
 	// Commit the transaction
@@ -217,12 +223,46 @@ void CheckCPU() // Respawn's engine and our SDK utilize POPCNT, SSE3 and SSSE3 (
 	}
 }
 
-void DetourInit() // Run the sigscan
+bool AllocateModule(string strModule)
+{
+	if (strModule == "r2sdk.dll" && !g_pSDKDll)
+	{
+		g_pSDKDll = new CModule("r2sdk.dll");
+		return true;
+	}
+
+	if (strModule == "tier0.dll" && !g_pTier0Dll)
+	{
+		g_pTier0Dll = new CModule("tier0.dll");
+		return true;
+	}
+
+	if (strModule == "launcher.dll" && !g_pLauncherDll)
+	{
+		g_pLauncherDll = new CModule("launcher.dll");
+		return true;
+	}
+
+	if (strModule == "engine.dll" && !g_pEngineDll)
+	{
+		g_pEngineDll = new CModule("engine.dll");
+		return true;
+	}
+
+	DevMsg(eDLL_T::NONE, "Skipping module: %s\n", strModule.c_str());
+
+	return false;
+}
+
+void DetourScanModule(string strModule)
 {
 	bool bLogAdr = g_svCmdLine.find("-sig_toconsole") != string::npos;
 	bool bInitDivider = false;
 
-	for (const IDetour* pDetour : g_DetourVector)
+	CFastTimer scanTimer;
+	scanTimer.Start();
+
+	for (const IDetour* pDetour : g_DetourMap[strModule])
 	{
 		pDetour->GetCon(); // Constants.
 		pDetour->GetFun(); // Functions.
@@ -239,25 +279,31 @@ void DetourInit() // Run the sigscan
 			spdlog::debug("+---------------------------------------------------------------------+\n");
 		}
 	}
+
+	scanTimer.End();
+	spdlog::info("Scanning '{:s}' took '{:f}' seconds\n", strModule.c_str(), scanTimer.GetDuration().GetSeconds());
 }
 
-void DetourAddress() // Test the sigscan results
+void DetourAttachModule(string strModule)
 {
-	spdlog::debug("+---------------------------------------------------------------------+\n");
-	for (const IDetour* pDetour : g_DetourVector)
+	DetourTransactionBegin();
+	DetourUpdateThread(GetCurrentThread());
+
+	for (const IDetour* pDetour : g_DetourMap[strModule])
 	{
-		pDetour->GetAdr();
-		spdlog::debug("+---------------------------------------------------------------------+\n");
+		pDetour->Attach();
 	}
+
+	DetourTransactionCommit();
 }
 
 void DetourRegister() // Register detour classes to be searched and hooked.
 {
 	// Tier0
-	REGISTER(VPlatform);
-	REGISTER(VMemStd);
-	REGISTER(VCommandLine);
+	REGISTER(tier0.dll,VPlatform);
+	REGISTER(tier0.dll,VMemStd);
+	REGISTER(tier0.dll,VCommandLine);
 
-	REGISTER(VApplication);
-	REGISTER(VLauncher);
+	REGISTER(launcher.dll,VApplication);
+	REGISTER(launcher.dll,VLauncher);
 }

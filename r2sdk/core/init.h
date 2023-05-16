@@ -11,6 +11,7 @@ void Winsock_Shutdown();
 void QuerySystemInfo();
 void CheckCPU();
 
-void DetourInit();
-void DetourAddress();
+bool AllocateModule(string strModule);
+void DetourScanModule(string strModule);
+void DetourAttachModule(string strModule);
 void DetourRegister();
