@@ -10,12 +10,12 @@
 4 void* unknown3[1]; // free #1
 5 void (*Free)(IMemAlloc* memAlloc, void* pMem);
 6 void* unknown4[2]; // nullsubs, maybe CrtSetDbgFlag
-7 size_t (*GetSize)(IMemAlloc* memAlloc, void* pMem);
-8 void* unknown5[9]; // they all do literally nothing
-9 void (*DumpStats)(IMemAlloc* memAlloc);
-10 void (*DumpStatsFileBase)(IMemAlloc* memAlloc, const char* pchFileBase);
-11 void* unknown6[4];
-12 int (*heapchk)(IMemAlloc* memAlloc);
+8 size_t (*GetSize)(IMemAlloc* memAlloc, void* pMem);
+9 void* unknown5[9]; // they all do literally nothing
+18 void (*DumpStats)(IMemAlloc* memAlloc);
+19 void (*DumpStatsFileBase)(IMemAlloc* memAlloc, const char* pchFileBase);
+23 void* unknown6[4];
+24 int (*heapchk)(IMemAlloc* memAlloc);
 */
 
 class IMemAlloc
@@ -42,7 +42,7 @@ public:
 	template<typename T>
 	size_t GetSize(T* pMem)
 	{
-		const static int index = 7;
+		const static int index = 8;
 		return CallVFunc<size_t>(index, this, pMem);
 	}
 };
