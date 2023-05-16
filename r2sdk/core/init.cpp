@@ -249,7 +249,7 @@ bool AllocateModule(string strModule)
 		return true;
 	}
 
-	DevMsg(eDLL_T::NONE, "Skipping module: %s\n", strModule.c_str());
+	//DevMsg(eDLL_T::NONE, "Skipping module: %s\n", strModule.c_str());
 
 	return false;
 }
@@ -281,7 +281,7 @@ void DetourScanModule(string strModule)
 	}
 
 	scanTimer.End();
-	spdlog::info("Scanning '{:s}' took '{:f}' seconds\n", strModule.c_str(), scanTimer.GetDuration().GetSeconds());
+	DevMsg(eDLL_T::NONE, "Scanning '%s' took '%f' seconds\n", strModule.c_str(), scanTimer.GetDuration().GetSeconds());
 }
 
 void DetourAttachModule(string strModule)
