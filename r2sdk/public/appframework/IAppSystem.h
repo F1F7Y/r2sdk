@@ -51,10 +51,22 @@ enum AppSystemTier_t
 //-----------------------------------------------------------------------------
 // 
 //-----------------------------------------------------------------------------
+/*
+.rdata:000000018005B0C8 ??_7IAppSystem@@6B@ dq offset sub_180009910
+.rdata:000000018005B0C8                                         ; DATA XREF: .text:0000000180008C80↑o
+.rdata:000000018005B0C8                                         ; .text:0000000180008D00↑o ...
+.rdata:000000018005B0D0                 dq offset _purecall
+.rdata:000000018005B0D8                 dq offset _purecall
+.rdata:000000018005B0E0                 dq offset _purecall
+.rdata:000000018005B0E8                 dq offset _purecall
+.rdata:000000018005B0F0                 dq offset _purecall
+.rdata:000000018005B0F8                 dq offset _purecall
+.rdata:000000018005B100                 dq offset _purecall
+*/
 abstract_class IAppSystem
 {
 public:
-	//virtual ~IAppSystem() = 0; // Prepended on each class derived class in assembly.
+	virtual ~IAppSystem() = 0; // Prepended on each class derived class in assembly.
 
 	// Here's where the app systems get to learn about each other 
 	virtual bool Connect(CreateInterfaceFn factory) = 0;
@@ -72,7 +84,7 @@ public:
 	virtual const AppSystemInfo_t* GetDependencies() { return NULL; }
 
 	// Returns the tier
-	virtual AppSystemTier_t GetTier() = 0;
+	//virtual AppSystemTier_t GetTier() = 0;
 
 	// Reconnect to a particular interface
 	virtual void Reconnect(CreateInterfaceFn factory, const char* pInterfaceName) = 0;

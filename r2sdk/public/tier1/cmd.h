@@ -111,8 +111,8 @@ public:
 	ConCommand(void); // !TODO: Rebuild engine constructor in SDK instead.
 	ConCommand(const char* szName, const char* szHelpString, int nFlags, void* pCallback, void* pCommandCompletionCallback);
 
-	static ConCommand* StaticCreate(const char* szName, const char* szHelpString, const char* pszUsageString,
-		int nFlags, FnCommandCallback_t pCallback, FnCommandCompletionCallback pCommandCompletionCallback);
+	static ConCommand* StaticCreate(const char* szName, const char* szHelpString, int nFlags,
+		FnCommandCallback_t pCallback, FnCommandCompletionCallback pCommandCompletionCallback);
 
 	static void StaticInit(void);
 	static void InitShipped(void);

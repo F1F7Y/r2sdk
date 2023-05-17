@@ -1,4 +1,4 @@
-#ifndef ICVAR_H
+﻿#ifndef ICVAR_H
 #define ICVAR_H
 #include "tier0/annotations.h"
 #include "appframework/IAppSystem.h"
@@ -48,65 +48,83 @@ public:
 //-----------------------------------------------------------------------------
 // Purpose: DLL interface to ConVars/ConCommands
 //-----------------------------------------------------------------------------
+/*
+.rdata:000000018005B598                 dq offset sub_180009DA0
+.rdata:000000018005B5A0                 dq offset ICvar__RegisterConCommand
+.rdata:000000018005B5A8                 dq offset ICvar__UnregisterConCommand
+.rdata:000000018005B5B0                 dq offset sub_18000F800
+.rdata:000000018005B5B8                 dq offset sub_18000AE20
+.rdata:000000018005B5C0                 dq offset sub_18000A9D0
+.rdata:000000018005B5C8                 dq offset sub_18000A980
+.rdata:000000018005B5D0                 dq offset sub_18000ABF0
+.rdata:000000018005B5D8                 dq offset sub_18000ABB0
+.rdata:000000018005B5E0                 dq offset sub_18000A940
+.rdata:000000018005B5E8                 dq offset sub_18000A900
+.rdata:000000018005B5F0                 dq offset sub_18000CF30
+.rdata:000000018005B5F8                 dq offset sub_18000E6F0
+.rdata:000000018005B600                 dq offset sub_18000C200
+.rdata:000000018005B608                 dq offset sub_18000E610
+.rdata:000000018005B610                 dq offset sub_180009DE0
+.rdata:000000018005B618                 dq offset sub_18000C190
+.rdata:000000018005B620                 dq offset sub_18000E5A0
+.rdata:000000018005B628                 dq offset sub_180009FD0
+.rdata:000000018005B630                 dq offset sub_18000A170
+.rdata:000000018005B638                 dq offset sub_18000A0B0
+.rdata:000000018005B640                 dq offset sub_18000EC50
+.rdata:000000018005B648                 dq offset sub_18000C170
+.rdata:000000018005B650                 dq offset sub_18000F4B0
+.rdata:000000018005B658                 dq offset ?Id@SchedulingRing@details@Concurrency@@QEBAHXZ ; Concurrency::details::SchedulingRing::Id(void)
+.rdata:000000018005B660                 dq offset sub_18000AEB0
+.rdata:000000018005B668                 dq offset sub_18000AEC0
+.rdata:000000018005B670                 dq offset sub_18000C530
+.rdata:000000018005B678                 dq offset sub_18000DD60
+.rdata:000000018005B680                 dq offset sub_18000DCD0
+.rdata:000000018005B688                 dq offset sub_18000DDF0
+.rdata:000000018005B690                 dq offset sub_18000B8A0
+.rdata:000000018005B698                 dq offset sub_18000D3C0
+.rdata:000000018005B6A0                 dq offset sub_18000A550
+*/
 abstract_class ICvar : public IAppSystem
 {
 public:
-	// Allocate a unique DLL identifier
-	virtual CVarDLLIdentifier_t AllocateDLLIdentifier() = 0;
+	virtual void sub_180009DA0() = 0;
 
 	// Register, unregister commands
 	virtual void			RegisterConCommand(ConCommandBase* pCommandBase) = 0;
 	virtual void			UnregisterConCommand(ConCommandBase* pCommandBase) = 0;
-	virtual void			UnregisterConCommands(CVarDLLIdentifier_t id) = 0;
+	virtual void			sub_18000F800() = 0;
 
-	// If there is a +<varname> <value> on the command line, this returns the value.
-	// Otherwise, it returns NULL.
-	virtual const char* GetCommandLineValue(const char* pVariableName) = 0;
-
-	// Try to find the cvar pointer by name
-	virtual ConCommandBase* FindCommandBase(const char* name) = 0;
-	virtual const ConCommandBase* FindCommandBase(const char* name) const = 0;
-	virtual ConVar* FindVar(const char* var_name) = 0;
-	virtual const ConVar* FindVar(const char* var_name) const = 0;
-	virtual ConCommand* FindCommand(const char* name) = 0;
-	virtual const ConCommand* FindCommand(const char* name) const = 0;
-
-	virtual void sub_140599640() = 0;
-	virtual void sub_140599BA0() = 0;
-
-	// Install a global change callback (to be called when any convar changes) 
-	virtual void			InstallGlobalChangeCallback(/*FnChangeCallback callback*/ ) = 0;
-	virtual void			RemoveGlobalChangeCallback(/*FnChangeCallback callback*/) = 0;
-	virtual void			CallGlobalChangeCallbacks(ConVar* var, const char* pOldString/*, float flOldValue*/) = 0;
-
-	// Install a console printer
-	virtual void			InstallConsoleDisplayFunc(IConsoleDisplayFunc* pDisplayFunc) = 0;
-	virtual void			RemoveConsoleDisplayFunc(IConsoleDisplayFunc* pDisplayFunc) = 0;
-	virtual void			ConsoleColorPrintf(const Color& clr, PRINTF_FORMAT_STRING const char* pFormat, ...) const FMTFUNCTION(3, 4) = 0;
-	virtual void			ConsolePrintf(PRINTF_FORMAT_STRING const char* pFormat, ...) const FMTFUNCTION(2, 3) = 0;
-	virtual void			ConsoleDPrintf(PRINTF_FORMAT_STRING const char* pFormat, ...) const FMTFUNCTION(2, 3) = 0;
-
-	virtual void sub_140598730() = 0;
-
-	// Method allowing the engine ICvarQuery interface to take over
-	// A little hacky, owing to the fact the engine is loaded
-	// well after ICVar, so we can't use the standard connect pattern
-	virtual void			InstallCVarQuery(ICvarQuery* pQuery) = 0;
-
-	virtual void			SetMaxSplitScreenSlots(int nSlots) = 0;
-	virtual int				GetMaxSplitScreenSlots() const = 0;
-
-	virtual int				GetConsoleDisplayFuncCount() const = 0;
-	virtual void			GetConsoleText(int nDisplayFuncIndex, char* pchText, size_t bufSize) const = 0;
-
-	// Utilities for convars accessed by the material system thread
-	virtual bool			IsMaterialThreadSetAllowed() const = 0;
-	virtual void			QueueMaterialThreadSetValue(ConVar* pConVar, const char* pValue) = 0;
-	virtual void			QueueMaterialThreadSetValue(ConVar* pConVar, int nValue) = 0;
-	virtual void			QueueMaterialThreadSetValue(ConVar* pConVar, float flValue) = 0;
-	virtual bool			HasQueuedMaterialThreadConVarSets() const = 0;
-	virtual int				ProcessQueuedMaterialThreadConVarSets() = 0;
-
+	virtual void sub_18000AE20() = 0;
+	virtual void sub_18000A9D0() = 0;
+	virtual void sub_18000A980() = 0;
+	virtual void sub_18000ABF0() = 0;
+	virtual void sub_18000ABB0() = 0;
+	virtual void sub_18000A940() = 0;
+	virtual void sub_18000A900() = 0;
+	virtual void sub_18000CF30() = 0;
+	virtual void sub_18000E6F0() = 0;
+	virtual void sub_18000C200() = 0;
+	virtual void sub_18000E610() = 0; // FindCommandBase
+	virtual void sub_180009DE0() = 0;
+	virtual void sub_18000C190() = 0; // FindVar
+	virtual void sub_18000E5A0() = 0;
+	virtual void sub_180009FD0() = 0; // FindCommand
+	virtual void sub_18000A170() = 0;
+	virtual void sub_18000A0B0() = 0;
+	virtual void sub_18000EC50() = 0;
+	virtual void sub_18000C170() = 0;
+	virtual void sub_18000F4B0() = 0;
+	virtual void sub_unk() = 0;  //? Id@SchedulingRing@details@Concurrency@@QEBAHXZ; Concurrency::details::SchedulingRing::Id(void)
+	virtual void sub_18000AEB0() = 0;
+	virtual void sub_18000AEC0() = 0;
+	virtual void sub_18000C530() = 0;
+	virtual void sub_18000DD60() = 0;
+	virtual void sub_18000DCD0() = 0;
+	virtual void sub_18000DDF0() = 0;
+	virtual void sub_18000B8A0() = 0;
+	virtual void sub_18000D3C0() = 0;
+	virtual void sub_18000A550() = 0;
+/*
 protected:
 	class ICVarIteratorInternal
 	{
@@ -118,6 +136,7 @@ protected:
 	};
 
 	virtual ICVarIteratorInternal* FactoryInternalIterator(void) = 0;
+	*/
 };
 #endif
 #endif // ICVAR_H

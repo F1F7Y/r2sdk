@@ -14,6 +14,7 @@
 //#include "tier1/utlstring.h"
 //#include "vstdlib/completion.h"
 //#include "vstdlib/callback.h"
+#include "engine/console.h"
 
 
 //-----------------------------------------------------------------------------
@@ -57,47 +58,21 @@ inline const char* CCommand::operator[](int nIndex) const
 // Purpose: create
 //-----------------------------------------------------------------------------
 
-ConCommand* ConCommand::StaticCreate(const char* pszName, const char* pszHelpString, const char* pszUsageString,
-	int nFlags, FnCommandCallback_t pCallback, FnCommandCompletionCallback pCompletionFunc)
+ConCommand* ConCommand::StaticCreate(const char* pszName, const char* pszHelpString, int nFlags,
+	FnCommandCallback_t pCallback, FnCommandCompletionCallback pCompletionFunc)
 {
 	ConCommand* pCommand = MemAllocSingleton()->Alloc<ConCommand>(sizeof(ConCommand));
-	/*
-	*(ConCommandBase**)pCommand = g_pConCommandVFTable;
-
-	pCommand->m_pNext = nullptr;
-	pCommand->m_bRegistered = false;
-
-	pCommand->m_pszName = pszName;
-	pCommand->m_pszHelpString = pszHelpString;
-	pCommand->m_nCallbackFlags = 0;
-	pCommand->m_nFlags = nFlags;
-
-	//pCommand->m_nNullCallBack = NullSub;
-	//pCommand->m_pSubCallback = nullptr;
-	pCommand->m_fnCommandCallback = pCallback;
-	//pCommand->m_bHasCompletionCallback = pCompletionFunc != nullptr ? true : false;
-	//pCommand->m_bUsingNewCommandCallback = true;
-	//pCommand->m_bUsingCommandCallbackInterface = false;
-	//pCommand->m_fnCompletionCallback = pCompletionFunc ? pCompletionFunc : CallbackStub;
-
-	g_pCVar->RegisterConCommand(pCommand);*/
 
 	v_ConCommand_ConCommand(pCommand, pszName, pCallback, pszHelpString, nFlags, nullptr);
-
+	
 	return pCommand;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: construct/allocate
 //-----------------------------------------------------------------------------
-ConCommand::ConCommand()/*
-	: m_nNullCallBack(nullptr)
-	, m_pSubCallback(nullptr)
-	, m_fnCommandCallbackV1(nullptr)
-	, m_fnCompletionCallback(nullptr)
-	, m_bHasCompletionCallback(false)
-	, m_bUsingNewCommandCallback(false)
-	, m_bUsingCommandCallbackInterface(false)*/
+ConCommand::ConCommand()
+	: m_fnCompletionCallback(nullptr)
 {
 }
 //-----------------------------------------------------------------------------
@@ -109,6 +84,10 @@ void ConCommand::StaticInit(void)
 	//-------------------------------------------------------------------------
 	// ENGINE DLL                                                             |
 	//ConCommand::StaticCreate("bhit", "Bullet-hit trajectory debug.", nullptr, FCVAR_DEVELOPMENTONLY | FCVAR_GAMEDLL, BHit_f, nullptr);
+
+	ConCommand::StaticCreate("toggleconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ToggleConsole_f, nullptr);
+	ConCommand::StaticCreate("hideconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_HideConsole_f, nullptr);
+	ConCommand::StaticCreate("showconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ShowConsole_f, nullptr);
 }
 
 //-----------------------------------------------------------------------------

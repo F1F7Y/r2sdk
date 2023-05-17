@@ -2,8 +2,6 @@
 #include "launcher/launcher.h"
 #include "tier1/cmd.h"
 
-#include "engine/console.h"
-
 int LauncherMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	DevMsg(eDLL_T::NONE, "LauncherMain\n");
@@ -23,7 +21,7 @@ bool CSourceAppSystemGroup__PreInit(void* pModAppSystemGroup)
 
 	bCalled = true;
 
-	ConCommand::StaticCreate("toggleconsole", "helpString", "usageString", FCVAR_DONTRECORD, Con_ToggleConsole_f, nullptr);
+	ConCommand::StaticInit();
 
 	return v_CSourceAppSystemGroup__PreInit(pModAppSystemGroup);
 }
