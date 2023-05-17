@@ -242,14 +242,14 @@ void CCrashHandler::FormatExceptionAddress(LPCSTR pExceptionAddress)
 	if (GetModuleFileNameExA(GetCurrentProcess(), hCrashedModule, szCrashedModuleFullName, sizeof(szCrashedModuleFullName)) - 1 > 0x1FE)
 	{
 		m_svBuffer.append(Format("\tmodule@%p: %p\n", (void*)hCrashedModule, pModuleBase));
-		m_nCrashMsgFlags = 2; // Display the "Apex crashed" message without additional information regarding the module.
+		m_nCrashMsgFlags = 2; // Display the "Titanfall2 crashed" message without additional information regarding the module.
 		return;
 	}
 
 	// TODO: REMOVE EXT.
 	const CHAR* szCrashedModuleName = strrchr(szCrashedModuleFullName, '\\') + 1;
 	m_svBuffer.append(Format("\t%-15s: %p\n", szCrashedModuleName, pModuleBase));
-	m_nCrashMsgFlags = 1; // Display the "Apex crashed in <module>" message.
+	m_nCrashMsgFlags = 1; // Display the "Titanfall2 crashed in <module>" message.
 
 	if (m_svCrashMsgInfo.empty()) // Only set it once to the crashing module.
 	{
@@ -483,7 +483,7 @@ bool CCrashHandler::HasWhitelist()
 //-----------------------------------------------------------------------------
 void CCrashHandler::WriteFile()
 {
-	const string logDirectory = Format("%s\\%s.txt", g_LogSessionDirectory.c_str(), "apex_crash");
+	const string logDirectory = Format("%s\\%s.txt", g_LogSessionDirectory.c_str(), "titanfall2_crash");
 	CIOStream logFile;
 
 	if (logFile.Open(logDirectory, CIOStream::Mode_t::WRITE))
