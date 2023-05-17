@@ -1,5 +1,8 @@
 #include "core/logdef.h"
 #include "launcher/launcher.h"
+#include "tier1/cmd.h"
+
+#include "engine/console.h"
 
 int LauncherMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -21,6 +24,8 @@ bool CSourceAppSystemGroup__PreInit(void* pModAppSystemGroup)
 		Error(eDLL_T::NONE, 0xAAAAAAAA, "CSourceAppSystemGroup__PreInit called more than once!");
 
 	bCalled = true;
+
+	ConCommand::StaticCreate("toggleconsole", "helpString", "usageString", FCVAR_DONTRECORD, Con_ToggleConsole_f, nullptr);
 
 	return v_CSourceAppSystemGroup__PreInit(pModAppSystemGroup);
 }

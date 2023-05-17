@@ -14,6 +14,10 @@
 #include "tier0/commandline.h"
 #include "launcher/IApplication.h"
 #include "launcher/launcher.h"
+// Tier 1
+#include "tier1/cmd.h"
+// Engine
+#include "engine/vgui_baseui_interface.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -304,7 +308,11 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(tier0.dll,VMemStd);
 	REGISTER(tier0.dll,VCommandLine);
 
+	// Tier1
+	REGISTER(engine.dll,VConCommand);
+
 	REGISTER(launcher.dll,VLauncher);
 
 	REGISTER(engine.dll, VApplication);
+	REGISTER(engine.dll, VEngineVgui);
 }
