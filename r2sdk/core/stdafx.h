@@ -120,12 +120,11 @@
 	}                                                               \
 
 inline CModule* g_pSDKDll = nullptr;
-//inline CModule* g_pGameDll = new CModule("Titanfall2.exe");
 inline CModule* g_pLauncherDll = nullptr;
 inline CModule* g_pTier0Dll = nullptr;
 inline CModule* g_pEngineDll = nullptr;
-//inline CModule g_ClientDll = CModule("client.dll");
-//inline CModule g_ServerDll = CModule("server.dll");
+inline CModule* g_pClientDll = nullptr;
+inline CModule* g_pServerDll = nullptr;
 
 inline const string g_ProcessTimestamp = CreateTimedFileName();
 

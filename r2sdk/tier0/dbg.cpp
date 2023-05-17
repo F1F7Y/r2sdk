@@ -16,6 +16,7 @@
 #ifndef DEDICATED
 //#include "vgui/vgui_debugpanel.h"
 //#include "gameui/IConsole.h"
+#include "gameui/GameConsole.h"
 #endif // !DEDICATED
 #ifndef CLIENT_DLL
 //#include "engine/server/sv_rcon.h"
@@ -374,7 +375,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	}
 
 #ifndef NETCONSOLE
-#if 0
+
 	// Output is always logged to the file.
 	std::shared_ptr<spdlog::logger> ntlogger = spdlog::get(pszLogger); // <-- Obtain by 'pszLogger'.
 	assert(ntlogger.get() != nullptr);
@@ -383,23 +384,25 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	if (bToConsole)
 	{
 #ifndef CLIENT_DLL
+#if 0
 		if (!LoggedFromClient(context) && RCONServer()->ShouldSend(sv_rcon::response_t::SERVERDATA_RESPONSE_CONSOLE_LOG))
 		{
 			RCONServer()->SendEncode(formatted.c_str(), pszUpTime, sv_rcon::response_t::SERVERDATA_RESPONSE_CONSOLE_LOG,
 				int(context), int(logType));
 		}
+#endif
 #endif // !CLIENT_DLL
 #ifndef DEDICATED
-		g_ImGuiLogger->debug(message);
+		g_GameLogger->debug(message);
 
 		if (g_bSpdLog_PostInit)
 		{
-			g_pConsole->AddLog(ConLog_t(g_LogStream.str(), overlayColor));
+			g_pGameConsole->m_pConsole->m_pConsolePanel->Print(message.c_str());
 
-			if (logLevel >= LogLevel_t::LEVEL_NOTIFY) // Draw to mini console.
-			{
-				g_pOverlay->AddLog(overlayContext, g_LogStream.str());
-			}
+			//if (logLevel >= LogLevel_t::LEVEL_NOTIFY) // Draw to mini console.
+			//{
+			//	g_pOverlay->AddLog(overlayContext, g_LogStream.str());
+			//}
 		}
 #endif // !DEDICATED
 	}
@@ -408,7 +411,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	g_LogStream.str(string());
 	g_LogStream.clear();
 #endif // !DEDICATED
-#endif
+
 #endif // !NETCONSOLE
 
 	if (exitCode) // Terminate the process if an exit code was passed.

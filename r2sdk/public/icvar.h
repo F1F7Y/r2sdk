@@ -29,11 +29,9 @@ typedef int CVarDLLIdentifier_t;
 abstract_class IConsoleDisplayFunc
 {
 public:
-	virtual void ColorPrint(const Color & clr, const char* pMessage) = 0;
+	virtual void ColorPrint(const Color& clr, const char* pMessage) = 0;
 	virtual void Print(const char* pMessage) = 0;
 	virtual void DPrint(const char* pMessage) = 0;
-
-	virtual void GetConsoleText(char* pchText, size_t bufSize) const = 0;
 };
 
 //-----------------------------------------------------------------------------

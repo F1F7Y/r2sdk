@@ -18,6 +18,8 @@
 #include "tier1/cmd.h"
 // Engine
 #include "engine/vgui_baseui_interface.h"
+// Client
+#include "gameui/GameConsoleDialog.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -253,6 +255,18 @@ bool AllocateModule(string strModule)
 		return true;
 	}
 
+	if (strModule == "client.dll" && !g_pClientDll)
+	{
+		g_pClientDll = new CModule("client.dll");
+		return true;
+	}
+
+	//if (strModule == "server.dll" && !g_pServerDll)
+	//{
+	//	g_pServerDll = new CModule("server.dll");
+	//	return true;
+	//}
+
 	//DevMsg(eDLL_T::NONE, "Skipping module: %s\n", strModule.c_str());
 
 	return false;
@@ -315,4 +329,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 
 	REGISTER(engine.dll, VApplication);
 	REGISTER(engine.dll, VEngineVgui);
+
+	// Client
+	REGISTER(client.dll, VConsoleDialog);
 }

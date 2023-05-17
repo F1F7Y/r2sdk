@@ -7,6 +7,7 @@ char CEngine__Init(void* self)
 	char cResult = v_CEngineVGui__Init(self);
 	DevMsg(eDLL_T::NONE, "CEngine__Init: %i\n", cResult);
 	g_pGameConsole->Initialize();
+	SpdLog_PostInit();
 	return cResult;
 }
 

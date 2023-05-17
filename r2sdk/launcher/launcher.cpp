@@ -6,7 +6,6 @@
 
 int LauncherMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	SpdLog_PostInit();
 	DevMsg(eDLL_T::NONE, "LauncherMain\n");
 	return v_LauncherMain(hInstance, hPrevInstance, lpCmdLine, nShowCmd);
 }
