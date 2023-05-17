@@ -14,7 +14,6 @@ bool CSourceAppSystemGroup__PreInit(void* pModAppSystemGroup)
 {
 	DevMsg(eDLL_T::NONE, "CSourceAppSystemGroup__PreInit\n");
 
-
 	// [Fifty]: r5r has a check for 'CSourceAppSystemGroup::CREATION' here
 	// i dont know how the inheritance do so i just added a defensive check
 	static bool bCalled = false;

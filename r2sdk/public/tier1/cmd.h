@@ -17,7 +17,7 @@
 //#include "tier1/characterset.h"
 #include "public/iconvar.h"
 #include "public/iconcommand.h"
-//#include "mathlib/color.h"
+#include "mathlib/color.h"
 
 //-----------------------------------------------------------------------------
 // Forward declarations

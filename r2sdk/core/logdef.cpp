@@ -20,7 +20,7 @@ void SpdLog_Init(void)
 #ifndef NETCONSOLE
 	g_LogSessionDirectory = fmt::format("platform\\logs\\{:s}", g_ProcessTimestamp);
 	/************************
-	 * IMGUI LOGGER SETUP   *
+	 * GAME CONSOLE LOGGER SETUP   *
 	 ************************/
 	{
 		g_GameLogger = std::make_shared<spdlog::logger>("game_console", g_LogSink);

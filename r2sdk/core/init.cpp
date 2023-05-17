@@ -317,6 +317,9 @@ void DetourAttachModule(string strModule)
 
 void DetourRegister() // Register detour classes to be searched and hooked.
 {
+	// Launcher
+	REGISTER(launcher.dll, VLauncher);
+
 	// Tier0
 	REGISTER(tier0.dll,VPlatform);
 	REGISTER(tier0.dll,VMemStd);
@@ -324,9 +327,6 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 
 	// Tier1
 	REGISTER(engine.dll,VConCommand);
-
-	REGISTER(launcher.dll,VLauncher);
-
 	REGISTER(engine.dll, VApplication);
 	REGISTER(engine.dll, VEngineVgui);
 
