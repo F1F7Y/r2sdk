@@ -21,6 +21,8 @@ bool CSourceAppSystemGroup__PreInit(void* pModAppSystemGroup)
 
 	bCalled = true;
 
+	//Sleep(5000);
+
 	ConCommand::StaticInit();
 
 	return v_CSourceAppSystemGroup__PreInit(pModAppSystemGroup);

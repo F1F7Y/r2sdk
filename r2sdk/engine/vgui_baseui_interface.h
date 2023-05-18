@@ -6,7 +6,6 @@
 inline CMemory p_CEngineVGui__Init;
 inline auto v_CEngineVGui__Init = p_CEngineVGui__Init.RCast<char(*)(void*)>();
 
-
 ///////////////////////////////////////////////////////////////////////////////
 class VEngineVgui : public IDetour
 {

@@ -20,6 +20,9 @@
 #include "engine/vgui_baseui_interface.h"
 // Client
 #include "gameui/GameConsoleDialog.h"
+#include "vgui_controls/Panel.h"
+#include "vgui_controls/Frame.h"
+#include "vgui_controls/Label.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -332,4 +335,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 
 	// Client
 	REGISTER(client.dll, VConsoleDialog);
+	REGISTER(client.dll, VguiFrame);
+	REGISTER(client.dll, VguiPanel);
+	REGISTER(client.dll, VguiLabel);
 }
