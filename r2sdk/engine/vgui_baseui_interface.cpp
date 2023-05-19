@@ -13,25 +13,12 @@ char CEngineVGui__Init(void* self)
 
 	vgui::Frame* frame = MemAllocSingleton()->Alloc<vgui::Frame>(sizeof(vgui::Frame));
 	v_Frame__Frame(frame, NULL, "FrameTest", false, true);
-	frame->SetTitle("Cs", true);
+	frame->SetTitle("Cock and balls", true);
 	frame->SetVisible(true);
-	//frame->sub_1807708A0("cock");
-	//DevMsg(eDLL_T::NONE, "name: %s\n", frame->GetName());
-	//frame->SetName("cock");
-	//DevMsg(eDLL_T::NONE, "name: %s\n", frame->GetName());
-	//frame->SetSize(200, 300);
-	//frame->SetPos(50, 50);
-	//int x, y;
-	//frame->nullsub_159(x, y);
-	//DevMsg(eDLL_T::NONE, "pos: %i, %i\n",x,y);
-	//frame->sub_18009E140(255);
-	//DevMsg(eDLL_T::NONE, "Unk: %i", frame->IsDragEnabled());
-	//frame->SetDragEnabled(true);
-	//DevMsg(eDLL_T::NONE, "Unk: %i", frame->sub_18075D890());
 
-	//vgui::Label* label = MemAllocSingleton()->Alloc<vgui::Label>(sizeof(vgui::Label));
-	//v_Label__Label(label, frame, "LabelTest", "Penis");
-	//label->SetVisible(true);
+	vgui::Label* label = MemAllocSingleton()->Alloc<vgui::Label>(sizeof(vgui::Label));
+	v_Label__Label(label, frame, "LabelTest", "Penis");
+	label->SetVisible(true);
 
 	SpdLog_PostInit();
 	return cResult;
