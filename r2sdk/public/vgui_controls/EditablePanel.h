@@ -8,31 +8,31 @@ namespace vgui
 	class EditablePanel : public Panel
 	{
 	public:
-		virtual void sub_18077C950() = 0;
-		virtual void sub_18077C9F0() = 0;
-		virtual void sub_18077D370() = 0;
-		virtual void sub_18077C990() = 0;
-		virtual void sub_18077BA30() = 0;
-		virtual void sub_18077C250() = 0;
-		virtual void sub_18077C0F0() = 0;
-		virtual void sub_18077D550() = 0;
-		virtual void sub_18077D480() = 0;
-		virtual void sub_18077D400() = 0;
-		virtual void sub_18077C260() = 0;
-		virtual void sub_18077C320() = 0;
-		virtual void sub_18077C2F0() = 0;
-		virtual void sub_18077D3C0() = 0;
-		virtual void sub_18077D5D0() = 0;
-		virtual void sub_18077D6F0() = 0;
-		virtual void sub_18077D680() = 0;
-		virtual void sub_18077D760() = 0;
-		virtual void sub_18077D610() = 0;
-		virtual void sub_18077D100() = 0;
-		virtual void sub_18077C4A0() = 0;
-		virtual void sub_18077CBF0() = 0;
-		virtual void sub_18077CB40() = 0;
-		virtual void sub_18077CC60() = 0;
-		virtual void sub_18077CB30() = 0;
+		virtual void sub_18077C950();
+		virtual void sub_18077C9F0();
+		virtual void sub_18077D370();
+		virtual void sub_18077C990();
+		virtual void sub_18077BA30();
+		virtual void sub_18077C250();
+		virtual void sub_18077C0F0();
+		virtual void sub_18077D550();
+		virtual void SetControlString(const char* controlName, const char* string);
+		virtual void SetControlString(const char* controlName, const wchar_t* string);
+		virtual int GetControlInt(const char* controlName, int defaultState);
+		virtual void GetControlString(const char* controlName, char* buf, int bufSize, const char* defaultString);
+		virtual void sub_18077C2F0();
+		virtual void sub_18077D3C0();
+		virtual void sub_18077D5D0();
+		virtual /*KeyValues*/ void* GetDialogVariables();
+		virtual void sub_18077D680(); // Also GetDialogVariables???
+		virtual void sub_18077D760(); // Also GetDialogVariables???
+		virtual void sub_18077D610(); // Also GetDialogVariables???
+		virtual void sub_18077D100();
+		virtual void sub_18077C4A0();
+		virtual void sub_18077CBF0();
+		virtual void OnCurrentDefaultButtonSet(VPANEL defaultButton);
+		virtual void OnFindDefaultButton();
+		virtual void sub_18077CB30();
 
 		//{
 			//_QWORD qword0;
