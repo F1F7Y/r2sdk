@@ -1,6 +1,7 @@
 #include "core/logdef.h"
 #include "launcher/launcher.h"
 #include "tier1/cmd.h"
+#include "tier1/cvar.h"
 
 int LauncherMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
@@ -24,6 +25,7 @@ bool CSourceAppSystemGroup__PreInit(void* pModAppSystemGroup)
 	//Sleep(5000);
 
 	ConCommand::StaticInit();
+	ConVar::StaticInit();
 
 	return v_CSourceAppSystemGroup__PreInit(pModAppSystemGroup);
 }
