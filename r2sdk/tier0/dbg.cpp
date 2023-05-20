@@ -10,6 +10,7 @@
 #include "core/logdef.h"
 #include "tier0/dbg.h"
 #include "tier0/platform.h"
+#include "public/tier1/cvar.h"
 #ifndef NETCONSOLE
 //#include "tier0/threadtools.h"
 #include "tier0/commandline.h"
@@ -397,7 +398,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 
 		if (g_bSpdLog_PostInit)
 		{
-			g_pGameConsole->m_pConsole->m_pConsolePanel->Print(message.c_str());
+			g_pCVar->ConsolePrintf("%s", message.c_str());
 
 			//if (logLevel >= LogLevel_t::LEVEL_NOTIFY) // Draw to mini console.
 			//{
