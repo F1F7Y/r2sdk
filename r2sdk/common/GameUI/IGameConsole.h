@@ -14,31 +14,6 @@
 #include "mathlib/color.h"
 #include "tier1/interface.h"
 
-class EditablePanel
-{
-public:
-	virtual ~EditablePanel() = 0;
-	unsigned char unknown[0x2B0];
-};
-
-class CConsolePanel : public EditablePanel, public IConsoleDisplayFunc
-{
-};
-
-class CConsoleDialog
-{
-public:
-	struct VTable
-	{
-		void* unknown[298];
-		void (*OnCommandSubmitted)(CConsoleDialog* consoleDialog, const char* pCommand);
-	};
-
-	VTable* m_vtable;
-	unsigned char unknown[0x398];
-	CConsolePanel* m_pConsolePanel;
-};
-
 //-----------------------------------------------------------------------------
 // Purpose: interface to game/dev console
 //-----------------------------------------------------------------------------
@@ -62,9 +37,6 @@ public:
 	virtual bool IsConsoleVisible() = 0;
 
 	virtual void SetParent(int parent) = 0;
-
-	bool m_bInitialized;
-	CConsoleDialog* m_pConsole;
 };
 
 #define GAMECONSOLE_INTERFACE_VERSION "GameConsole004"

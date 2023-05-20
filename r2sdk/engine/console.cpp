@@ -7,12 +7,6 @@
 //-----------------------------------------------------------------------------
 void Con_ToggleConsole_f(const CCommand& arg)
 {
-	if (!g_pGameConsole->m_bInitialized)
-	{
-		Warning(eDLL_T::NONE, "Tried to toggle console when it is not initilazed!\n");
-		return;
-	}
-
 	if (g_pGameConsole->IsConsoleVisible())
 	{
 		g_pGameConsole->Hide();
@@ -30,12 +24,6 @@ void Con_ToggleConsole_f(const CCommand& arg)
 //-----------------------------------------------------------------------------
 void Con_HideConsole_f(const CCommand& arg)
 {
-	if (!g_pGameConsole->m_bInitialized)
-	{
-		Warning(eDLL_T::NONE, "Tried to hide console when it is not initilazed!\n");
-		return;
-	}
-
 	g_pGameConsole->Hide();
 }
 
@@ -44,11 +32,5 @@ void Con_HideConsole_f(const CCommand& arg)
 //-----------------------------------------------------------------------------
 void Con_ShowConsole_f(const CCommand& arg)
 {
-	if (!g_pGameConsole->m_bInitialized)
-	{
-		Warning(eDLL_T::NONE, "Tried to show console when it is not initilazed!\n");
-		return;
-	}
-
 	g_pGameConsole->Activate();
 }
