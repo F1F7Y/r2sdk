@@ -2,6 +2,7 @@
 //#include "tier1/utlrbtree.h"
 //#include "tier1/NetAdr.h"
 #include "tier1/cvar.h"
+#include "tier0/memstd.h"
 //#include "public/const.h"
 //#include "engine/sys_dll2.h"
 //#include "filesystem/filesystem.h"
@@ -12,49 +13,43 @@
 ///////////////////////////////////////////////////////////////////////////////
 ICvar* g_pCVar = nullptr;
 
-#if 0
+#if 1
 //-----------------------------------------------------------------------------
 // ENGINE                                                                     |
-//ConVar* sdk_fixedframe_tickinterval = nullptr;
+ConVar* sdk_test_convar = nullptr;
 
 
 //-----------------------------------------------------------------------------
 // Purpose: create
 //-----------------------------------------------------------------------------
-/*
-ConVar* ConVar::StaticCreate(const char* pszName, const char* pszDefaultValue, int nFlags, const char* pszHelpString, bool bMin, float fMin, bool bMax, float fMax, FnChangeCallback_t pCallback, const char* pszUsageString)
+
+ConVar* ConVar::StaticCreate(const char* pszName, const char* pszDefaultValue, int nFlags, const char* pszHelpString, bool bMin, float fMin, bool bMax, float fMax, FnChangeCallback_t pCallback)
 {
 	ConVar* pNewConVar = MemAllocSingleton()->Alloc<ConVar>(sizeof(ConVar)); // Allocate new memory with StdMemAlloc else we crash.
 
-	pNewConVar->m_bRegistered = false;
-	*(ConVar**)pNewConVar = g_pConVarVBTable;
-	char* pConVarVFTable = (char*)pNewConVar + sizeof(ConCommandBase);
-	*(IConVar**)pConVarVFTable = g_pConVarVFTable;
+	pNewConVar->m_pConCommandBaseVTable = (void*)g_pConVarVBTable;
+	pNewConVar->s_pConCommandBases = (ConCommandBase*)g_pConVarVFTable;
 
-	pNewConVar->m_pszName = nullptr;
-	pNewConVar->m_pszHelpString = nullptr;
-	pNewConVar->m_pszUsageString = nullptr;
-	pNewConVar->s_pAccessor = nullptr;
-	pNewConVar->m_nFlags = FCVAR_NONE;
-	pNewConVar->m_pNext = nullptr;
+	v_ConVar_Malloc(&pNewConVar->m_pMalloc, 0, 0);
+	v_ConVar_ConVar(pNewConVar, pszName, pszDefaultValue, nFlags, pszHelpString, bMin, fMin, bMax, fMax, pCallback);
 
-	pNewConVar->m_fnChangeCallbacks.Init();
-
-	v_ConVar_Register(pNewConVar, pszName, pszDefaultValue, nFlags, pszHelpString, bMin, fMin, bMax, fMax, pCallback, pszUsageString);
 	return pNewConVar;
-}*/
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: destroy
 //-----------------------------------------------------------------------------
+/*
 void ConVar::Destroy(void)
 {
 	v_ConVar_Unregister(this);
 }
+*/
 
 //-----------------------------------------------------------------------------
 // Purpose: construct/allocate
 //-----------------------------------------------------------------------------
+/*
 ConVar::ConVar(void)
 	: m_pParent(nullptr)
 	, m_pszDefaultValue(nullptr)
@@ -68,6 +63,7 @@ ConVar::ConVar(void)
 	m_Value.m_fValue = 0.0f;
 	m_Value.m_nValue = 0;
 }
+*/
 
 //-----------------------------------------------------------------------------
 // Purpose: destructor
@@ -84,185 +80,15 @@ ConVar::ConVar(void)
 //-----------------------------------------------------------------------------
 // Purpose: initialize ConVar's
 //-----------------------------------------------------------------------------
-/*
+
 void ConVar::StaticInit(void)
 {
 	//-------------------------------------------------------------------------
 	// ENGINE                                                                 |
-	hostdesc = ConVar::StaticCreate("hostdesc", "", FCVAR_RELEASE, "Host game server description.", false, 0.f, false, 0.f, nullptr, nullptr);
-	sdk_fixedframe_tickinterval = ConVar::StaticCreate("sdk_fixedframe_tickinterval", "0.01", FCVAR_RELEASE, "The tick interval used by the SDK fixed frame.", false, 0.f, false, 0.f, nullptr, nullptr);
-	staticProp_defaultBuildFrustum = ConVar::StaticCreate("staticProp_defaultBuildFrustum", "0", FCVAR_DEVELOPMENTONLY, "Use the old solution for building static prop frustum culling.", false, 0.f, false, 0.f, nullptr, nullptr);
-
-	curl_debug = ConVar::StaticCreate("curl_debug", "0", FCVAR_DEVELOPMENTONLY, "Determines whether or not to enable curl debug logging.", false, 0.f, false, 0.f, nullptr, "1 = curl logs; 0 (zero) = no logs.");
-	curl_timeout = ConVar::StaticCreate("curl_timeout", "15", FCVAR_DEVELOPMENTONLY, "Maximum time in seconds a curl transfer operation could take.", false, 0.f, false, 0.f, nullptr, nullptr);
-	ssl_verify_peer = ConVar::StaticCreate("ssl_verify_peer", "1", FCVAR_DEVELOPMENTONLY, "Verify the authenticity of the peer's SSL certificate.", false, 0.f, false, 0.f, nullptr, "1 = curl verifies; 0 (zero) = no verification.");
-
-	rcon_address = ConVar::StaticCreate("rcon_address", "[loopback]:37015", FCVAR_SERVER_CANNOT_QUERY | FCVAR_DONTRECORD | FCVAR_RELEASE, "Remote server access address.", false, 0.f, false, 0.f, nullptr, nullptr);
-	rcon_password = ConVar::StaticCreate("rcon_password", "", FCVAR_SERVER_CANNOT_QUERY | FCVAR_DONTRECORD | FCVAR_RELEASE, "Remote server access password (rcon is disabled if empty).", false, 0.f, false, 0.f, &RCON_PasswordChanged_f, nullptr);
-
-	r_debug_overlay_nodecay = ConVar::StaticCreate("r_debug_overlay_nodecay", "0", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Keeps all debug overlays alive regardless of their lifetime. Use command 'clear_debug_overlays' to clear everything.", false, 0.f, false, 0.f, nullptr, nullptr);
-	r_debug_overlay_invisible = ConVar::StaticCreate("r_debug_overlay_invisible", "1", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Show invisible debug overlays (alpha < 1 = 255).", false, 0.f, false, 0.f, nullptr, nullptr);
-	r_debug_overlay_wireframe = ConVar::StaticCreate("r_debug_overlay_wireframe", "1", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Use wireframe in debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	r_debug_draw_depth_test = ConVar::StaticCreate("r_debug_draw_depth_test", "1", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Toggle depth test for other debug draw functionality.", false, 0.f, false, 0.f, nullptr, nullptr);
-	r_drawWorldMeshes = ConVar::StaticCreate("r_drawWorldMeshes", "1", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Render world meshes.", false, 0.f, false, 0.f, nullptr, nullptr);
-	r_drawWorldMeshesDepthOnly = ConVar::StaticCreate("r_drawWorldMeshesDepthOnly", "1", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Render world meshes (depth only).", false, 0.f, false, 0.f, nullptr, nullptr);
-	r_drawWorldMeshesDepthAtTheEnd = ConVar::StaticCreate("r_drawWorldMeshesDepthAtTheEnd", "1", FCVAR_DEVELOPMENTONLY | FCVAR_CHEAT, "Render world meshes (depth at the end).", false, 0.f, false, 0.f, nullptr, nullptr);
+	sdk_test_convar = ConVar::StaticCreate("sdk_test_convar", "test", FCVAR_RELEASE, "SDK test convar", false, 0.f, false, 0.f, nullptr) ;
+	
 	//-------------------------------------------------------------------------
-	// SERVER                                                                 |
-#ifndef CLIENT_DLL
-	ai_ainDumpOnLoad = ConVar::StaticCreate("ai_ainDumpOnLoad", "0", FCVAR_DEVELOPMENTONLY, "Dumps AIN data from node graphs loaded from the disk on load.", false, 0.f, false, 0.f, nullptr, nullptr);
-	ai_ainDebugConnect = ConVar::StaticCreate("ai_ainDebugConnect", "0", FCVAR_DEVELOPMENTONLY, "Debug AIN node connections.", false, 0.f, false, 0.f, nullptr, nullptr);
-	ai_script_nodes_draw_range = ConVar::StaticCreate("ai_script_nodes_draw_range", "0", FCVAR_DEVELOPMENTONLY, "Debug draw AIN script nodes ranging from shift index to this cvar.", false, 0.f, false, 0.f, nullptr, nullptr);
-	ai_script_nodes_draw_nearest = ConVar::StaticCreate("ai_script_nodes_draw_nearest", "1", FCVAR_DEVELOPMENTONLY, "Debug draw AIN script node links to nearest node (build order is used if null).", false, 0.f, false, 0.f, nullptr, nullptr);
-
-	navmesh_always_reachable = ConVar::StaticCreate("navmesh_always_reachable", "0", FCVAR_DEVELOPMENTONLY, "Marks goal poly from agent poly as reachable regardless of table data ( !slower! ).", false, 0.f, false, 0.f, nullptr, nullptr);
-	navmesh_debug_type = ConVar::StaticCreate("navmesh_debug_type", "0", FCVAR_DEVELOPMENTONLY, "NavMesh debug draw hull index.", true, 0.f, true, 4.f, nullptr, "0 = small, 1 = med_short, 2 = medium, 3 = large, 4 = extra large");
-	navmesh_debug_tile_range = ConVar::StaticCreate("navmesh_debug_tile_range", "0", FCVAR_DEVELOPMENTONLY, "NavMesh debug draw tiles ranging from shift index to this cvar.", true, 0.f, false, 0.f, nullptr, nullptr);
-	navmesh_debug_camera_range = ConVar::StaticCreate("navmesh_debug_camera_range", "2000", FCVAR_DEVELOPMENTONLY, "Only debug draw tiles within this distance from camera origin.", true, 0.f, false, 0.f, nullptr, nullptr);
-#ifndef DEDICATED
-	navmesh_draw_bvtree = ConVar::StaticCreate("navmesh_draw_bvtree", "-1", FCVAR_DEVELOPMENTONLY, "Draws the BVTree of the NavMesh tiles.", false, 0.f, false, 0.f, nullptr, "Index: > 0 && < mesh->m_tileCount");
-	navmesh_draw_portal = ConVar::StaticCreate("navmesh_draw_portal", "-1", FCVAR_DEVELOPMENTONLY, "Draws the portal of the NavMesh tiles.", false, 0.f, false, 0.f, nullptr, "Index: > 0 && < mesh->m_tileCount");
-	navmesh_draw_polys = ConVar::StaticCreate("navmesh_draw_polys", "-1", FCVAR_DEVELOPMENTONLY, "Draws the polys of the NavMesh tiles.", false, 0.f, false, 0.f, nullptr, "Index: > 0 && < mesh->m_tileCount");
-	navmesh_draw_poly_bounds = ConVar::StaticCreate("navmesh_draw_poly_bounds", "-1", FCVAR_DEVELOPMENTONLY, "Draws the bounds of the NavMesh polys.", false, 0.f, false, 0.f, nullptr, "Index: > 0 && < mesh->m_tileCount");
-	navmesh_draw_poly_bounds_inner = ConVar::StaticCreate("navmesh_draw_poly_bounds_inner", "0", FCVAR_DEVELOPMENTONLY, "Draws the inner bounds of the NavMesh polys (requires navmesh_draw_poly_bounds).", false, 0.f, false, 0.f, nullptr, "Index: > 0 && < mesh->m_tileCount");
-#endif // !DEDICATED
-	sv_showconnecting = ConVar::StaticCreate("sv_showconnecting", "1", FCVAR_RELEASE, "Logs information about the connecting client to the console.", false, 0.f, false, 0.f, nullptr, nullptr);
-	sv_globalBanlist = ConVar::StaticCreate("sv_globalBanlist", "1", FCVAR_RELEASE, "Determines whether or not to use the global banned list.", false, 0.f, false, 0.f, nullptr, "0 = Disable, 1 = Enable.");
-	sv_pylonVisibility = ConVar::StaticCreate("sv_pylonVisibility", "0", FCVAR_RELEASE, "Determines the visibility to the Pylon master server.", false, 0.f, false, 0.f, nullptr, "0 = Offline, 1 = Hidden, 2 = Public.");
-	sv_pylonRefreshRate = ConVar::StaticCreate("sv_pylonRefreshRate", "5.0", FCVAR_DEVELOPMENTONLY, "Pylon host refresh rate (seconds).", true, 2.f, true, 8.f, nullptr, nullptr);
-	sv_banlistRefreshRate = ConVar::StaticCreate("sv_banlistRefreshRate", "30.0", FCVAR_DEVELOPMENTONLY, "Banned list refresh rate (seconds).", true, 1.f, false, 0.f, nullptr, nullptr);
-	sv_statusRefreshRate = ConVar::StaticCreate("sv_statusRefreshRate", "0.5", FCVAR_RELEASE, "Server status refresh rate (seconds).", true, 0.f, false, 0.f, nullptr, nullptr);
-	sv_autoReloadRate = ConVar::StaticCreate("sv_autoReloadRate", "0", FCVAR_RELEASE, "Time in seconds between each server auto-reload (disabled if null).", true, 0.f, false, 0.f, nullptr, nullptr);
-	sv_simulateBots = ConVar::StaticCreate("sv_simulateBots", "1", FCVAR_RELEASE, "Simulate user commands for bots on the server.", true, 0.f, false, 0.f, nullptr, nullptr);
-
-	sv_rcon_debug = ConVar::StaticCreate("sv_rcon_debug", "0", FCVAR_RELEASE, "Show rcon debug information ( !slower! ).", false, 0.f, false, 0.f, nullptr, nullptr);
-	sv_rcon_sendlogs = ConVar::StaticCreate("sv_rcon_sendlogs", "0", FCVAR_RELEASE, "Network console logs to connected and authenticated sockets.", false, 0.f, false, 0.f, nullptr, nullptr);
-	sv_rcon_banpenalty = ConVar::StaticCreate("sv_rcon_banpenalty", "10", FCVAR_RELEASE, "Number of minutes to ban users who fail rcon authentication.", false, 0.f, false, 0.f, nullptr, nullptr);
-	sv_rcon_maxfailures = ConVar::StaticCreate("sv_rcon_maxfailures", "10", FCVAR_RELEASE, "Max number of times a user can fail rcon authentication before being banned.", true, 1.f, false, 0.f, nullptr, nullptr);
-	sv_rcon_maxignores = ConVar::StaticCreate("sv_rcon_maxignores", "15", FCVAR_RELEASE, "Max number of times a user can ignore the instruction message before being banned.", true, 1.f, false, 0.f, nullptr, nullptr);
-	sv_rcon_maxsockets = ConVar::StaticCreate("sv_rcon_maxsockets", "32", FCVAR_RELEASE, "Max number of accepted sockets before the server starts closing redundant sockets.", true, 1.f, true, MAX_PLAYERS, nullptr, nullptr);
-	sv_rcon_maxconnections = ConVar::StaticCreate("sv_rcon_maxconnections", "1", FCVAR_RELEASE, "Max number of authenticated connections before the server closes the listen socket.", true, 1.f, true, MAX_PLAYERS, &RCON_ConnectionCountChanged_f, nullptr);
-	sv_rcon_maxpacketsize = ConVar::StaticCreate("sv_rcon_maxpacketsize", "1024", FCVAR_RELEASE, "Max number of bytes allowed in a command packet from a non-authenticated net console.", true, 0.f, false, 0.f, nullptr, nullptr);
-	sv_rcon_whitelist_address = ConVar::StaticCreate("sv_rcon_whitelist_address", "", FCVAR_RELEASE, "This address is not considered a 'redundant' socket and will never be banned for failed authentication attempts.", false, 0.f, false, 0.f, &RCON_WhiteListAddresChanged_f, "Format: '::ffff:127.0.0.1'");
-
-	sv_quota_stringCmdsPerSecond = ConVar::StaticCreate("sv_quota_stringCmdsPerSecond", "16", FCVAR_RELEASE, "How many string commands per second clients are allowed to submit, 0 to disallow all string commands.", true, 0.f, false, 0.f, nullptr, nullptr);
-	sv_validatePersonaName = ConVar::StaticCreate("sv_validatePersonaName", "1", FCVAR_RELEASE, "Validate the client's textual persona name on connect.", true, 0.f, false, 0.f, nullptr, nullptr);
-	sv_minPersonaNameLength = ConVar::StaticCreate("sv_minPersonaNameLength", "4", FCVAR_RELEASE, "The minimum length of the client's textual persona name.", true, 0.f, false, 0.f, nullptr, nullptr);
-	sv_maxPersonaNameLength = ConVar::StaticCreate("sv_maxPersonaNameLength", "16", FCVAR_RELEASE, "The maximum length of the client's textual persona name.", true, 0.f, false, 0.f, nullptr, nullptr);
-#endif // !CLIENT_DLL
-#if !defined (GAMEDLL_S0) && !defined (GAMEDLL_S1)
-	bhit_depth_test = ConVar::StaticCreate("bhit_depth_test", "0", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED, "Use depth test for bullet ray trace overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	bhit_abs_origin = ConVar::StaticCreate("bhit_abs_origin", "1", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED, "Draw entity's predicted abs origin upon bullet impact for trajectory debugging (requires 'r_visualizetraces' to be set!).", false, 0.f, false, 0.f, nullptr, nullptr);
-#endif // !GAMEDLL_S0 && !GAMEDLL_S1
-	//-------------------------------------------------------------------------
-	// CLIENT                                                                 |
-#ifndef DEDICATED
-	cl_rcon_request_sendlogs = ConVar::StaticCreate("cl_rcon_request_sendlogs", "1", FCVAR_RELEASE, "Request the rcon server to send console logs on connect.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_quota_stringCmdsPerSecond = ConVar::StaticCreate("cl_quota_stringCmdsPerSecond", "16", FCVAR_RELEASE, "How many string commands per second user is allowed to submit, 0 to allow all submissions.", true, 0.f, false, 0.f, nullptr, nullptr);
-
-	cl_notify_invert_x = ConVar::StaticCreate("cl_notify_invert_x", "0", FCVAR_DEVELOPMENTONLY, "Inverts the X offset for console notify debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_notify_invert_y = ConVar::StaticCreate("cl_notify_invert_y", "0", FCVAR_DEVELOPMENTONLY, "Inverts the Y offset for console notify debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_notify_offset_x = ConVar::StaticCreate("cl_notify_offset_x", "10", FCVAR_DEVELOPMENTONLY, "X offset for console notify debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_notify_offset_y = ConVar::StaticCreate("cl_notify_offset_y", "10", FCVAR_DEVELOPMENTONLY, "Y offset for console notify debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-
-	cl_showsimstats = ConVar::StaticCreate("cl_showsimstats", "0", FCVAR_DEVELOPMENTONLY, "Shows the tick counter for the server/client simulation and the render frame.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_simstats_invert_x = ConVar::StaticCreate("cl_simstats_invert_x", "1", FCVAR_DEVELOPMENTONLY, "Inverts the X offset for simulation debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_simstats_invert_y = ConVar::StaticCreate("cl_simstats_invert_y", "1", FCVAR_DEVELOPMENTONLY, "Inverts the Y offset for simulation debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_simstats_offset_x = ConVar::StaticCreate("cl_simstats_offset_x", "650", FCVAR_DEVELOPMENTONLY, "X offset for simulation debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_simstats_offset_y = ConVar::StaticCreate("cl_simstats_offset_y", "120", FCVAR_DEVELOPMENTONLY, "Y offset for simulation debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-
-	cl_showgpustats = ConVar::StaticCreate("cl_showgpustats", "0", FCVAR_DEVELOPMENTONLY, "Texture streaming debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_gpustats_invert_x = ConVar::StaticCreate("cl_gpustats_invert_x", "1", FCVAR_DEVELOPMENTONLY, "Inverts the X offset for texture streaming debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_gpustats_invert_y = ConVar::StaticCreate("cl_gpustats_invert_y", "1", FCVAR_DEVELOPMENTONLY, "Inverts the Y offset for texture streaming debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_gpustats_offset_x = ConVar::StaticCreate("cl_gpustats_offset_x", "650", FCVAR_DEVELOPMENTONLY, "X offset for texture streaming debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_gpustats_offset_y = ConVar::StaticCreate("cl_gpustats_offset_y", "105", FCVAR_DEVELOPMENTONLY, "Y offset for texture streaming debug overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-
-	cl_showmaterialinfo = ConVar::StaticCreate("cl_showmaterialinfo", "0", FCVAR_DEVELOPMENTONLY, "Draw info for the material under the crosshair on screen.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_materialinfo_offset_x = ConVar::StaticCreate("cl_materialinfo_offset_x", "0", FCVAR_DEVELOPMENTONLY, "X offset for material debug info overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	cl_materialinfo_offset_y = ConVar::StaticCreate("cl_materialinfo_offset_y", "420", FCVAR_DEVELOPMENTONLY, "Y offset for material debug info overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-
-	con_drawnotify = ConVar::StaticCreate("con_drawnotify", "0", FCVAR_RELEASE, "Draws the RUI console to the hud.", false, 0.f, false, 0.f, nullptr, nullptr);
-	con_notifylines = ConVar::StaticCreate("con_notifylines", "3", FCVAR_MATERIAL_SYSTEM_THREAD, "Number of console lines to overlay for debugging.", true, 1.f, false, 0.f, nullptr, nullptr);
-	con_notifytime = ConVar::StaticCreate("con_notifytime", "6", FCVAR_MATERIAL_SYSTEM_THREAD, "How long to display recent console text to the upper part of the game window.", false, 1.f, false, 50.f, nullptr, nullptr);
-
-	con_notify_invert_x = ConVar::StaticCreate("con_notify_invert_x", "0", FCVAR_MATERIAL_SYSTEM_THREAD, "Inverts the X offset for RUI console overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	con_notify_invert_y = ConVar::StaticCreate("con_notify_invert_y", "0", FCVAR_MATERIAL_SYSTEM_THREAD, "Inverts the Y offset for RUI console overlay.", false, 0.f, false, 0.f, nullptr, nullptr);
-	con_notify_offset_x = ConVar::StaticCreate("con_notify_offset_x", "10", FCVAR_MATERIAL_SYSTEM_THREAD, "X offset for RUI console overlay.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_offset_y = ConVar::StaticCreate("con_notify_offset_y", "10", FCVAR_MATERIAL_SYSTEM_THREAD, "Y offset for RUI console overlay.", false, 1.f, false, 50.f, nullptr, nullptr);
-
-	con_notify_script_server_clr = ConVar::StaticCreate("con_notify_script_server_clr", "130 120 245 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Script SERVER VM RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_script_client_clr = ConVar::StaticCreate("con_notify_script_client_clr", "117 116 139 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Script CLIENT VM RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_script_ui_clr = ConVar::StaticCreate("con_notify_script_ui_clr", "200 110 110 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Script UI VM RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-
-	con_notify_native_server_clr = ConVar::StaticCreate("con_notify_native_server_clr", "20 50 248 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native SERVER RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_client_clr = ConVar::StaticCreate("con_notify_native_client_clr", "70 70 70 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native CLIENT RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_ui_clr = ConVar::StaticCreate("con_notify_native_ui_clr", "200 60 60 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native UI RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_engine_clr = ConVar::StaticCreate("con_notify_native_engine_clr", "255 255 255 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native engine RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_fs_clr = ConVar::StaticCreate("con_notify_native_fs_clr", "0 100 225 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native FileSystem RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_rtech_clr = ConVar::StaticCreate("con_notify_native_rtech_clr", "25 120 20 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native RTech RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_ms_clr = ConVar::StaticCreate("con_notify_native_ms_clr", "200 20 180 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native MaterialSystem RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_audio_clr = ConVar::StaticCreate("con_notify_native_audio_clr", "238 43 10 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native AudioSystem RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_native_video_clr = ConVar::StaticCreate("con_notify_native_video_clr", "115 0 235 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Native VideoSystem RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-
-	con_notify_netcon_clr = ConVar::StaticCreate("con_notify_netcon_clr", "255 255 255 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Net console RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_common_clr = ConVar::StaticCreate("con_notify_common_clr", "255 140 80 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Common RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-
-	con_notify_warning_clr = ConVar::StaticCreate("con_notify_warning_clr", "180 180 20 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Warning RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-	con_notify_error_clr = ConVar::StaticCreate("con_notify_error_clr", "225 20 20 255", FCVAR_MATERIAL_SYSTEM_THREAD, "Error RUI console overlay log color.", false, 1.f, false, 50.f, nullptr, nullptr);
-
-	con_max_lines = ConVar::StaticCreate("con_max_lines", "1024", FCVAR_DEVELOPMENTONLY, "Maximum number of lines in the console before cleanup starts.", true, 1.f, false, 0.f, nullptr, nullptr);
-	con_max_history = ConVar::StaticCreate("con_max_history", "512", FCVAR_DEVELOPMENTONLY, "Maximum number of command submission items before history cleanup starts.", true, 0.f, false, 0.f, nullptr, nullptr);
-	con_suggestion_limit = ConVar::StaticCreate("con_suggestion_limit", "128", FCVAR_DEVELOPMENTONLY, "Maximum number of suggestions the autocomplete window will show for the console.", true, 0.f, false, 0.f, nullptr, nullptr);
-	con_suggestion_showhelptext = ConVar::StaticCreate("con_suggestion_showhelptext", "1", FCVAR_DEVELOPMENTONLY, "Show CommandBase help text in autocomplete window.", false, 0.f, false, 0.f, nullptr, nullptr);
-	con_suggestion_showflags = ConVar::StaticCreate("con_suggestion_showflags", "1", FCVAR_DEVELOPMENTONLY, "Show CommandBase flags in autocomplete window.", false, 0.f, false, 0.f, nullptr, nullptr);
-	con_suggestion_flags_realtime = ConVar::StaticCreate("con_suggestion_flags_realtime", "1", FCVAR_DEVELOPMENTONLY, "Whether to show compile-time or run-time CommandBase flags.", false, 0.f, false, 0.f, nullptr, nullptr);
-
-	serverbrowser_hideEmptyServers = ConVar::StaticCreate("serverbrowser_hideEmptyServers", "0", FCVAR_RELEASE, "Hide empty servers in the server browser", false, 0.f, false, 0.f, nullptr, nullptr);
-	serverbrowser_mapFilter = ConVar::StaticCreate("serverbrowser_mapFilter", "0", FCVAR_RELEASE, "Filter servers by map in the server browser", false, 0.f, false, 0.f, nullptr, nullptr);
-	serverbrowser_gamemodeFilter = ConVar::StaticCreate("serverbrowser_gamemodeFilter", "0", FCVAR_RELEASE, "Filter servers by gamemode in the server browser", false, 0.f, false, 0.f, nullptr, nullptr);
-#endif // !DEDICATED
-	//-------------------------------------------------------------------------
-	// FILESYSTEM                                                             |
-	fs_showWarnings = ConVar::StaticCreate("fs_showWarnings", "0", FCVAR_DEVELOPMENTONLY, "Logs the FileSystem warnings to the console, filtered by 'fs_warning_level' ( !slower! ).", true, 0.f, true, 2.f, nullptr, "0 = log to file. 1 = 0 + log to console. 2 = 1 + log to notify.");
-	fs_packedstore_entryblock_stats = ConVar::StaticCreate("fs_packedstore_entryblock_stats", "0", FCVAR_DEVELOPMENTONLY, "Logs the stats of each file entry in the VPK during decompression ( !slower! ).", false, 0.f, false, 0.f, nullptr, nullptr);
-	fs_packedstore_workspace = ConVar::StaticCreate("fs_packedstore_workspace", "platform/ship/", FCVAR_DEVELOPMENTONLY, "Determines the current VPK workspace.", false, 0.f, false, 0.f, nullptr, nullptr);
-	fs_packedstore_compression_level = ConVar::StaticCreate("fs_packedstore_compression_level", "default", FCVAR_DEVELOPMENTONLY, "Determines the VPK compression level.", false, 0.f, false, 0.f, nullptr, "fastest faster default better uber");
-	fs_packedstore_max_helper_threads = ConVar::StaticCreate("fs_packedstore_max_helper_threads", "-1", FCVAR_DEVELOPMENTONLY, "Max # of additional \"helper\" threads to create during compression.", true, -1, true, LZHAM_MAX_HELPER_THREADS, nullptr, "Must range between [-1,LZHAM_MAX_HELPER_THREADS], where -1=max practical.");
-	//-------------------------------------------------------------------------
-	// MATERIALSYSTEM                                                         |
-#ifndef DEDICATED
-	mat_alwaysComplain = ConVar::StaticCreate("mat_alwaysComplain", "0", FCVAR_RELEASE | FCVAR_MATERIAL_SYSTEM_THREAD, "Always complain when a material is missing.", false, 0.f, false, 0.f, nullptr, nullptr);
-#endif // !DEDICATED
-	//-------------------------------------------------------------------------
-	// SQUIRREL                                                               |
-	script_show_output = ConVar::StaticCreate("script_show_output", "0", FCVAR_RELEASE, "Prints the VM output to the console ( !slower! ).", true, 0.f, true, 2.f, nullptr, "0 = log to file. 1 = 0 + log to console. 2 = 1 + log to notify.");
-	script_show_warning = ConVar::StaticCreate("script_show_warning", "0", FCVAR_RELEASE, "Prints the VM warning output to the console ( !slower! ).", true, 0.f, true, 2.f, nullptr, "0 = log to file. 1 = 0 + log to console. 2 = 1 + log to notify.");
-	//-------------------------------------------------------------------------
-	// NETCHANNEL                                                             |
-	net_tracePayload = ConVar::StaticCreate("net_tracePayload", "0", FCVAR_DEVELOPMENTONLY, "Log the payload of the send/recv datagram to a file on the disk.", false, 0.f, false, 0.f, nullptr, nullptr);
-	net_encryptionEnable = ConVar::StaticCreate("net_encryptionEnable", "1", FCVAR_DEVELOPMENTONLY | FCVAR_REPLICATED, "Use AES encryption on game packets.", false, 0.f, false, 0.f, nullptr, nullptr);
-	net_useRandomKey = ConVar::StaticCreate("net_useRandomKey", "1", FCVAR_RELEASE, "Use random AES encryption key for game packets.", false, 0.f, false, 0.f, &NET_UseRandomKeyChanged_f, nullptr);
-	net_processTimeBudget = ConVar::StaticCreate("net_processTimeBudget", "200", FCVAR_RELEASE, "Net message process time budget in milliseconds (removing netchannel if exceeded).", true, 0.f, false, 0.f, nullptr, "0 = disabled.");
-	//-------------------------------------------------------------------------
-	// NETWORKSYSTEM                                                          |
-	pylon_matchmaking_hostname = ConVar::StaticCreate("pylon_matchmaking_hostname", "ms.r5reloaded.com", FCVAR_RELEASE, "Holds the pylon matchmaking hostname.", false, 0.f, false, 0.f, &MP_HostName_Changed_f, nullptr);
-	pylon_host_update_interval = ConVar::StaticCreate("pylon_host_update_interval", "5", FCVAR_RELEASE, "Length of time in seconds between each status update interval to master server.", true, 5.f, false, 0.f, nullptr, nullptr);
-	pylon_showdebuginfo = ConVar::StaticCreate("pylon_showdebuginfo", "0", FCVAR_RELEASE, "Shows debug output for pylon.", false, 0.f, false, 0.f, nullptr, nullptr);
-	//-------------------------------------------------------------------------
-	// RTECH API                                                              |
-	rtech_debug = ConVar::StaticCreate("rtech_debug", "0", FCVAR_DEVELOPMENTONLY, "Shows debug output for the RTech system.", false, 0.f, false, 0.f, nullptr, nullptr);
-	//-------------------------------------------------------------------------
-	// RUI                                                                    |
-#ifndef DEDICATED
-	rui_drawEnable = ConVar::StaticCreate("rui_drawEnable", "1", FCVAR_RELEASE, "Draws the RUI if set.", false, 0.f, false, 0.f, nullptr, "1 = Draw, 0 = No Draw.");
-#endif // !DEDICATED
-	//-------------------------------------------------------------------------
-	// MILES                                                                  |
-#ifndef DEDICATED
-	miles_debug = ConVar::StaticCreate("miles_debug", "0", FCVAR_RELEASE, "Enables debug prints for the Miles Sound System.", false, 0.f, false, 0.f, nullptr, "1 = Print, 0 = No Print");
-#endif // !DEDICATED
-	//-------------------------------------------------------------------------
-}*/
+}
 
 //-----------------------------------------------------------------------------
 // Purpose: initialize shipped ConVar's
@@ -452,17 +278,17 @@ bool ConVar::GetBool(void) const
 //-----------------------------------------------------------------------------
 float ConVar::GetFloat(void) const
 {
-	return m_pParent->m_Value.m_fValue;
+	return m_Value.m_fValue;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Return ConVar value as a double.
 // Output : double
 //-----------------------------------------------------------------------------
-double ConVar::GetDouble(void) const
-{
-	return static_cast<double>(m_pParent->m_Value.m_fValue);
-}
+//double ConVar::GetDouble(void) const
+//{
+//	return static_cast<double>(m_Value.m_fValue);
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: Return ConVar value as an integer.
@@ -470,26 +296,26 @@ double ConVar::GetDouble(void) const
 //-----------------------------------------------------------------------------
 int ConVar::GetInt(void) const
 {
-	return m_pParent->m_Value.m_nValue;
+	return m_Value.m_nValue;
 }
 
 //-----------------------------------------------------------------------------
 // Purpose: Return ConVar value as an integer (64-bit).
 // Output : int
 //-----------------------------------------------------------------------------
-int64_t ConVar::GetInt64(void) const
-{
-	return static_cast<int64_t>(m_pParent->m_Value.m_nValue);
-}
+//int64_t ConVar::GetInt64(void) const
+//{
+//	return static_cast<int64_t>(m_pParent->m_Value.m_nValue);
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: Return ConVar value as a size type.
 // Output : int
 //-----------------------------------------------------------------------------
-size_t ConVar::GetSizeT(void) const
-{
-	return static_cast<size_t>(m_pParent->m_Value.m_nValue);
-}
+//size_t ConVar::GetSizeT(void) const
+//{
+//	return static_cast<size_t>(m_pParent->m_Value.m_nValue);
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: Return ConVar value as a color.
@@ -507,12 +333,12 @@ size_t ConVar::GetSizeT(void) const
 //-----------------------------------------------------------------------------
 const char* ConVar::GetString(void) const
 {
-	if (m_ConCommandBase.m_nFlags & FCVAR_NEVER_AS_STRING)
-	{
-		return "FCVAR_NEVER_AS_STRING";
-	}
+	//if (m_ConCommandBase.m_nFlags & FCVAR_NEVER_AS_STRING)
+	//{
+	//	return "FCVAR_NEVER_AS_STRING";
+	//}
 
-	char const* str = m_pParent->m_Value.m_pszString;
+	char const* str = m_Value.m_pszString;
 	return str ? str : "";
 }
 
@@ -520,21 +346,21 @@ const char* ConVar::GetString(void) const
 // Purpose: 
 // Input  : flMaxVal - 
 //-----------------------------------------------------------------------------
-void ConVar::SetMax(float flMaxVal)
-{
-	m_pParent->m_fMaxVal = flMaxVal;
-	m_pParent->m_bHasMax = true;
-}
+//void ConVar::SetMax(float flMaxVal)
+//{
+//	m_fMaxVal = flMaxVal;
+//	m_bHasMax = true;
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 // Input  : flMinVal - 
 //-----------------------------------------------------------------------------
-void ConVar::SetMin(float flMinVal)
-{
-	m_pParent->m_fMinVal = flMinVal;
-	m_pParent->m_bHasMin = true;
-}
+//void ConVar::SetMin(float flMinVal)
+//{
+//	m_fMinVal = flMinVal;
+//	m_bHasMin = true;
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: 
@@ -543,8 +369,8 @@ void ConVar::SetMin(float flMinVal)
 //-----------------------------------------------------------------------------
 bool ConVar::GetMin(float& flMinVal) const
 {
-	flMinVal = m_pParent->m_fMinVal;
-	return m_pParent->m_bHasMin;
+	flMinVal = m_fMinVal;
+	return m_bHasMin;
 }
 
 //-----------------------------------------------------------------------------
@@ -554,8 +380,8 @@ bool ConVar::GetMin(float& flMinVal) const
 //-----------------------------------------------------------------------------
 bool ConVar::GetMax(float& flMaxVal) const
 {
-	flMaxVal = m_pParent->m_fMaxVal;
-	return m_pParent->m_bHasMax;
+	flMaxVal = m_fMaxVal;
+	return m_bHasMax;
 }
 
 //-----------------------------------------------------------------------------
@@ -564,7 +390,7 @@ bool ConVar::GetMax(float& flMaxVal) const
 //-----------------------------------------------------------------------------
 float ConVar::GetMinValue(void) const
 {
-	return m_pParent->m_fMinVal;
+	return m_fMinVal;
 }
 
 //-----------------------------------------------------------------------------
@@ -573,7 +399,7 @@ float ConVar::GetMinValue(void) const
 //-----------------------------------------------------------------------------
 float ConVar::GetMaxValue(void) const
 {
-	return m_pParent->m_fMaxVal;
+	return m_fMaxVal;
 }
 
 //-----------------------------------------------------------------------------
@@ -582,7 +408,7 @@ float ConVar::GetMaxValue(void) const
 //-----------------------------------------------------------------------------
 bool ConVar::HasMin(void) const
 {
-	return m_pParent->m_bHasMin;
+	return m_bHasMin;
 }
 
 //-----------------------------------------------------------------------------
@@ -591,7 +417,7 @@ bool ConVar::HasMin(void) const
 //-----------------------------------------------------------------------------
 bool ConVar::HasMax(void) const
 {
-	return m_pParent->m_bHasMax;
+	return m_bHasMax;
 }
 
 //-----------------------------------------------------------------------------
@@ -600,8 +426,8 @@ bool ConVar::HasMax(void) const
 //-----------------------------------------------------------------------------
 void ConVar::SetValue(int nValue)
 {
-	ConVar* pCVar = reinterpret_cast<ConVar*>(m_pParent);
-	pCVar->InternalSetIntValue(nValue);
+	//ConVar* pCVar = reinterpret_cast<ConVar*>(m_pParent);
+	//pCVar->InternalSetIntValue(nValue);
 }
 
 //-----------------------------------------------------------------------------
@@ -610,8 +436,8 @@ void ConVar::SetValue(int nValue)
 //-----------------------------------------------------------------------------
 void ConVar::SetValue(float flValue)
 {
-	ConVar* pCVar = reinterpret_cast<ConVar*>(m_pParent);
-	pCVar->InternalSetFloatValue(flValue);
+	//ConVar* pCVar = reinterpret_cast<ConVar*>(m_pParent);
+	//pCVar->InternalSetFloatValue(flValue);
 }
 
 //-----------------------------------------------------------------------------
@@ -620,8 +446,8 @@ void ConVar::SetValue(float flValue)
 //-----------------------------------------------------------------------------
 void ConVar::SetValue(const char* pszValue)
 {
-	ConVar* pCVar = reinterpret_cast<ConVar*>(m_pParent);
-	pCVar->InternalSetValue(pszValue);
+	//ConVar* pCVar = reinterpret_cast<ConVar*>(m_pParent);
+	//pCVar->InternalSetValue(pszValue);
 }
 
 //-----------------------------------------------------------------------------
@@ -656,30 +482,30 @@ void ConVar::SetValue(const char* pszValue)
 //-----------------------------------------------------------------------------
 // Purpose: Reset to default value.
 //-----------------------------------------------------------------------------
-void ConVar::Revert(void)
-{
-	SetValue(m_pszDefaultValue);
-}
+//void ConVar::Revert(void)
+//{
+//	SetValue(m_pszDefaultValue);
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: returns the default ConVar value.
 // Output : const char
 //-----------------------------------------------------------------------------
-const char* ConVar::GetDefault(void) const
-{
-	return m_pParent->m_pszDefaultValue;
-}
+//const char* ConVar::GetDefault(void) const
+//{
+//	return m_pszDefaultValue;
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: sets the default ConVar value.
 // Input  : *pszDefault -
 //-----------------------------------------------------------------------------
-void ConVar::SetDefault(const char* pszDefault)
-{
-	static const char* pszEmpty = "";
-	m_pszDefaultValue = pszDefault ? pszDefault : pszEmpty;
-	assert(m_pszDefaultValue);
-}
+//void ConVar::SetDefault(const char* pszDefault)
+//{
+//	static const char* pszEmpty = "";
+//	m_pszDefaultValue = pszDefault ? pszDefault : pszEmpty;
+//	assert(m_pszDefaultValue);
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: sets the ConVar color value from string.
@@ -731,6 +557,7 @@ bool ConVar::SetColorFromString(const char* pszValue)
 // Purpose: changes the ConVar string value.
 // Input  : *pszTempVal - flOldValue
 //-----------------------------------------------------------------------------
+/*
 void ConVar::ChangeStringValue(const char* pszTempVal)
 {
 	Assert(!(m_nFlags & FCVAR_NEVER_AS_STRING));
@@ -765,66 +592,67 @@ void ConVar::ChangeStringValue(const char* pszTempVal)
 	}
 
 	stackfree(pszOldValue);
-}
+}*/
 
 //-----------------------------------------------------------------------------
 // Purpose: Install a change callback (there shouldn't already be one....)
 // Input  : callback - 
 //			bInvoke - 
 //-----------------------------------------------------------------------------
-void ConVar::InstallChangeCallback(FnChangeCallback_t callback, bool bInvoke /*=true*/)
-{
-	if (!callback)
-	{
-		Warning(eDLL_T::ENGINE, "%s: Called with NULL callback; ignoring!!!\n", __FUNCTION__);
-		return;
-	}
-
-	if (m_pParent->m_fnChangeCallbacks.Find(callback) != m_pParent->m_fnChangeCallbacks.InvalidIndex())
-	{
-		// Same ptr added twice, sigh...
-		Warning(eDLL_T::ENGINE, "%s: Ignoring duplicate change callback!!!\n", __FUNCTION__);
-		return;
-	}
-
-	m_pParent->m_fnChangeCallbacks.AddToTail(callback);
-
-	// Call it immediately to set the initial value...
-	if (bInvoke)
-	{
-		callback(this, m_Value.m_pszString, m_Value.m_fValue);
-	}
-}
+//void ConVar::InstallChangeCallback(FnChangeCallback_t callback, bool bInvoke /*=true*/)
+//{
+//	if (!callback)
+//	{
+//		Warning(eDLL_T::ENGINE, "%s: Called with NULL callback; ignoring!!!\n", __FUNCTION__);
+//		return;
+//	}
+//
+//	if (m_pParent->m_fnChangeCallbacks.Find(callback) != m_pParent->m_fnChangeCallbacks.InvalidIndex())
+//	{
+//		// Same ptr added twice, sigh...
+//		Warning(eDLL_T::ENGINE, "%s: Ignoring duplicate change callback!!!\n", __FUNCTION__);
+//		return;
+//	}
+//
+//	m_pParent->m_fnChangeCallbacks.AddToTail(callback);
+//
+//	// Call it immediately to set the initial value...
+//	if (bInvoke)
+//	{
+//		callback(this, m_Value.m_pszString, m_Value.m_fValue);
+//	}
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: Install a change callback (there shouldn't already be one....)
 // Input  : callback - 
 //-----------------------------------------------------------------------------
-void ConVar::RemoveChangeCallback(FnChangeCallback_t callback)
-{
-	m_pParent->m_fnChangeCallbacks.FindAndRemove(callback);
-}
+//void ConVar::RemoveChangeCallback(FnChangeCallback_t callback)
+//{
+//	m_pParent->m_fnChangeCallbacks.FindAndRemove(callback);
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
-void ConVar_AppendFlags(ConCommandBase* var, char* buf, size_t bufsize)
-{
-	for (int i = 0; i < ARRAYSIZE(g_PrintConVarFlags); ++i)
-	{
-		const ConVarFlagsToString_t& info = g_PrintConVarFlags[i];
-		if (var->IsFlagSet(info.m_nFlag))
-		{
-			char append[128];
-			V_snprintf(append, sizeof(append), " %s", info.m_pszDesc);
-			V_strncat(buf, append, bufsize);
-		}
-	}
-}
+//void ConVar_AppendFlags(ConCommandBase* var, char* buf, size_t bufsize)
+//{
+//	for (int i = 0; i < ARRAYSIZE(g_PrintConVarFlags); ++i)
+//	{
+//		const ConVarFlagsToString_t& info = g_PrintConVarFlags[i];
+//		if (var->IsFlagSet(info.m_nFlag))
+//		{
+//			char append[128];
+//			V_snprintf(append, sizeof(append), " %s", info.m_pszDesc);
+//			V_strncat(buf, append, bufsize);
+//		}
+//	}
+//}
 
 //-----------------------------------------------------------------------------
 // Purpose: 
 //-----------------------------------------------------------------------------
+/*
 void ConVar_PrintDescription(ConCommandBase* pVar)
 {
 	bool bMin, bMax;
@@ -1489,7 +1317,8 @@ CConCommandHash::CCommandHashHandle_t CConCommandHash::FastInsert(ConCommandBase
 
 	return iHashData;
 }
-
+*/
+#if 0
 //-----------------------------------------------------------------------------
 // Purpose: Remove a given element from the hash.
 //-----------------------------------------------------------------------------
@@ -1611,14 +1440,14 @@ void CConCommandHash::Report(void)
 	DevMsg(eDLL_T::ENGINE, "\tAverage: %.1f\n", total / ((float)(kNUM_BUCKETS)));
 }
 //#endif
-
+#endif
 ///////////////////////////////////////////////////////////////////////////////
-void VCVar::Attach() const
+void VConVar::Attach() const
 {
-	DetourAttach((LPVOID*)&v_ConVar_PrintDescription, &ConVar_PrintDescription);
+	//DetourAttach((LPVOID*)&v_ConVar_PrintDescription, &ConVar_PrintDescription);
 }
-void VCVar::Detach() const
+void VConVar::Detach() const
 {
-	DetourDetach((LPVOID*)&v_ConVar_PrintDescription, &ConVar_PrintDescription);
+	//DetourDetach((LPVOID*)&v_ConVar_PrintDescription, &ConVar_PrintDescription);
 }
 #endif

@@ -16,6 +16,7 @@
 #include "launcher/launcher.h"
 // Tier 1
 #include "tier1/cmd.h"
+#include "tier1/cvar.h"
 // Engine
 #include "engine/vgui_baseui_interface.h"
 // Client
@@ -324,12 +325,13 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(launcher.dll, VLauncher);
 
 	// Tier0
-	REGISTER(tier0.dll,VPlatform);
-	REGISTER(tier0.dll,VMemStd);
-	REGISTER(tier0.dll,VCommandLine);
+	REGISTER(tier0.dll, VPlatform);
+	REGISTER(tier0.dll, VMemStd);
+	REGISTER(tier0.dll, VCommandLine);
 
 	// Tier1
-	REGISTER(engine.dll,VConCommand);
+	REGISTER(engine.dll, VConCommand);
+	REGISTER(engine.dll, VConVar);
 	REGISTER(engine.dll, VApplication);
 	REGISTER(engine.dll, VEngineVgui);
 

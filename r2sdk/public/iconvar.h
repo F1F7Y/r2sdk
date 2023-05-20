@@ -111,7 +111,7 @@ typedef void (*FnChangeCallback_t)(IConVar* var, const char* pOldValue, float fl
 //-----------------------------------------------------------------------------
 // Abstract interface for ConVars
 //-----------------------------------------------------------------------------
-abstract_class IConVar
+abstract_class IConVar // taken from r5r, TODO: verify
 {
 public:
 	virtual ~IConVar() { };
