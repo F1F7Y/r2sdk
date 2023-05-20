@@ -3,6 +3,7 @@
 #include "tier0/annotations.h"
 #include "appframework/IAppSystem.h"
 #include "tier1/interface.h"
+#include "public/iconvar.h"
 #if 1
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -87,34 +88,42 @@ public:
 abstract_class ICvar : public IAppSystem
 {
 public:
-	virtual void sub_180009DA0() = 0;
+	virtual CVarDLLIdentifier_t AllocateDLLIdentifier() = 0;
 
 	// Register, unregister commands
-	virtual void			RegisterConCommand(ConCommandBase* pCommandBase) = 0;
-	virtual void			UnregisterConCommand(ConCommandBase* pCommandBase) = 0;
-	virtual void			sub_18000F800() = 0;
+	virtual void RegisterConCommand(ConCommandBase* pCommandBase) = 0;
+	virtual void UnregisterConCommand(ConCommandBase* pCommandBase) = 0;
+	virtual void UnregisterConCommands(CVarDLLIdentifier_t id) = 0;
 
-	virtual void sub_18000AE20() = 0;
-	virtual void sub_18000A9D0() = 0;
-	virtual void sub_18000A980() = 0;
-	virtual void sub_18000ABF0() = 0;
-	virtual void sub_18000ABB0() = 0;
-	virtual void sub_18000A940() = 0;
-	virtual void sub_18000A900() = 0;
+	virtual const char* GetCommandLineValue(const char* pVariableName) = 0;
+
+	virtual ConCommandBase* FindCommandBase(const char* name) = 0;
+	virtual const ConCommandBase* FindCommandBase(const char* name) const = 0;
+	virtual ConVar* FindVar(const char* var_name) = 0;
+	virtual const ConVar* FindVar(const char* var_name) const = 0;
+	virtual ConCommand* FindCommand(const char* name) = 0;
+	virtual const ConCommand* FindCommand(const char* name) const = 0;
+
 	virtual void sub_18000CF30() = 0;
 	virtual void sub_18000E6F0() = 0;
+
 	virtual void sub_18000C200() = 0;
-	virtual void sub_18000E610() = 0; // FindCommandBase
+	virtual void sub_18000E610() = 0;
 	virtual void sub_180009DE0() = 0;
-	virtual void sub_18000C190() = 0; // FindVar
-	virtual void sub_18000E5A0() = 0;
-	virtual void sub_180009FD0() = 0; // FindCommand
-	virtual void sub_18000A170() = 0;
-	virtual void sub_18000A0B0() = 0;
+
+	virtual void sub_18000C190() = 0; // InstallConsoleDisplayFunc
+	virtual void sub_18000E5A0() = 0; // RemoveConsoleDisplayFunc
+
+	virtual void			ConsoleColorPrintf(const Color& clr, const char* pFormat, ...) const;
+	virtual void			ConsolePrintf(const char* pFormat, ...) const;
+	virtual void			ConsoleDPrintf(const char* pFormat, ...) const;
+
 	virtual void sub_18000EC50() = 0;
+
 	virtual void sub_18000C170() = 0;
+
 	virtual void sub_18000F4B0() = 0;
-	virtual void sub_unk() = 0;  //? Id@SchedulingRing@details@Concurrency@@QEBAHXZ; Concurrency::details::SchedulingRing::Id(void)
+	virtual void sub_unk() = 0;
 	virtual void sub_18000AEB0() = 0;
 	virtual void sub_18000AEC0() = 0;
 	virtual void sub_18000C530() = 0;

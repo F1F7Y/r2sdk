@@ -89,7 +89,7 @@ public:
 	// Reconnect to a particular interface
 	virtual void Reconnect(CreateInterfaceFn factory, const char* pInterfaceName) = 0;
 };
-
+#if 0
 //-----------------------------------------------------------------------------
 // Helper empty implementation of an IAppSystem
 //-----------------------------------------------------------------------------
@@ -120,5 +120,5 @@ public:
 	// Reconnect to a particular interface
 	virtual void Reconnect(CreateInterfaceFn factory, const char* pInterfaceName) = 0;
 };
-
+#endif
 #endif // IAPPSYSTEM_H
