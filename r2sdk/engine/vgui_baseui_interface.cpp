@@ -11,14 +11,14 @@ char CEngineVGui__Init(void* self)
 	DevMsg(eDLL_T::NONE, "CEngineVGui__Init: %i\n", cResult);
 	g_pGameConsole->Initialize();
 
-	vgui::Frame* frame = MemAllocSingleton()->Alloc<vgui::Frame>(sizeof(vgui::Frame));
-	v_Frame__Frame(frame, NULL, "FrameTest", false, true);
-	frame->SetTitle("Cock and balls", true);
-	frame->SetVisible(true);
+	//vgui::Frame* frame = MemAllocSingleton()->Alloc<vgui::Frame>(sizeof(vgui::Frame));
+	//v_Frame__Frame(frame, NULL, "FrameTest", false, true);
+	//frame->SetTitle("Cock and balls", true);
+	//frame->SetVisible(true);
 
-	vgui::Label* label = MemAllocSingleton()->Alloc<vgui::Label>(sizeof(vgui::Label));
-	v_Label__Label(label, frame, "LabelTest", "Penis");
-	label->SetVisible(true);
+	//vgui::Label* label = MemAllocSingleton()->Alloc<vgui::Label>(sizeof(vgui::Label));
+	//v_Label__Label(label, frame, "LabelTest", "Penis");
+	//label->SetVisible(true);
 
 	SpdLog_PostInit();
 	return cResult;
