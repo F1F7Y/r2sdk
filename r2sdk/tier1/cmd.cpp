@@ -72,7 +72,10 @@ ConCommand* ConCommand::StaticCreate(const char* pszName, const char* pszHelpStr
 // Purpose: construct/allocate
 //-----------------------------------------------------------------------------
 ConCommand::ConCommand()
-	: m_fnCompletionCallback(nullptr)
+	: m_fnCompletionCallback(nullptr),
+	pad_0054(),
+	unk0(0),
+	unk1(0)
 {
 }
 //-----------------------------------------------------------------------------
