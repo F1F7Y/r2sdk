@@ -15,3 +15,4 @@ bool AllocateModule(string strModule);
 void DetourScanModule(string strModule);
 void DetourAttachModule(string strModule);
 void DetourRegister();
+void DetourAddress();

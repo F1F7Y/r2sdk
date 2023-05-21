@@ -13,7 +13,7 @@
 //#include "tier1/characterset.h"
 //#include "tier1/utlstring.h"
 //#include "vstdlib/completion.h"
-//#include "vstdlib/callback.h"
+#include "vstdlib/callback.h"
 #include "engine/console.h"
 
 
@@ -86,11 +86,13 @@ void ConCommand::StaticInit(void)
 {
 	//-------------------------------------------------------------------------
 	// ENGINE DLL                                                             |
-	//ConCommand::StaticCreate("bhit", "Bullet-hit trajectory debug.", nullptr, FCVAR_DEVELOPMENTONLY | FCVAR_GAMEDLL, BHit_f, nullptr);
-
 	ConCommand::StaticCreate("toggleconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ToggleConsole_f, nullptr);
 	ConCommand::StaticCreate("hideconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_HideConsole_f, nullptr);
 	ConCommand::StaticCreate("showconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ShowConsole_f, nullptr);
+
+	//-------------------------------------------------------------------------
+	// TIER0                                                                  |
+	ConCommand::StaticCreate("sig_getadr", "Logs the sigscan results to the console.", FCVAR_DONTRECORD/*FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN*/, SIG_GetAdr_f, nullptr);
 }
 
 //-----------------------------------------------------------------------------

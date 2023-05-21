@@ -335,6 +335,19 @@ void DetourAttachModule(string strModule)
 	DetourTransactionCommit();
 }
 
+void DetourAddress()
+{
+	spdlog::debug("+---------------------------------------------------------------------+\n");
+	for (const pair<string, vector<IDetour*>>& Module : g_DetourMap)
+	{
+		for (const IDetour* pDetour : Module.second)
+		{
+			pDetour->GetAdr();
+			spdlog::debug("+---------------------------------------------------------------------+\n");
+		}
+	}
+}
+
 void DetourRegister() // Register detour classes to be searched and hooked.
 {
 	// Launcher
