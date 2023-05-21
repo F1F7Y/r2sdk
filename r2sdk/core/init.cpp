@@ -24,6 +24,8 @@
 #include "vgui_controls/Panel.h"
 #include "vgui_controls/Frame.h"
 #include "vgui_controls/Label.h"
+// filesystem_stdio
+#include "filesystem/basefilesystem.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -271,6 +273,12 @@ bool AllocateModule(string strModule)
 	//	return true;
 	//}
 
+	if (strModule == "filesystem_stdio.dll" && !g_pFSStdioDll)
+	{
+		g_pFSStdioDll = new CModule("filesystem_stdio.dll");
+		return true;
+	}
+
 	//DevMsg(eDLL_T::NONE, "Skipping module: %s\n", strModule.c_str());
 
 	return false;
@@ -340,4 +348,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(client.dll, VguiFrame);
 	REGISTER(client.dll, VguiPanel);
 	REGISTER(client.dll, VguiLabel);
+
+	// Filesystem
+	REGISTER(filesystem_stdio.dll, VBaseFileSystem);
 }

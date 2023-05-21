@@ -112,6 +112,8 @@
 #include "tier0/dbg.h"
 #endif // !SDKLAUNCHER && !NETCONSOLE && !PLUGINSDK
 
+#undef GetCurrentDirectory
+
 #define REGISTER_MODULE(strModule)                                  \
 	if(AllocateModule(strModule))                                   \
 	{                                                               \
@@ -125,6 +127,7 @@ inline CModule* g_pTier0Dll = nullptr;
 inline CModule* g_pEngineDll = nullptr;
 inline CModule* g_pClientDll = nullptr;
 inline CModule* g_pServerDll = nullptr;
+inline CModule* g_pFSStdioDll = nullptr; // filesystem_stdio.dll
 
 inline const string g_ProcessTimestamp = CreateTimedFileName();
 

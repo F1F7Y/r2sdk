@@ -3,6 +3,7 @@
 #include "interfaces/interfaces.h"
 #include "tier1/cvar.h"
 #include "gameui/GameConsole.h"
+#include "filesystem.h"
 
 int CModAppSystemGroup__Main(void* pModAppSystemGroup, void *a2)
 {
@@ -11,6 +12,7 @@ int CModAppSystemGroup__Main(void* pModAppSystemGroup, void *a2)
 	// Get factories
 	g_pCVar = Sys_GetFactoryPtr("vstdlib.dll", CVAR_INTERFACE_VERSION).RCast<ICvar*>();
 	g_pGameConsole = Sys_GetFactoryPtr("client.dll", GAMECONSOLE_INTERFACE_VERSION).RCast<IGameConsole*>();
+	g_pFullFileSystem = Sys_GetFactoryPtr("filesystem_stdio.dll", FILESYSTEM_INTERFACE_VERSION).RCast<IFileSystem*>();
 	
 	return v_CModAppSystemGroup__Main(pModAppSystemGroup, a2);
 }

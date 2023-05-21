@@ -4,6 +4,7 @@
 #include "vgui_controls/Label.h"
 #include "core/logdef.h"
 #include <tier0/memstd.h>
+#include "filesystem.h"
 
 char CEngineVGui__Init(void* self)
 {
@@ -19,6 +20,9 @@ char CEngineVGui__Init(void* self)
 	//vgui::Label* label = MemAllocSingleton()->Alloc<vgui::Label>(sizeof(vgui::Label));
 	//v_Label__Label(label, frame, "LabelTest", "Penis");
 	//label->SetVisible(true);
+	//char test[1000];
+	//g_pFullFileSystem->GetCurrentDirectory(test, 1000);
+	//DevMsg(eDLL_T::FS, "CurrentDir: %s\n", test);
 
 	SpdLog_PostInit();
 	return cResult;
