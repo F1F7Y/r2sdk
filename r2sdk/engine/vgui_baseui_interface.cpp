@@ -28,12 +28,23 @@ char CEngineVGui__Init(void* self)
 	return cResult;
 }
 
+void CEngineVGui__Shutdown(void* self)
+{
+	// This disables logging to GameConsole when shutting down
+	// so that we dont try to log to it and AV
+	g_bLogToGameConsole = false;
+	v_CEngineVGui__Shutdown(self);
+	DevMsg(eDLL_T::NONE, "CEngineVGui__Shutdown\n");
+}
+
 void VEngineVgui::Attach(void) const
 {
 	DetourAttach((LPVOID*)&v_CEngineVGui__Init, &CEngineVGui__Init);
+	DetourAttach((LPVOID*)&v_CEngineVGui__Shutdown, &CEngineVGui__Shutdown);
 }
 
 void VEngineVgui::Detach(void) const
 {
 	DetourDetach((LPVOID*)&v_CEngineVGui__Init, &CEngineVGui__Init);
+	DetourDetach((LPVOID*)&v_CEngineVGui__Shutdown, &CEngineVGui__Shutdown);
 }

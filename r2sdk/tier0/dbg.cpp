@@ -10,7 +10,7 @@
 #include "core/logdef.h"
 #include "tier0/dbg.h"
 #include "tier0/platform.h"
-#include "public/tier1/cvar.h"
+#include "tier1/cvar.h"
 #ifndef NETCONSOLE
 //#include "tier0/threadtools.h"
 #include "tier0/commandline.h"

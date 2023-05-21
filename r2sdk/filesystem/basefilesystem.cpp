@@ -83,7 +83,7 @@ const char* CBaseFileSystem__UnmountVPKFile(void* self, const char* pszVpkPath)
 
 	if (nHandle >= 0)
 	{
-		DevMsg(eDLL_T::FS, "Unmounted VPK file: '%s' with handle: '%i'\n", pszVpkPath, nHandle);
+		//DevMsg(eDLL_T::FS, "Unmounted VPK file: '%s' with handle: '%i'\n", pszVpkPath, nHandle);
 	}
 
 	return pRet;

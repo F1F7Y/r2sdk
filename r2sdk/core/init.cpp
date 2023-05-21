@@ -26,8 +26,6 @@
 #include "vgui_controls/Label.h"
 // filesystem_stdio
 #include "filesystem/basefilesystem.h"
-// Vstdlib
-#include "vstdlib/cvar.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -281,12 +279,6 @@ bool AllocateModule(string strModule)
 		return true;
 	}
 
-	if (strModule == "vstdlib.dll" && !g_pVstdlibDll)
-	{
-		g_pVstdlibDll = new CModule("vstdlib.dll");
-		return true;
-	}
-
 	//DevMsg(eDLL_T::NONE, "Skipping module: %s\n", strModule.c_str());
 
 	return false;
@@ -372,7 +364,4 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 
 	// Filesystem
 	REGISTER(filesystem_stdio.dll, VBaseFileSystem);
-
-	// Vstdlib
-	REGISTER(vstdlib.dll, VCVar);
 }

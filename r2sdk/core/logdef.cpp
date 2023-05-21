@@ -103,6 +103,7 @@ void SpdLog_PostInit()
 	}
 	else { g_TermLogger->set_pattern("%v"); }
 	g_bSpdLog_PostInit = true;
+	g_bLogToGameConsole = true;
 }
 
 //#############################################################################
