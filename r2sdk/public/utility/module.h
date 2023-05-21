@@ -26,6 +26,7 @@ public:
 
 	void Init();
 	void LoadSections();
+	bool Good();
 #ifndef PLUGINSDK
 	CMemory FindPatternSIMD(const string& svPattern, const ModuleSections_t* moduleSection = nullptr) const;
 	CMemory FindString(const string& svString, const ptrdiff_t occurrence = 1, bool nullTerminator = false) const;

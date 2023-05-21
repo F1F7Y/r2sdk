@@ -84,7 +84,7 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "windows/console.cpp"
                          "windows/console.h"
                          "windows/loadlibrary.cpp"
-                         "windows/loadlibrary.h")
+                         "windows/loadlibrary.h" "squirrel/sqvm.h" "squirrel/client/sqvm.h" "squirrel/server/sqvm.h" "squirrel/ui/sqvm.h" "squirrel/sqdatatypes.h" "squirrel/sqclasstypes.h" "squirrel/sqvm.cpp")
 
 target_link_libraries(r2sdk detours spdlog dbghelp)
 

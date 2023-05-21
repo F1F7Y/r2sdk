@@ -17,8 +17,11 @@ CModule::CModule(const string& svModuleName)
 {
 	m_pModuleBase = reinterpret_cast<uintptr_t>(GetModuleHandleA(svModuleName.c_str()));
 
+	if (!Good())
+		return;
+
 	//if (m_pModuleBase == NULL)
-	//	return;
+	//	Error(eDLL_T::NONE, 0xBAD0C0DE, "failed to get module handle of: '%s'\n", svModuleName.c_str());
 
 	Init();
 	LoadSections();
@@ -64,6 +67,14 @@ void CModule::LoadSections()
 	m_ExceptionTable = GetSectionByName(".pdata");
 	m_RunTimeData = GetSectionByName(".data");
 	m_ReadOnlyData = GetSectionByName(".rdata");
+}
+
+//-----------------------------------------------------------------------------
+// Purpose: returns whether the module was parsed properly
+//-----------------------------------------------------------------------------
+bool CModule::Good()
+{
+	return m_pModuleBase != NULL;
 }
 
 #ifndef PLUGINSDK
