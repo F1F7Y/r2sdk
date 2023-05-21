@@ -42,7 +42,7 @@ FileHandle_t CBaseFileSystem__ReadFileFromVPK(void* self, FileHandle_t pResult, 
 	return v_CBaseFileSystem__ReadFileFromVPK(self, pResult, pszFilePath);
 }
 
-bool CBaseFileSystem_LoadFromCache(void* self, char* pszFilePath, void* pResult)
+bool CBaseFileSystem__LoadFromCache(void* self, char* pszFilePath, void* pResult)
 {
 	//DevMsg(eDLL_T::FS, "LoadFromCache: %s\n", pszFilePath);
 
@@ -56,13 +56,50 @@ bool CBaseFileSystem_LoadFromCache(void* self, char* pszFilePath, void* pResult)
 	return v_CBaseFileSystem_LoadFromCache(self, pszFilePath, pResult);
 }
 
+VPKData_t* CBaseFileSystem__MountVPKFile(void* self, const char* pszVpkPath)
+{
+	int nHandle = v_CBaseFileSystem__GetMountedVPKHandle(self, pszVpkPath);
+	VPKData_t* pData = v_CBaseFileSystem_MountVPKFile(self, pszVpkPath);
+
+	if (pData)
+	{
+		if (nHandle < 0) // Only log if vpk hasn't been mounted yet...
+		{
+			DevMsg(eDLL_T::FS, "Mounted VPK file: '%s' with handle: '%i'\n", pszVpkPath, pData->m_nHandle);
+		}
+	}
+	else
+	{
+		Warning(eDLL_T::FS, "Unable to mount VPK file: '%s'\n", pszVpkPath);
+	}
+
+	return pData;
+}
+
+const char* CBaseFileSystem__UnmountVPKFile(void* self, const char* pszVpkPath)
+{
+	int nHandle = v_CBaseFileSystem__GetMountedVPKHandle(self, pszVpkPath);
+	const char* pRet = v_CBaseFileSystem__UnmountVPKFile(self, pszVpkPath);
+
+	if (nHandle >= 0)
+	{
+		DevMsg(eDLL_T::FS, "Unmounted VPK file: '%s' with handle: '%i'\n", pszVpkPath, nHandle);
+	}
+
+	return pRet;
+}
+
 void VBaseFileSystem::Attach() const
 {
 	DetourAttach((LPVOID*)&v_CBaseFileSystem__ReadFileFromVPK, &CBaseFileSystem__ReadFileFromVPK);
-	DetourAttach((LPVOID*)&v_CBaseFileSystem_LoadFromCache, &CBaseFileSystem_LoadFromCache);
+	DetourAttach((LPVOID*)&v_CBaseFileSystem_LoadFromCache, &CBaseFileSystem__LoadFromCache);
+	DetourAttach((LPVOID*)&v_CBaseFileSystem_MountVPKFile, &CBaseFileSystem__MountVPKFile);
+	DetourAttach((LPVOID*)&v_CBaseFileSystem__UnmountVPKFile, &CBaseFileSystem__UnmountVPKFile);
 }
 void VBaseFileSystem::Detach() const
 {
 	DetourDetach((LPVOID*)&v_CBaseFileSystem__ReadFileFromVPK, &CBaseFileSystem__ReadFileFromVPK);
-	DetourDetach((LPVOID*)&v_CBaseFileSystem_LoadFromCache, &CBaseFileSystem_LoadFromCache);
+	DetourDetach((LPVOID*)&v_CBaseFileSystem_LoadFromCache, &CBaseFileSystem__LoadFromCache);
+	DetourDetach((LPVOID*)&v_CBaseFileSystem_MountVPKFile, &CBaseFileSystem__MountVPKFile);
+	DetourAttach((LPVOID*)&v_CBaseFileSystem__UnmountVPKFile, &CBaseFileSystem__UnmountVPKFile);
 }
