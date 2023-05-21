@@ -5,6 +5,8 @@ constexpr int SPDLOG_NUM_FILE = 512; // Sets number of files to rotate to.
 
 inline bool g_bSpdLog_UseAnsiClr = false;
 inline bool g_bSpdLog_PostInit = false;
+inline bool g_bLogToGameConsole = false;
+
 
 inline string g_LogSessionDirectory;
 

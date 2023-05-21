@@ -393,7 +393,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 #ifndef DEDICATED
 		g_GameLogger->debug(message);
 
-		if (g_bSpdLog_PostInit)
+		if (g_bSpdLog_PostInit && g_bLogToGameConsole)
 		{
 			g_pCVar->ConsoleColorPrintf(overlayColor.ToSourceColor(), "%s", message.c_str());
 
