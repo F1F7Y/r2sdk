@@ -10,12 +10,10 @@ void Con_ToggleConsole_f(const CCommand& arg)
 	if (g_pGameConsole->IsConsoleVisible())
 	{
 		g_pGameConsole->Hide();
-		DevMsg(eDLL_T::NONE, "hide\n");
 	}
 	else
 	{
 		g_pGameConsole->Activate();
-		DevMsg(eDLL_T::NONE, "show\n");
 	}
 }
 
