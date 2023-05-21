@@ -4,6 +4,7 @@
 #include "appframework/IAppSystem.h"
 #include "tier1/interface.h"
 #include "public/iconvar.h"
+#include "mathlib/color.h"
 #if 1
 //-----------------------------------------------------------------------------
 // Forward declarations
@@ -114,7 +115,7 @@ public:
 	virtual void sub_18000C190() = 0; // InstallConsoleDisplayFunc
 	virtual void sub_18000E5A0() = 0; // RemoveConsoleDisplayFunc
 
-	virtual void			ConsoleColorPrintf(const Color& clr, const char* pFormat, ...) const;
+	virtual void			ConsoleColorPrintf(const SourceColor& clr, const char* pFormat, ...) const;
 	virtual void			ConsolePrintf(const char* pFormat, ...) const;
 	virtual void			ConsoleDPrintf(const char* pFormat, ...) const;
 

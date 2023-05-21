@@ -115,56 +115,56 @@ bool HushAsserts()
 #endif // NDEBUG
 }
 
-#if !defined (DEDICATED) && !defined (NETCONSOLE) && 0
-ImVec4 CheckForWarnings(LogType_t type, eDLL_T context, const ImVec4& defaultCol)
+#if !defined (DEDICATED) && !defined (NETCONSOLE)
+Color CheckForWarnings(LogType_t type, eDLL_T context, const Color& defaultCol)
 {
-	ImVec4 color = defaultCol;
+	Color color = defaultCol;
 	if (type == LogType_t::LOG_WARNING || context == eDLL_T::SYSTEM_WARNING)
 	{
-		color = ImVec4(1.00f, 1.00f, 0.00f, 0.80f);
+		color = Color(255, 255,   0, 210);
 	}
 	else if (type == LogType_t::LOG_ERROR || context == eDLL_T::SYSTEM_ERROR)
 	{
-		color = ImVec4(1.00f, 0.00f, 0.00f, 0.80f);
+		color = Color(255,   0,   0, 210);
 	}
 
 	return color;
 }
 
-ImVec4 GetColorForContext(LogType_t type, eDLL_T context)
+Color GetColorForContext(LogType_t type, eDLL_T context)
 {
 	switch (context)
 	{
 	case eDLL_T::SCRIPT_SERVER:
-		return CheckForWarnings(type, context, ImVec4(0.59f, 0.58f, 0.73f, 1.00f));
+		return CheckForWarnings(type, context, Color(150, 150, 190, 255));
 	case eDLL_T::SCRIPT_CLIENT:
-		return CheckForWarnings(type, context, ImVec4(0.59f, 0.58f, 0.63f, 1.00f));
+		return CheckForWarnings(type, context, Color(150, 150, 120, 255));
 	case eDLL_T::SCRIPT_UI:
-		return CheckForWarnings(type, context, ImVec4(0.59f, 0.48f, 0.53f, 1.00f));
+		return CheckForWarnings(type, context, Color(150, 110, 120, 255));
 	case eDLL_T::SERVER:
-		return CheckForWarnings(type, context, ImVec4(0.23f, 0.47f, 0.85f, 1.00f));
+		return CheckForWarnings(type, context, Color( 60, 110, 220, 255));
 	case eDLL_T::CLIENT:
-		return CheckForWarnings(type, context, ImVec4(0.46f, 0.46f, 0.46f, 1.00f));
+		return CheckForWarnings(type, context, Color(110, 110, 110, 255));
 	case eDLL_T::UI:
-		return CheckForWarnings(type, context, ImVec4(0.59f, 0.35f, 0.46f, 1.00f));
+		return CheckForWarnings(type, context, Color(150,  90, 110, 255));
 	case eDLL_T::ENGINE:
-		return CheckForWarnings(type, context, ImVec4(0.70f, 0.70f, 0.70f, 1.00f));
+		return CheckForWarnings(type, context, Color(190, 190, 190, 255));
 	case eDLL_T::FS:
-		return CheckForWarnings(type, context, ImVec4(0.32f, 0.64f, 0.72f, 1.00f));
+		return CheckForWarnings(type, context, Color( 90, 180, 190, 255));
 	case eDLL_T::RTECH:
-		return CheckForWarnings(type, context, ImVec4(0.36f, 0.70f, 0.35f, 1.00f));
+		return CheckForWarnings(type, context, Color( 90, 190,  90, 255));
 	case eDLL_T::MS:
-		return CheckForWarnings(type, context, ImVec4(0.75f, 0.30f, 0.68f, 1.00f));
+		return CheckForWarnings(type, context, Color(190,  76, 173, 255));
 	case eDLL_T::AUDIO:
-		return CheckForWarnings(type, context, ImVec4(0.93f, 0.42f, 0.12f, 1.00f));
+		return CheckForWarnings(type, context, Color(240, 110,  30, 255));
 	case eDLL_T::VIDEO:
-		return CheckForWarnings(type, context, ImVec4(0.73f, 0.00f, 0.92f, 1.00f));
+		return CheckForWarnings(type, context, Color(190,   0, 240, 255));
 	case eDLL_T::NETCON:
-		return CheckForWarnings(type, context, ImVec4(0.81f, 0.81f, 0.81f, 1.00f));
+		return CheckForWarnings(type, context, Color(210, 210, 210, 255));
 	case eDLL_T::COMMON:
-		return CheckForWarnings(type, context, ImVec4(1.00f, 0.80f, 0.60f, 1.00f));
+		return CheckForWarnings(type, context, Color(255, 200, 150, 255));
 	default:
-		return CheckForWarnings(type, context, ImVec4(0.81f, 0.81f, 0.81f, 1.00f));
+		return CheckForWarnings(type, context, Color(210, 210, 210, 255));
 	}
 }
 #endif // !DEDICATED && !NETCONSOLE
@@ -241,17 +241,17 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	const char* pszLogger, const char* pszFormat, va_list args,
 	const UINT exitCode /*= NO_ERROR*/, const char* pszUptimeOverride /*= nullptr*/)
 {
-	const char* pszUpTime = pszUptimeOverride ? pszUptimeOverride : Plat_GetProcessUpTime();
-	string message = g_bSpdLog_PostInit ? pszUpTime : "";
-
 	const bool bToConsole = (logLevel >= LogLevel_t::LEVEL_CONSOLE);
 	const bool bUseColor = (bToConsole && g_bSpdLog_UseAnsiClr);
 
-	const char* pszContext = GetContextNameByIndex(context, bUseColor);
-	message.append(pszContext);
+	const char* pszUpTime = pszUptimeOverride ? pszUptimeOverride : Plat_GetProcessUpTime();
+	string uptime = g_bSpdLog_PostInit ? pszUpTime : "";
 
-#if !defined (DEDICATED) && !defined (NETCONSOLE) && 0
-	ImVec4 overlayColor = GetColorForContext(logType, context);
+	const char* pszContext = GetContextNameByIndex(context, bUseColor);
+	string contextName = pszContext;
+
+#if !defined (DEDICATED) && !defined (NETCONSOLE)
+	Color overlayColor = GetColorForContext(logType, context);
 	eDLL_T overlayContext = context;
 #endif // !DEDICATED && !NETCONSOLE
 
@@ -266,15 +266,16 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	//-------------------------------------------------------------------------
 	// Setup logger and context
 	//-------------------------------------------------------------------------
+	string color;
 	switch (logType)
 	{
 	case LogType_t::LOG_WARNING:
-#if !defined (DEDICATED) && !defined (NETCONSOLE) && 0
+#if !defined (DEDICATED) && !defined (NETCONSOLE)
 		overlayContext = eDLL_T::SYSTEM_WARNING;
 #endif // !DEDICATED && !NETCONSOLE
 		if (bUseColor)
 		{
-			message.append(g_svYellowF);
+			color = g_svYellowF;
 		}
 		break;
 	case LogType_t::LOG_ERROR:
@@ -283,7 +284,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 #endif // !DEDICATED && !NETCONSOLE
 		if (bUseColor)
 		{
-			message.append(g_svRedF);
+			color = g_svRedF;
 		}
 		break;
 #ifndef NETCONSOLE
@@ -292,10 +293,8 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 		break;
 	case LogType_t::SQ_WARNING:
 #ifndef DEDICATED
-#if 0
 		overlayContext = eDLL_T::SYSTEM_WARNING;
-		overlayColor = ImVec4(1.00f, 1.00f, 0.00f, 0.80f);
-#endif
+		overlayColor = Color(255, 255, 0, 200);
 #endif // !DEDICATED
 		bSquirrel = true;
 		bWarning = true;
@@ -314,12 +313,12 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	va_end(argsCopy);
 
 #ifndef NETCONSOLE
-#if 0
 	//-------------------------------------------------------------------------
 	// Colorize script warnings and errors
 	//-------------------------------------------------------------------------
 	if (bToConsole && bSquirrel)
 	{
+#if 0
 		if (bWarning && g_bSQAuxError)
 		{
 			if (formatted.find("SCRIPT ERROR:") != string::npos ||
@@ -336,29 +335,28 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 				g_bSQAuxBadLogic = false;
 			}
 		}
-
+#endif
 		// Append warning/error color before appending the formatted text,
 		// so that this gets marked as such while preserving context colors.
 		if (bError)
 		{
 #ifndef DEDICATED
 			overlayContext = eDLL_T::SYSTEM_ERROR;
-			overlayColor = ImVec4(1.00f, 0.00f, 0.00f, 0.80f);
+			overlayColor = Color(255, 0, 0, 200);
 #endif // !DEDICATED
 
 			if (bUseColor)
 			{
-				message.append(g_svRedF);
+				color = g_svRedF;
 			}
 		}
 		else if (bUseColor && bWarning)
 		{
-			message.append(g_svYellowF);
+			color = g_svYellowF;
 		}
 	}
-#endif
 #endif // !NETCONSOLE
-	message.append(formatted);
+	//message.append(formatted);
 
 	//-------------------------------------------------------------------------
 	// Emit to all interfaces
@@ -366,12 +364,12 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	std::lock_guard<std::mutex> lock(g_LogMutex);
 	if (bToConsole)
 	{
-		g_TermLogger->debug(message);
+		g_TermLogger->debug("{}{}{}{}", uptime, color, contextName, formatted);
 
 		if (bUseColor)
 		{
 			// Remove ANSI rows before emitting to file or over wire.
-			message = std::regex_replace(message, s_AnsiRowRegex, "");
+			contextName = std::regex_replace(contextName, s_AnsiRowRegex, "");
 		}
 	}
 
@@ -380,12 +378,12 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	// Output is always logged to the file.
 	std::shared_ptr<spdlog::logger> ntlogger = spdlog::get(pszLogger); // <-- Obtain by 'pszLogger'.
 	assert(ntlogger.get() != nullptr);
-	ntlogger->debug(message);
+	ntlogger->debug("{}{}{}", uptime, contextName, formatted);
 
 	if (bToConsole)
 	{
 #ifndef CLIENT_DLL
-#if 0
+#if 0 // RCON
 		if (!LoggedFromClient(context) && RCONServer()->ShouldSend(sv_rcon::response_t::SERVERDATA_RESPONSE_CONSOLE_LOG))
 		{
 			RCONServer()->SendEncode(formatted.c_str(), pszUpTime, sv_rcon::response_t::SERVERDATA_RESPONSE_CONSOLE_LOG,
@@ -394,11 +392,12 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 #endif
 #endif // !CLIENT_DLL
 #ifndef DEDICATED
-		g_GameLogger->debug(message);
+		g_GameLogger->debug(contextName);
 
 		if (g_bSpdLog_PostInit)
 		{
-			g_pCVar->ConsolePrintf("%s", message.c_str());
+			g_pCVar->ConsolePrintf("%s", uptime.c_str());
+			g_pCVar->ConsoleColorPrintf(overlayColor.ToSourceColor(), "%s%s", contextName.c_str(), formatted.c_str());
 
 			//if (logLevel >= LogLevel_t::LEVEL_NOTIFY) // Draw to mini console.
 			//{
@@ -417,7 +416,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 
 	if (exitCode) // Terminate the process if an exit code was passed.
 	{
-		if (MessageBoxA(NULL, Format("%s- %s", pszUpTime, message.c_str()).c_str(),
+		if (MessageBoxA(NULL, Format("%s- %s", pszUpTime, contextName.c_str()).c_str(),
 			"SDK Error", MB_ICONERROR | MB_OK))
 		{
 			TerminateProcess(GetCurrentProcess(), exitCode);

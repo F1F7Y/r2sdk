@@ -14,6 +14,30 @@
 
 #include "tier0/basetypes.h"
 
+struct SourceColor
+{
+	unsigned char R;
+	unsigned char G;
+	unsigned char B;
+	unsigned char A;
+
+	SourceColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
+	{
+		R = r;
+		G = g;
+		B = b;
+		A = a;
+	}
+
+	SourceColor()
+	{
+		R = 0;
+		G = 0;
+		B = 0;
+		A = 0;
+	}
+};
+
 //-----------------------------------------------------------------------------
 // Purpose: Basic handler for an rgb set of colors
 //			This class is fully inline
@@ -95,6 +119,11 @@ public:
 	{
 		SetRawColor(rhs.GetRawColor());
 		return *this;
+	}
+
+	SourceColor ToSourceColor()
+	{
+		return SourceColor(_color[0], _color[1], _color[2], _color[3]);
 	}
 
 private:
