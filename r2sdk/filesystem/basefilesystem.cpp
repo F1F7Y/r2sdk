@@ -53,13 +53,13 @@ bool CBaseFileSystem__LoadFromCache(void* self, char* pszFilePath, void* pResult
 		return false;
 	}
 
-	return v_CBaseFileSystem_LoadFromCache(self, pszFilePath, pResult);
+	return v_CBaseFileSystem__LoadFromCache(self, pszFilePath, pResult);
 }
 
 VPKData_t* CBaseFileSystem__MountVPKFile(void* self, const char* pszVpkPath)
 {
 	int nHandle = v_CBaseFileSystem__GetMountedVPKHandle(self, pszVpkPath);
-	VPKData_t* pData = v_CBaseFileSystem_MountVPKFile(self, pszVpkPath);
+	VPKData_t* pData = v_CBaseFileSystem__MountVPKFile(self, pszVpkPath);
 
 	if (pData)
 	{
@@ -92,14 +92,14 @@ const char* CBaseFileSystem__UnmountVPKFile(void* self, const char* pszVpkPath)
 void VBaseFileSystem::Attach() const
 {
 	DetourAttach((LPVOID*)&v_CBaseFileSystem__ReadFileFromVPK, &CBaseFileSystem__ReadFileFromVPK);
-	DetourAttach((LPVOID*)&v_CBaseFileSystem_LoadFromCache, &CBaseFileSystem__LoadFromCache);
-	DetourAttach((LPVOID*)&v_CBaseFileSystem_MountVPKFile, &CBaseFileSystem__MountVPKFile);
+	DetourAttach((LPVOID*)&v_CBaseFileSystem__LoadFromCache, &CBaseFileSystem__LoadFromCache);
+	DetourAttach((LPVOID*)&v_CBaseFileSystem__MountVPKFile, &CBaseFileSystem__MountVPKFile);
 	DetourAttach((LPVOID*)&v_CBaseFileSystem__UnmountVPKFile, &CBaseFileSystem__UnmountVPKFile);
 }
 void VBaseFileSystem::Detach() const
 {
 	DetourDetach((LPVOID*)&v_CBaseFileSystem__ReadFileFromVPK, &CBaseFileSystem__ReadFileFromVPK);
-	DetourDetach((LPVOID*)&v_CBaseFileSystem_LoadFromCache, &CBaseFileSystem__LoadFromCache);
-	DetourDetach((LPVOID*)&v_CBaseFileSystem_MountVPKFile, &CBaseFileSystem__MountVPKFile);
+	DetourDetach((LPVOID*)&v_CBaseFileSystem__LoadFromCache, &CBaseFileSystem__LoadFromCache);
+	DetourDetach((LPVOID*)&v_CBaseFileSystem__MountVPKFile, &CBaseFileSystem__MountVPKFile);
 	DetourAttach((LPVOID*)&v_CBaseFileSystem__UnmountVPKFile, &CBaseFileSystem__UnmountVPKFile);
 }
