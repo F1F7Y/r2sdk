@@ -127,6 +127,7 @@
 		global = new CModule(#wantedModule);                        \
 		if (!global->Good())                                        \
 		{                                                           \
+            delete global;                                          \
 			global = nullptr;                                       \
 			return false;                                           \
 		}                                                           \
