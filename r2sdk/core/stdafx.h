@@ -121,6 +121,18 @@
 		DetourAttachModule(strModule);                              \
 	}                                                               \
 
+#define SCAN_MODULE(loadedModule, wantedModule, global)             \
+	if (loadedModule == #wantedModule && !global)                   \
+	{                                                               \
+		global = new CModule(#wantedModule);                        \
+		if (!global->Good())                                        \
+		{                                                           \
+			global = nullptr;                                       \
+			return false;                                           \
+		}                                                           \
+		return true;                                                \
+	}                                                               \
+
 inline CModule* g_pSDKDll = nullptr;
 inline CModule* g_pLauncherDll = nullptr;
 inline CModule* g_pTier0Dll = nullptr;

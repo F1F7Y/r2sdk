@@ -237,47 +237,13 @@ void CheckCPU() // Respawn's engine and our SDK utilize POPCNT, SSE3 and SSSE3 (
 
 bool AllocateModule(string strModule)
 {
-	if (strModule == "r2sdk.dll" && !g_pSDKDll)
-	{
-		g_pSDKDll = new CModule("r2sdk.dll");
-		return true;
-	}
-
-	if (strModule == "tier0.dll" && !g_pTier0Dll)
-	{
-		g_pTier0Dll = new CModule("tier0.dll");
-		return true;
-	}
-
-	if (strModule == "launcher.dll" && !g_pLauncherDll)
-	{
-		g_pLauncherDll = new CModule("launcher.dll");
-		return true;
-	}
-
-	if (strModule == "engine.dll" && !g_pEngineDll)
-	{
-		g_pEngineDll = new CModule("engine.dll");
-		return true;
-	}
-
-	if (strModule == "client.dll" && !g_pClientDll)
-	{
-		g_pClientDll = new CModule("client.dll");
-		return true;
-	}
-
-	//if (strModule == "server.dll" && !g_pServerDll)
-	//{
-	//	g_pServerDll = new CModule("server.dll");
-	//	return true;
-	//}
-
-	if (strModule == "filesystem_stdio.dll" && !g_pFSStdioDll)
-	{
-		g_pFSStdioDll = new CModule("filesystem_stdio.dll");
-		return true;
-	}
+	SCAN_MODULE(strModule, r2sdk.dll, g_pSDKDll);
+	SCAN_MODULE(strModule, tier0.dll, g_pTier0Dll);
+	SCAN_MODULE(strModule, launcher.dll, g_pLauncherDll);
+	SCAN_MODULE(strModule, engine.dll, g_pEngineDll);
+	SCAN_MODULE(strModule, client.dll, g_pClientDll);
+	SCAN_MODULE(strModule, server.dll, g_pServerDll);
+	SCAN_MODULE(strModule, filesystem_stdio.dll, g_pFSStdioDll);
 
 	//DevMsg(eDLL_T::NONE, "Skipping module: %s\n", strModule.c_str());
 
