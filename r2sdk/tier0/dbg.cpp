@@ -245,10 +245,10 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	const bool bUseColor = (bToConsole && g_bSpdLog_UseAnsiClr);
 
 	const char* pszUpTime = pszUptimeOverride ? pszUptimeOverride : Plat_GetProcessUpTime();
-	string uptime = g_bSpdLog_PostInit ? pszUpTime : "";
+	string message = g_bSpdLog_PostInit ? pszUpTime : "";
 
 	const char* pszContext = GetContextNameByIndex(context, bUseColor);
-	string contextName = pszContext;
+	message.append(pszContext);
 
 #if !defined (DEDICATED) && !defined (NETCONSOLE)
 	Color overlayColor = GetColorForContext(logType, context);
@@ -266,7 +266,6 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	//-------------------------------------------------------------------------
 	// Setup logger and context
 	//-------------------------------------------------------------------------
-	string color;
 	switch (logType)
 	{
 	case LogType_t::LOG_WARNING:
@@ -275,7 +274,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 #endif // !DEDICATED && !NETCONSOLE
 		if (bUseColor)
 		{
-			color = g_svYellowF;
+			message.append(g_svYellowF);
 		}
 		break;
 	case LogType_t::LOG_ERROR:
@@ -284,7 +283,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 #endif // !DEDICATED && !NETCONSOLE
 		if (bUseColor)
 		{
-			color = g_svRedF;
+			message.append(g_svRedF);
 		}
 		break;
 #ifndef NETCONSOLE
@@ -347,16 +346,16 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 
 			if (bUseColor)
 			{
-				color = g_svRedF;
+				message.append(g_svRedF);
 			}
 		}
 		else if (bUseColor && bWarning)
 		{
-			color = g_svYellowF;
+			message.append(g_svYellowF);
 		}
 	}
 #endif // !NETCONSOLE
-	//message.append(formatted);
+	message.append(formatted);
 
 	//-------------------------------------------------------------------------
 	// Emit to all interfaces
@@ -364,12 +363,12 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	std::lock_guard<std::mutex> lock(g_LogMutex);
 	if (bToConsole)
 	{
-		g_TermLogger->debug("{}{}{}{}", uptime, color, contextName, formatted);
+		g_TermLogger->debug(message);
 
 		if (bUseColor)
 		{
 			// Remove ANSI rows before emitting to file or over wire.
-			contextName = std::regex_replace(contextName, s_AnsiRowRegex, "");
+			message = std::regex_replace(message, s_AnsiRowRegex, "");
 		}
 	}
 
@@ -378,7 +377,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 	// Output is always logged to the file.
 	std::shared_ptr<spdlog::logger> ntlogger = spdlog::get(pszLogger); // <-- Obtain by 'pszLogger'.
 	assert(ntlogger.get() != nullptr);
-	ntlogger->debug("{}{}{}", uptime, contextName, formatted);
+	ntlogger->debug(message);
 
 	if (bToConsole)
 	{
@@ -392,12 +391,11 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 #endif
 #endif // !CLIENT_DLL
 #ifndef DEDICATED
-		g_GameLogger->debug(contextName);
+		g_GameLogger->debug(message);
 
 		if (g_bSpdLog_PostInit)
 		{
-			g_pCVar->ConsolePrintf("%s", uptime.c_str());
-			g_pCVar->ConsoleColorPrintf(overlayColor.ToSourceColor(), "%s%s", contextName.c_str(), formatted.c_str());
+			g_pCVar->ConsoleColorPrintf(overlayColor.ToSourceColor(), "%s", message.c_str());
 
 			//if (logLevel >= LogLevel_t::LEVEL_NOTIFY) // Draw to mini console.
 			//{
@@ -416,7 +414,7 @@ void CoreMsgV(LogType_t logType, LogLevel_t logLevel, eDLL_T context,
 
 	if (exitCode) // Terminate the process if an exit code was passed.
 	{
-		if (MessageBoxA(NULL, Format("%s- %s", pszUpTime, contextName.c_str()).c_str(),
+		if (MessageBoxA(NULL, Format("%s- %s", pszUpTime, message.c_str()).c_str(),
 			"SDK Error", MB_ICONERROR | MB_OK))
 		{
 			TerminateProcess(GetCurrentProcess(), exitCode);
