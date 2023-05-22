@@ -11,7 +11,7 @@ void SDK_Init()
     g_svCmdLine = GetCommandLineA();
 
 #ifndef DEDICATED
-    if (g_svCmdLine.find("-wconsole") != std::string::npos || true)
+    if (g_svCmdLine.find("-wconsole") != std::string::npos)
     {
         Console_Init();
     }
