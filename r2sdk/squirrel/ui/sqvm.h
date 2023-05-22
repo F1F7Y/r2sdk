@@ -15,7 +15,7 @@ class HSQVM_UI : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_SQVM_UI_PrintFunc = g_pClientDll->FindPatternSIMD("24 20 BA 00 08 00 00 E8  14 0E 72 00 80 3D CC EE").Offset(-32);
+		p_SQVM_UI_PrintFunc = g_pClientDll->Offset(0x12BA0); /* "24 20 BA 00 08 00 00 E8  14 0E 72 00 80 3D CC EE" - 32 */
 		v_SQVM_UI_PrintFunc = p_SQVM_UI_PrintFunc.RCast<SQRESULT(*)(HSquirrelVM*, SQChar*, ...)>();
 	}
 	virtual void GetVar(void) const { }

@@ -15,7 +15,7 @@ class VConsoleDialog : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_CGameConsoleDialog__OnCommandSubmitted = g_pClientDll->FindPatternSIMD("48 8B 0D E9 B3 79 00 48 8B 01 48 FF A0 C8 08 00 00");
+		p_CGameConsoleDialog__OnCommandSubmitted = g_pClientDll->Offset(0x4A2550); /* "48 8B 0D E9 B3 79 00 48 8B 01 48 FF A0 C8 08 00 00" */
 		v_CGameConsoleDialog__OnCommandSubmitted = p_CGameConsoleDialog__OnCommandSubmitted.RCast<void(*)(void*,const char*)>();
 	}
 	virtual void GetVar(void) const { }

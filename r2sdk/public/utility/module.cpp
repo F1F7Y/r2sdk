@@ -178,6 +178,16 @@ CMemory CModule::FindPatternSIMD(const string& svPattern, const ModuleSections_t
 }
 
 //-----------------------------------------------------------------------------
+// Purpose: returns memory location of offset in a module
+// Input  : offset - 
+// Output : CMemory
+//-----------------------------------------------------------------------------
+CMemory CModule::Offset(const ptrdiff_t offset)
+{
+	return CMemory(m_pModuleBase + offset);
+}
+
+//-----------------------------------------------------------------------------
 // Purpose: find address of input string constant in read only memory
 // Input  : *svString - 
 //          bNullTerminator - 

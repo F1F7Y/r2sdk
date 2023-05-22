@@ -71,7 +71,7 @@ class VguiLabel : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_Label__Label = g_pClientDll->FindPatternSIMD("48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 48 83 EC 20 49 8B F1 48 8B F9 E8 B1");
+		p_Label__Label = g_pClientDll->Offset(0x77D9D0); /* "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 48 83 EC 20 49 8B F1 48 8B F9 E8 B1" */
 		v_Label__Label = p_Label__Label.RCast<vgui::Label * (*)(vgui::Label*, void*, const char*, const char*)>();
 	}
 	virtual void GetVar(void) const { }

@@ -182,11 +182,11 @@ class VConVar : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_ConVar_ConVar = g_pEngineDll->FindPatternSIMD("48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 F3");
+		p_ConVar_ConVar = g_pEngineDll->Offset(0x417230); /* "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 20 F3" */
 		v_ConVar_ConVar = p_ConVar_ConVar.RCast<void(*)(ConVar*, const char*, const char*, int, const char*, bool, float, bool, float, FnChangeCallback_t)>();
 
-		// 48 89 5C 24 08 57 48 83 EC 20 49 63 F8 48 63 C2 48 8B D9 48 C7 01 00 00 00 00 48 89 79 08 48 89 41 10 45 85 C0 74 4C 48 8B 0D 6A 91 1A 00 48 C1
-		p_ConVar_Malloc = g_pEngineDll->FindPatternSIMD("0D 6A 91 1A 00 48 C1").Offset(-41);
+		/* 48 89 5C 24 08 57 48 83 EC 20 49 63 F8 48 63 C2 48 8B D9 48 C7 01 00 00 00 00 48 89 79 08 48 89 41 10 45 85 C0 74 4C 48 8B 0D 6A 91 1A 00 48 C1 */
+		p_ConVar_Malloc = g_pEngineDll->Offset(0x415C20);
 		v_ConVar_Malloc = p_ConVar_Malloc.RCast<void(*)(void* pConVarMaloc, int a2, int a3)>();
 	}
 	virtual void GetVar(void) const { }

@@ -71,7 +71,7 @@ class VguiFrame : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_Frame__Frame = g_pClientDll->FindPatternSIMD("48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 48 83 EC 20 41 0F B6 F1");
+		p_Frame__Frame = g_pClientDll->Offset(0x7D12A0); /* "48 89 5C 24 10 48 89 6C 24 18 48 89 74 24 20 57 41 54 41 55 41 56 41 57 48 83 EC 20 41 0F B6 F1" */
 		v_Frame__Frame = p_Frame__Frame.RCast<vgui::Frame*(*)(vgui::Frame*,void*,const char*,bool,bool)>();
 	}
 	virtual void GetVar(void) const { }

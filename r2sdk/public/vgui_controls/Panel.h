@@ -297,7 +297,7 @@ class VguiPanel : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_Panel__Panel = g_pClientDll->FindPatternSIMD("48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8D 05 02 63 27 00");
+		p_Panel__Panel = g_pClientDll->Offset(0x752900); /* "48 89 5C 24 08 48 89 74 24 10 57 48 83 EC 30 48 8D 05 02 63 27 00" */
 		v_Panel__Panel = p_Panel__Panel.RCast<vgui::Panel * (*)(vgui::Panel*, void*)>();
 	}
 	virtual void GetVar(void) const { }

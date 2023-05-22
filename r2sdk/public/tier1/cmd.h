@@ -131,15 +131,8 @@ public:
 
 /* ==== CONCOMMAND ====================================================================================================================================================== */
 
-/*
-typedef void (*ConCommandConstructorType)(
-	ConCommand* newCommand, const char* name, FnCommandCallback_t callback, const char* helpString, int flags, void* parent);
-*/
-
 inline CMemory p_ConCommand_ConCommand;
 inline auto v_ConCommand_ConCommand = p_ConCommand_ConCommand.RCast<void(*)(void* newCommand, const char* name, FnCommandCallback_t callback, const char* helpString, int flags, void* parent)>();
-
-inline ConCommandBase* g_pConCommandVFTable;
 
 ///////////////////////////////////////////////////////////////////////////////
 class VConCommand : public IDetour
@@ -147,41 +140,14 @@ class VConCommand : public IDetour
 	virtual void GetAdr(void) const
 	{
 		LogFunAdr("ConCommand::ConCommand", p_ConCommand_ConCommand.GetPtr());
-		//LogFunAdr("ConCommandBase::IsFlagSet", p_ConCommandBase_IsFlagSet.GetPtr());
-		//LogConAdr("ConCommand::AutoCompleteSuggest", p_ConCommand_AutoCompleteSuggest.GetPtr());
-		//LogFunAdr("Cbuf_AddText", p_Cbuf_AddText.GetPtr());
-		//LogFunAdr("Cbuf_Execute", p_Cbuf_Execute.GetPtr());
-		//LogFunAdr("Cmd_ForwardToServer", p_Cmd_ForwardToServer.GetPtr());
-		//LogFunAdr("CallbackStub", p_CallbackStub.GetPtr());
-		//LogFunAdr("NullSub", p_NullSub.GetPtr());
 	}
 	virtual void GetFun(void) const
 	{
-		p_ConCommand_ConCommand = g_pEngineDll->FindPatternSIMD("40 53 48 83 EC 20 48 8B D9 45 33 D2 4C 89 41 40");
+		p_ConCommand_ConCommand = g_pEngineDll->Offset(0x415F60); /* "40 53 48 83 EC 20 48 8B D9 45 33 D2 4C 89 41 40" */
 		v_ConCommand_ConCommand = p_ConCommand_ConCommand.RCast<void(*)(void* newCommand, const char* name, FnCommandCallback_t callback, const char* helpString, int flags, void* parent)>();
-		//p_ConCommand_AutoCompleteSuggest = g_GameDll.FindPatternSIMD("40 ?? B8 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 2B E0 F6 41 60 04");
-		//p_ConCommandBase_IsFlagSet = g_GameDll.FindPatternSIMD("85 51 38 0F 95 C0 C3");
-
-		//p_Cbuf_AddText = g_GameDll.FindPatternSIMD("48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 63 D9 41 8B F8 48 8D 0D ?? ?? ?? ?? 48 8B F2 FF 15 ?? ?? ?? ?? 48 8D 05 ?? ?? ?? ?? 41 B9 ?? ?? ?? ??");
-		//p_Cbuf_Execute = g_GameDll.FindPatternSIMD("48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 FF 15 ?? ?? ?? ??");
-		//p_Cmd_ForwardToServer = g_GameDll.FindPatternSIMD("48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 81 EC ?? ?? ?? ?? 44 8B 59 04");
-		//p_NullSub = g_GameDll.FindPatternSIMD("C2 ?? ?? CC CC CC CC CC CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 48 8D 05 ?? ?? ?? ??");
-		//p_CallbackStub = g_GameDll.FindPatternSIMD("33 C0 C3 CC CC CC CC CC CC CC CC CC CC CC CC CC 80 49 68 08");
-
-		//ConCommandBase_IsFlagSet = p_ConCommandBase_IsFlagSet.RCast<bool (*)(ConCommandBase*, int)>(); /*85 51 38 0F 95 C0 C3*/
-		//ConCommand_AutoCompleteSuggest = p_ConCommand_AutoCompleteSuggest.RCast<bool (*)(ConCommand*, const char*, CUtlVector< CUtlString >&)>();
-
-		//Cbuf_AddText = p_Cbuf_AddText.RCast<void (*)(ECommandTarget_t, const char*, cmd_source_t)>(); /*48 89 5C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 48 63 D9 41 8B F8 48 8D 0D ?? ?? ?? ?? 48 8B F2 FF 15 ?? ?? ?? ?? 48 8D 05 ?? ?? ?? ?? 41 B9 ?? ?? ?? ??*/
-		//Cbuf_Execute = p_Cbuf_Execute.RCast<void (*)(void)>();                                        /*48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 83 EC 20 FF 15 ?? ?? ?? ??*/
-		//v_Cmd_ForwardToServer = p_Cmd_ForwardToServer.RCast<bool (*)(const CCommand*)>();           /*48 89 5C 24 ?? 48 89 6C 24 ?? 48 89 74 24 ?? 57 48 81 EC ?? ?? ?? ?? 44 8B 59 04*/
-		//NullSub = p_NullSub.RCast<void(*)(void)>();                                   /*C2 00 00 CC CC CC CC CC CC CC CC CC CC CC CC CC 40 53 48 83 EC 20 48 8D 05 ?? ?? ?? ??*/
-		//CallbackStub = p_CallbackStub.RCast<FnCommandCompletionCallback>();                /*33 C0 C3 CC CC CC CC CC CC CC CC CC CC CC CC CC 80 49 68 08*/ /*UserMathErrorFunction*/
 	}
 	virtual void GetVar(void) const { }
-	virtual void GetCon(void) const
-	{
-		g_pConCommandVFTable = g_pEngineDll->GetVirtualMethodTable(".?AVConCommand@@").RCast<ConCommandBase*>();
-	}
+	virtual void GetCon(void) const { }
 	virtual void Attach(void) const;
 	virtual void Detach(void) const;
 };

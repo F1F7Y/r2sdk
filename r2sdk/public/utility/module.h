@@ -29,6 +29,7 @@ public:
 	bool Good();
 #ifndef PLUGINSDK
 	CMemory FindPatternSIMD(const string& svPattern, const ModuleSections_t* moduleSection = nullptr) const;
+	CMemory Offset(const ptrdiff_t offset);
 	CMemory FindString(const string& svString, const ptrdiff_t occurrence = 1, bool nullTerminator = false) const;
 	CMemory FindStringReadOnly(const string& svString, bool nullTerminator) const;
 

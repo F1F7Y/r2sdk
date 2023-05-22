@@ -19,10 +19,10 @@ class VEngineVgui : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
-		p_CEngineVGui__Init = g_pEngineDll->FindPatternSIMD("40 53 57 48 83 EC 38 48 8B F9 FF 15 38 6E 37 00");
+		p_CEngineVGui__Init = g_pEngineDll->Offset(0x247E10); /* "40 53 57 48 83 EC 38 48 8B F9 FF 15 38 6E 37 00" */
 		v_CEngineVGui__Init = p_CEngineVGui__Init.RCast<char(*)(void*)>();
 
-		p_CEngineVGui__Shutdown = g_pEngineDll->FindPatternSIMD("48 89 5C 24 08 57 48 83  EC 20 48 8B D9 48 8B 89 08 01");
+		p_CEngineVGui__Shutdown = g_pEngineDll->Offset(0x249A70); /* "48 89 5C 24 08 57 48 83  EC 20 48 8B D9 48 8B 89 08 01" */
 		v_CEngineVGui__Shutdown = p_CEngineVGui__Shutdown.RCast<void(*)(void*)>();
 	}
 	virtual void GetVar(void) const { }
