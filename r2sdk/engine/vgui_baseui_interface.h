@@ -2,6 +2,12 @@
 #define VGUI_BASEUI_INTERFACE_H
 
 #include "core/stdafx.h"
+#include "vguimatsurface/MatSystemSurface.h"
+
+
+extern IMatSystemSurface* g_pMatSystemSurface;
+
+///////////////////////////////////////////////////////////////////////////////
 
 inline CMemory p_CEngineVGui__Init;
 inline auto v_CEngineVGui__Init = p_CEngineVGui__Init.RCast<char(*)(void*)>();

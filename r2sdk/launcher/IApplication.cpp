@@ -4,6 +4,7 @@
 #include "tier1/cvar.h"
 #include "gameui/GameConsole.h"
 #include "filesystem.h"
+#include "engine/vgui_baseui_interface.h"
 
 int CModAppSystemGroup__Main(void* pModAppSystemGroup, void *a2)
 {
@@ -13,7 +14,8 @@ int CModAppSystemGroup__Main(void* pModAppSystemGroup, void *a2)
 	g_pCVar = Sys_GetFactoryPtr("vstdlib.dll", CVAR_INTERFACE_VERSION).RCast<ICvar*>();
 	g_pGameConsole = Sys_GetFactoryPtr("client.dll", GAMECONSOLE_INTERFACE_VERSION).RCast<IGameConsole*>();
 	g_pFullFileSystem = Sys_GetFactoryPtr("filesystem_stdio.dll", FILESYSTEM_INTERFACE_VERSION).RCast<IFileSystem*>();
-	
+	g_pMatSystemSurface = Sys_GetFactoryPtr("vguimatsurface.dll", MAT_SYSTEM_SURFACE_INTERFACE_VERSION).RCast<IMatSystemSurface*>();
+
 	return v_CModAppSystemGroup__Main(pModAppSystemGroup, a2);
 }
 

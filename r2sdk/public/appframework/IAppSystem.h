@@ -81,7 +81,7 @@ public:
 	virtual void Shutdown() = 0;
 
 	// Returns all dependent libraries
-	virtual const AppSystemInfo_t* GetDependencies() { return NULL; }
+	virtual const AppSystemInfo_t* GetDependencies() = 0;
 
 	// Returns the tier
 	//virtual AppSystemTier_t GetTier() = 0;

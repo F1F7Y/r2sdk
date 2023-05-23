@@ -16,7 +16,10 @@ ICvar* g_pCVar = nullptr;
 #if 1
 //-----------------------------------------------------------------------------
 // ENGINE                                                                     |
-ConVar* sdk_test_convar = nullptr;
+
+//-------------------------------------------------------------------------
+// CLIENT                                                                 |
+ConVar* cl_showsdkdbg = nullptr;
 
 
 //-----------------------------------------------------------------------------
@@ -85,9 +88,10 @@ void ConVar::StaticInit(void)
 {
 	//-------------------------------------------------------------------------
 	// ENGINE                                                                 |
-	sdk_test_convar = ConVar::StaticCreate("sdk_test_convar", "test", FCVAR_RELEASE, "SDK test convar", false, 0.f, false, 0.f, nullptr) ;
 	
 	//-------------------------------------------------------------------------
+	// CLIENT                                                                 |
+	cl_showsdkdbg = ConVar::StaticCreate("cl_showsdkdbg", "0", FCVAR_DONTRECORD, "Show the sdk debug panel", false, 0.f, false, 0.f, nullptr);
 }
 
 //-----------------------------------------------------------------------------
