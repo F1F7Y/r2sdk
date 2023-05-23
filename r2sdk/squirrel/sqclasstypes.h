@@ -27,7 +27,8 @@ enum class eSQReturnType
 
 enum class ScriptContext : int
 {
-	SERVER = -3,
-	CLIENT = -2,
-	UI = -1,
+	INVALID = -1,
+	SERVER,
+	CLIENT,
+	UI,
 };
