@@ -20,6 +20,7 @@
 // Engine
 #include "engine/vgui_baseui_interface.h"
 #include "engine/vengineserver_impl.h"
+#include "engine/client/client.h"
 // Client
 #include "gameui/GameConsoleDialog.h"
 #include "vgui_controls/Panel.h"
@@ -332,6 +333,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(engine.dll, VEngineVgui);
 
 	REGISTER(engine.dll, VEngineServer);
+	REGISTER(engine.dll, VClient);
 
 	// Client
 	REGISTER(client.dll, VConsoleDialog);
