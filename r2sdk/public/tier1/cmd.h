@@ -37,6 +37,32 @@ public:
 };
 
 //-----------------------------------------------------------------------------
+// Purpose: Command buffer context
+//-----------------------------------------------------------------------------
+enum class ECommandTarget_t : int
+{
+	CBUF_FIRST_PLAYER = 0,
+	CBUF_LAST_PLAYER = 1, // MAX_SPLITSCREEN_CLIENTS - 1, MAX_SPLITSCREEN_CLIENTS = 2
+	CBUF_SERVER = CBUF_LAST_PLAYER + 1,
+
+	CBUF_COUNT,
+};
+
+//-----------------------------------------------------------------------------
+// Sources of console commands
+//-----------------------------------------------------------------------------
+enum class cmd_source_t : int
+{
+	kCommandSrcCode,
+	kCommandSrcClientCmd,
+	kCommandSrcUserInput,
+	kCommandSrcNetClient,
+	kCommandSrcNetServer,
+	kCommandSrcDemoFile,
+	kCommandSrcInvalid = -1
+};
+
+//-----------------------------------------------------------------------------
 // Purpose: Command tokenizer
 //-----------------------------------------------------------------------------
 class CCommand
@@ -129,10 +155,16 @@ public:
 	int unk1; // 0x005C
 }; // Size: 0x0060
 
-/* ==== CONCOMMAND ====================================================================================================================================================== */
+/* ==== COMMAND_BUFFER ================================================================================================================================================== */
+inline CMemory p_Cbuf_AddText;
+inline auto Cbuf_AddText = p_Cbuf_AddText.RCast<void (*)(ECommandTarget_t eTarget, const char* pText, cmd_source_t cmdSource)>();
 
+/* ==== CONCOMMAND ====================================================================================================================================================== */
 inline CMemory p_ConCommand_ConCommand;
 inline auto v_ConCommand_ConCommand = p_ConCommand_ConCommand.RCast<void(*)(void* newCommand, const char* name, FnCommandCallback_t callback, const char* helpString, int flags, void* parent)>();
+
+///////////////////////////////////////////////////////////////////////////////
+ECommandTarget_t Cbuf_GetCurrentPlayer(void);
 
 ///////////////////////////////////////////////////////////////////////////////
 class VConCommand : public IDetour
@@ -140,11 +172,15 @@ class VConCommand : public IDetour
 	virtual void GetAdr(void) const
 	{
 		LogFunAdr("ConCommand::ConCommand", p_ConCommand_ConCommand.GetPtr());
+		LogFunAdr("Cbuf_AddText", p_Cbuf_AddText.GetPtr());
 	}
 	virtual void GetFun(void) const
 	{
 		p_ConCommand_ConCommand = g_pEngineDll->Offset(0x415F60); /* "40 53 48 83 EC 20 48 8B D9 45 33 D2 4C 89 41 40" */
 		v_ConCommand_ConCommand = p_ConCommand_ConCommand.RCast<void(*)(void* newCommand, const char* name, FnCommandCallback_t callback, const char* helpString, int flags, void* parent)>();
+		
+		p_Cbuf_AddText = g_pEngineDll->Offset(0x1203B0);
+		Cbuf_AddText = p_Cbuf_AddText.RCast<void (*)(ECommandTarget_t eTarget, const char* pText, cmd_source_t cmdSource)>();
 	}
 	virtual void GetVar(void) const { }
 	virtual void GetCon(void) const { }

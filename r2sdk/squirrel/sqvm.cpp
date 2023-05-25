@@ -1,5 +1,6 @@
 #include "sqvm.h"
 
+#include "tier1/cmd.h"
 #include "client/sqvm.h"
 #include "server/sqvm.h"
 #include "ui/sqvm.h"
@@ -35,6 +36,11 @@ string SQ_GetContextName(ScriptContext nSqContext)
 	return "UNKNOWN";
 }
 
+ScriptContext SQ_GetVMContext(HSquirrelVM* sqvm)
+{
+	return (ScriptContext)sqvm->sharedState->cSquirrelVM->vmContext;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 template <ScriptContext context>
@@ -56,14 +62,15 @@ SQRESULT SQVM_PrintFunc(HSquirrelVM* sqvm, SQChar* fmt, ...)
 template <ScriptContext context>
 void SQVM_CompileError(HSquirrelVM* sqvm, const SQChar* pszError, const SQChar* pszFile, SQUnsignedInteger nLine, SQInteger nColumn)
 {
-	eDLL_T logContext = SQ_GetLogContext(context);
-
-	// TODO [Fifty]: Detect UI VM as Client and Ui share the same function
-	// TODO [Fifty]: Automatically disconnect teh player on Client && Ui
-	//               errors so we don't AV
+	// Client and UI share some functions so we can't rely on template context
+	eDLL_T logContext = SQ_GetLogContext(SQ_GetVMContext(sqvm));
 
 	Error(logContext, NO_ERROR, "Compile error: '%s'\n", pszError);
 	Error(logContext, NO_ERROR, "  '%s': line [%d] column [%d]\n", pszFile, nLine, nColumn);
+
+	// Retail behavior is to engine error
+	// We need to disconnect the player otherwise we AV on client compilation error
+	Cbuf_AddText(Cbuf_GetCurrentPlayer(), "disconnect \"Compilation failure!\"", cmd_source_t::kCommandSrcCode);
 }
 
 ///////////////////////////////////////////////////////////////////////////////

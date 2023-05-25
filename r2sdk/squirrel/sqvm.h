@@ -18,8 +18,9 @@ inline auto v_SQVM_CompileError = p_SQVM_CompileError<context>.RCast<void(*)(HSq
 
 ///////////////////////////////////////////////////////////////////////////////
 // Helper functions
-eDLL_T SQ_GetLogContext(ScriptContext nSqContext);
-string SQ_GetContextName(ScriptContext nSqContext);
+eDLL_T        SQ_GetLogContext(ScriptContext nSqContext);
+string        SQ_GetContextName(ScriptContext nSqContext);
+ScriptContext SQ_GetVMContext(HSquirrelVM* sqvm);
 
 ///////////////////////////////////////////////////////////////////////////////
 template <ScriptContext context>
