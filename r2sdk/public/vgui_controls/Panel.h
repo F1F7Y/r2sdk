@@ -154,7 +154,7 @@ namespace vgui
 		virtual void sub_180768FD0();
 		virtual void sub_180769890();
 		virtual void sub_18076AA30();
-		virtual void nullsub_91();
+		virtual void Paint();
 		virtual void sub_18076ACB0();
 		virtual void sub_18076ACF0(); // __int64 __fastcall sub_18076ACF0(__int64 (__fastcall ***a1)(_QWORD))
 		virtual void nullsub_92();

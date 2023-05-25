@@ -2,6 +2,7 @@
 #include "gameui/GameConsole.h"
 #include "vgui_controls/Frame.h"
 #include "vgui_controls/Label.h"
+#include "vgui_controls/BitmapImagePanel.h"
 #include "core/logdef.h"
 #include <tier0/memstd.h>
 #include "filesystem.h"
@@ -12,17 +13,17 @@ char CEngineVGui__Init(void* self)
 	DevMsg(eDLL_T::NONE, "CEngineVGui__Init: %i\n", cResult);
 	g_pGameConsole->Initialize();
 
-	//vgui::Frame* frame = MemAllocSingleton()->Alloc<vgui::Frame>(sizeof(vgui::Frame));
-	//v_Frame__Frame(frame, NULL, "FrameTest", false, true);
-	//frame->SetTitle("Cock and balls", true);
-	//frame->SetVisible(true);
+	vgui::Frame* frame = MemAllocSingleton()->Alloc<vgui::Frame>(sizeof(vgui::Frame));
+	v_Frame__Frame(frame, NULL, "FrameTest", false, true);
+	frame->SetTitle("Test frame", true);
+	frame->SetVisible(true);
+
+	//CBitmapImagePanel* image = MemAllocSingleton()->Alloc<CBitmapImagePanel>(sizeof(CBitmapImagePanel));
+	//v_CBitmapImagePanel__CBitmapImagePanel(image, (vgui::Panel*)frame, "ImageTest", "vgui/spinner");
 
 	//vgui::Label* label = MemAllocSingleton()->Alloc<vgui::Label>(sizeof(vgui::Label));
 	//v_Label__Label(label, frame, "LabelTest", "Penis");
 	//label->SetVisible(true);
-	//char test[1000];
-	//g_pFullFileSystem->GetCurrentDirectory(test, 1000);
-	//DevMsg(eDLL_T::FS, "CurrentDir: %s\n", test);
 
 	SpdLog_PostInit();
 	return cResult;

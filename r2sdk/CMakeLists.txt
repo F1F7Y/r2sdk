@@ -54,6 +54,7 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "public/tier1/cvar.h"
                          "public/tier1/interface.h"
                          "public/tier1/strtools.h"
+                         "public/toolframework/itoolentity.h"
                          "public/utility/binstream.cpp"
                          "public/utility/binstream.h"
                          "public/utility/memaddr.cpp"
@@ -64,6 +65,7 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "public/utility/utility.h"
                          "public/vgui/VGUI.h"
                          "public/vgui/ISurface.h"
+                         "public/vgui_controls/BitmapImagePanel.h"
                          "public/vgui_controls/EditablePanel.h"
                          "public/vgui_controls/Frame.h"
                          "public/vgui_controls/Label.h"
@@ -112,7 +114,7 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "windows/console.cpp"
                          "windows/console.h"
                          "windows/loadlibrary.cpp"
-                         "windows/loadlibrary.h" "public/toolframework/itoolentity.h")
+                         "windows/loadlibrary.h")
 
 target_link_libraries(r2sdk detours spdlog dbghelp)
 

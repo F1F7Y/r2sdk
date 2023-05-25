@@ -27,6 +27,7 @@
 #include "vgui_controls/Panel.h"
 #include "vgui_controls/Frame.h"
 #include "vgui_controls/Label.h"
+#include "vgui_controls/BitmapImagePanel.h"
 #include "vgui/vgui_fpspanel.h"
 #include "vguimatsurface/MatSystemSurface.h"
 // filesystem_stdio
@@ -343,6 +344,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(client.dll, VguiFrame);
 	REGISTER(client.dll, VguiPanel);
 	REGISTER(client.dll, VguiLabel);
+	REGISTER(client.dll, VCBitmapImagePanel);
 	REGISTER(client.dll, VFPSPanel);
 	REGISTER(client.dll, VMatSystemSurface);
 
