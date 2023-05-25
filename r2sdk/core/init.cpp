@@ -14,6 +14,7 @@
 #include "tier0/commandline.h"
 #include "launcher/IApplication.h"
 #include "launcher/launcher.h"
+#include "tier0/threadtools.h"
 // Tier 1
 #include "tier1/cmd.h"
 #include "tier1/cvar.h"
@@ -325,6 +326,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(tier0.dll, VPlatform);
 	REGISTER(tier0.dll, VMemStd);
 	REGISTER(tier0.dll, VCommandLine);
+	REGISTER(tier0.dll, VThreadTools);
 
 	// Tier1
 	REGISTER(engine.dll, VConCommand);

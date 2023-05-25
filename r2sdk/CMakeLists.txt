@@ -104,7 +104,7 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "windows/console.cpp"
                          "windows/console.h"
                          "windows/loadlibrary.cpp"
-                         "windows/loadlibrary.h")
+                         "windows/loadlibrary.h" "public/tier0/threadtools.h")
 
 target_link_libraries(r2sdk detours spdlog dbghelp)
 
