@@ -31,3 +31,28 @@ public:
 	virtual void sub_180016040() = 0;
 	virtual void sub_180017170() = 0;
 };
+
+///////////////////////////////////////////////////////////////////////////////
+// Used to display the "CLIENT HITCHED" and other messages
+// Isn't in CMatSystemSurface, but i wanted to give it a place
+inline CMemory p_MatSystemSurface_DrawTextPopUp;
+inline auto MatSystemSurface_DrawTextPopUp = p_MatSystemSurface_DrawTextPopUp.RCast<void(*)(void* yOffset, void* self, vgui::HFont font, const char* pszText, bool bFadeOut, float& fDuration)>();
+
+///////////////////////////////////////////////////////////////////////////////
+class VMatSystemSurface : public IDetour
+{
+	virtual void GetAdr(void) const
+	{
+		LogFunAdr("MatSystemSurface::DrawTextPopUp", p_MatSystemSurface_DrawTextPopUp.GetPtr());
+	}
+	virtual void GetFun(void) const
+	{
+		p_MatSystemSurface_DrawTextPopUp = g_pClientDll->Offset(0x34D2B0);
+		MatSystemSurface_DrawTextPopUp = p_MatSystemSurface_DrawTextPopUp.RCast<void(*)(void*, void*, vgui::HFont, const char*, bool, float&)>();
+	}
+	virtual void GetVar(void) const { }
+	virtual void GetCon(void) const { }
+	virtual void Attach(void) const { }
+	virtual void Detach(void) const { }
+};
+///////////////////////////////////////////////////////////////////////////////
