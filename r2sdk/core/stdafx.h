@@ -57,23 +57,6 @@
 #include "thirdparty/detours/idetour.h"
 
 
-#if defined(SDKLAUNCHER)
-#include "thirdparty/cppnet/cppkore/Kore.h"
-#include "thirdparty/cppnet/cppkore/UIXTheme.h"
-#include "thirdparty/cppnet/cppkore/UIXLabel.h"
-#include "thirdparty/cppnet/cppkore/UIXListView.h"
-#include "thirdparty/cppnet/cppkore/UIXCheckBox.h"
-#include "thirdparty/cppnet/cppkore/UIXComboBox.h"
-#include "thirdparty/cppnet/cppkore/UIXTextBox.h"
-#include "thirdparty/cppnet/cppkore/UIXGroupBox.h"
-#include "thirdparty/cppnet/cppkore/UIXButton.h"
-#include "thirdparty/cppnet/cppkore/UIXRadioButton.h"
-#include "thirdparty/cppnet/cppkore/KoreTheme.h"
-
-#include "launcher/launcherdefs.h"
-#endif // SDKLAUNCHER
-
-
 #if !defined(SDKLAUNCHER) && !defined (NETCONSOLE) && !defined(PLUGINSDK)
 //#include "thirdparty/lzham/include/lzham_assert.h"
 //#include "thirdparty/lzham/include/lzham_types.h"
@@ -89,7 +72,7 @@
 #include "thirdparty/spdlog/include/spdlog/sinks/ansicolor_sink.h"
 #include "thirdparty/spdlog/include/spdlog/sinks/rotating_file_sink.h"
 
-//#include "thirdparty/curl/include/curl/curl.h"
+#include "thirdparty/curl/include/curl/curl.h"
 
 #include "common/experimental.h"
 #include "common/pseudodefs.h"

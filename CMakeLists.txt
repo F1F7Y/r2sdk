@@ -15,5 +15,9 @@ include_directories(.)
 add_subdirectory("r2launcher")
 add_subdirectory("r2sdk")
 
+set(HTTP_ONLY ON)
+set(CURL_STATICLIB ON)
+
 add_subdirectory("thirdparty/detours")
 add_subdirectory("thirdparty/spdlog")
+add_subdirectory("thirdparty/curl")

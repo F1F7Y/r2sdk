@@ -19,6 +19,8 @@ void SDK_Init()
     Console_Init();
 #endif // !DEDICATED
 
+    curl_global_init(CURL_GLOBAL_ALL);
+
     SpdLog_Init();
 
     for (size_t i = 0; i < SDK_ARRAYSIZE(R2SDK_EMBLEM); i++)
@@ -37,8 +39,9 @@ void SDK_Shutdown()
     Console_Shutdown();
     SpdLog_Shutdown();
 
-    LoadLibrary_Shutdown();
+    curl_global_cleanup();
 
+    LoadLibrary_Shutdown();
     Systems_Shutdown();
 }
 

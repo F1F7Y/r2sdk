@@ -114,9 +114,9 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "windows/console.cpp"
                          "windows/console.h"
                          "windows/loadlibrary.cpp"
-                         "windows/loadlibrary.h")
+                         "windows/loadlibrary.h" )
 
-target_link_libraries(r2sdk detours spdlog dbghelp)
+target_link_libraries(r2sdk detours spdlog libcurl dbghelp wsock32 ws2_32)
 
 target_precompile_headers(r2sdk PUBLIC "core/stdafx.h")
 
