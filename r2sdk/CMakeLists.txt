@@ -36,6 +36,8 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "mathlib/math_pfns.h"
                          "mathlib/vector.h"
                          "mathlib/vector2d.h"
+                         "origin/originauth.cpp"
+                         "origin/originauth.h"
                          "public/appframework/IAppSystem.h"
                          "public/interfaces/interfaces.h"
                          "public/tier0/annotations.h"
@@ -114,7 +116,7 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "windows/console.cpp"
                          "windows/console.h"
                          "windows/loadlibrary.cpp"
-                         "windows/loadlibrary.h"  "origin/originauth.h" "origin/originauth.cpp")
+                         "windows/loadlibrary.h")
 
 target_link_libraries(r2sdk detours spdlog libcurl dbghelp wsock32 ws2_32)
 
