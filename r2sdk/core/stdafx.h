@@ -51,7 +51,7 @@
 #include <d3d11.h>
 #endif // !DEDICATED && !SDKLAUNCHER && !NETCONSOLE && !PLUGINSDK
 
-//#include "thirdparty/nlohmann/json.hpp"
+#include "thirdparty/nlohmann/json.hpp"
 
 #include "thirdparty/detours/detours.h"
 #include "thirdparty/detours/idetour.h"

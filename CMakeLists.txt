@@ -10,7 +10,7 @@ set(CMAKE_VS_PLATFORM_TOOLSET v143)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/game)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/game)
 
-include_directories(.)
+include_directories(. thirdparty)
 
 add_subdirectory("r2launcher")
 add_subdirectory("r2sdk")
