@@ -13,10 +13,10 @@ char CEngineVGui__Init(void* self)
 	DevMsg(eDLL_T::NONE, "CEngineVGui__Init: %i\n", cResult);
 	g_pGameConsole->Initialize();
 
-	vgui::Frame* frame = MemAllocSingleton()->Alloc<vgui::Frame>(sizeof(vgui::Frame));
-	v_Frame__Frame(frame, NULL, "FrameTest", false, true);
-	frame->SetTitle("Test frame", true);
-	frame->SetVisible(true);
+	//vgui::Frame* frame = MemAllocSingleton()->Alloc<vgui::Frame>(sizeof(vgui::Frame));
+	//v_Frame__Frame(frame, NULL, "FrameTest", false, true);
+	//frame->SetTitle("Test frame", true);
+	//frame->SetVisible(true);
 
 	//CBitmapImagePanel* image = MemAllocSingleton()->Alloc<CBitmapImagePanel>(sizeof(CBitmapImagePanel));
 	//v_CBitmapImagePanel__CBitmapImagePanel(image, (vgui::Panel*)frame, "ImageTest", "vgui/spinner");
