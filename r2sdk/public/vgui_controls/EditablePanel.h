@@ -34,16 +34,9 @@ namespace vgui
 		virtual void OnFindDefaultButton();
 		virtual void sub_18077CB30();
 
-		//{
-			//_QWORD qword0;
-			_BYTE gap8[208];
-			//_QWORD qword268;
-			//_BYTE gap270[48];
-			//_QWORD qword2A0;
-			//_QWORD qword2A8;
-			//_DWORD dword2B0;
-		//};
-			// 208
+		_BYTE gap8[72];
+		char* m_pszConfigName;
+		int m_iConfigID;
 	};
 	static_assert(sizeof(EditablePanel) == 696);
 }

@@ -53,9 +53,10 @@ namespace vgui
 		virtual void sub_1807D4580();
 		virtual void sub_1807D44B0();
 		virtual void sub_1807D4BC0();
-		_BYTE gap8[220];
+		
+		BYTE gab[208];
 	};
-	static_assert(sizeof(Frame) == 920);
+	static_assert(sizeof(Frame) == 904);
 
 }
 inline CMemory p_Frame__Frame;

@@ -279,9 +279,11 @@ namespace vgui
 		virtual void nullsub_161();
 		virtual void sub_18009DAB0(); // returns 0
 
-		_BYTE gap4[480];
+		_BYTE gap4[600];
 	};
-	static_assert(sizeof(Panel) == 488);
+	static_assert(sizeof(Panel) == 608);
+	// [Fifty]: ^ Tested using a debugger and CBitmapImagePanel in a debugger
+	//          so unless CBitmapImagePanel is wrong this is correct
 
 } // vgui
 
