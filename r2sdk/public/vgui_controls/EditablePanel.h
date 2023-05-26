@@ -41,4 +41,26 @@ namespace vgui
 	static_assert(sizeof(EditablePanel) == 696);
 }
 
+///////////////////////////////////////////////////////////////////////////////
+inline CMemory p_EditablePanel__EditablePanel;
+inline auto v_EditablePanel__EditablePanel = p_EditablePanel__EditablePanel.RCast<vgui::EditablePanel*(*)(vgui::EditablePanel* self, vgui::Panel* pParent, const char* pszPanelName)>();
+
+///////////////////////////////////////////////////////////////////////////////
+class VguiEditablePanel : public IDetour
+{
+	virtual void GetAdr(void) const
+	{
+		LogFunAdr("vgui::EditablePanel::EditablePanel", p_EditablePanel__EditablePanel.GetPtr());
+	}
+	virtual void GetFun(void) const
+	{
+		p_EditablePanel__EditablePanel = g_pClientDll->Offset(0x77B570);
+		v_EditablePanel__EditablePanel = p_EditablePanel__EditablePanel.RCast<vgui::EditablePanel*(*)(vgui::EditablePanel*, vgui::Panel*, const char*)>();
+	}
+	virtual void GetVar(void) const { }
+	virtual void GetCon(void) const { }
+	virtual void Attach(void) const { }
+	virtual void Detach(void) const { }
+};
+
 #endif // !EDITABLEPANEL_H

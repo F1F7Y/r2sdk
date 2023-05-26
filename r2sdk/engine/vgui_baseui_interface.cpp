@@ -3,6 +3,7 @@
 #include "vgui_controls/Frame.h"
 #include "vgui_controls/Label.h"
 #include "vgui_controls/BitmapImagePanel.h"
+#include "vgui_controls/ListPanel.h"
 #include "core/logdef.h"
 #include <tier0/memstd.h>
 #include "filesystem.h"
@@ -17,6 +18,11 @@ char CEngineVGui__Init(void* self)
 	//v_Frame__Frame(frame, NULL, "FrameTest", false, true);
 	//frame->SetTitle("Test frame", true);
 	//frame->SetVisible(true);
+
+	//vgui::ListPanel* list = MemAllocSingleton()->Alloc<vgui::ListPanel>(sizeof(vgui::ListPanel));
+	//v_ListPanel__ListPanel(list, frame, "ListPanelTest");
+	//list->AddColumnHeader(0, "Please work", "what", 50, 50, 500);
+	//list->AddActionSignalTarget(frame);
 
 	//CBitmapImagePanel* image = MemAllocSingleton()->Alloc<CBitmapImagePanel>(sizeof(CBitmapImagePanel));
 	//v_CBitmapImagePanel__CBitmapImagePanel(image, (vgui::Panel*)frame, "ImageTest", "vgui/spinner");
