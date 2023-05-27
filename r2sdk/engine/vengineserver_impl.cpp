@@ -62,7 +62,7 @@ void CVEngineServer__SpewOutputFunc(void* pEngineServer, SpewType_t type, const 
 	if (bShouldFormat)
 		CoreMsgV(LogType_t::LOG_INFO, LogLevel_t::LEVEL_CONSOLE, eDLL_T::ENGINE, "sdk", fmt, args);
 	else
-		Error(eDLL_T::ENGINE, EXIT_FAILURE, "Failed to format string: '%s'\n", fmt);
+		Warning(eDLL_T::ENGINE, "Failed to format string: '%s'\n", fmt);
 }
 
 void VEngineServer::Attach(void) const
