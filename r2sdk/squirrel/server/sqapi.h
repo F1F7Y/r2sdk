@@ -11,6 +11,20 @@ class VSqapi_SERVER : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
+		// ARRAY FUNCS
+		p_sq_newarray<ScriptContext::SERVER> = g_pServerDll->Offset(0x39F0);
+		p_sq_arrayappend<ScriptContext::SERVER> = g_pServerDll->Offset(0x3C70);
+
+		v_sq_newarray<ScriptContext::SERVER> = p_sq_newarray<ScriptContext::SERVER>.RCast<void(*)(HSquirrelVM* sqvm, SQInteger iStackpos)>();
+		v_sq_arrayappend<ScriptContext::SERVER> = p_sq_arrayappend<ScriptContext::SERVER>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, SQInteger iStackpos)>();
+
+		// TABLE FUNCS
+		p_sq_newtable<ScriptContext::SERVER> = g_pServerDll->Offset(0x3960);
+		p_sq_newtableslot<ScriptContext::SERVER> = g_pServerDll->Offset(0x7080);
+
+		v_sq_newtable<ScriptContext::SERVER> = p_sq_newtable<ScriptContext::SERVER>.RCast<SQRESULT(*)(HSquirrelVM* sqvm)>();
+		v_sq_newtableslot<ScriptContext::SERVER> = p_sq_newtableslot<ScriptContext::SERVER>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, SQInteger idx, SQBool bStatic)>();
+
 		// PUSH FUNCS
 		p_sq_pushroottable<ScriptContext::SERVER> = g_pServerDll->Offset(0x5860);
 		p_sq_pushstring<ScriptContext::SERVER> = g_pServerDll->Offset(0x3440);
