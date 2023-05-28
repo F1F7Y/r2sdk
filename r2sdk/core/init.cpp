@@ -42,6 +42,9 @@
 #include "squirrel/ui/sqvm.h"
 #include "squirrel/client/sqscript.h"
 #include "squirrel/server/sqscript.h"
+#include "squirrel/client/sqapi.h"
+#include "squirrel/server/sqapi.h"
+#include "squirrel/ui/sqapi.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -363,4 +366,7 @@ void DetourRegister() // Register detour classes to be searched and hooked.
 	REGISTER(client.dll, HSQVM_UI);
 	REGISTER(client.dll, VSQVM_CLIENT);
 	REGISTER(server.dll, VSQVM_SERVER);
+	REGISTER(client.dll, VSqapi_CLIENT);
+	REGISTER(server.dll, VSqapi_SERVER);
+	REGISTER(client.dll, VSqapi_UI);
 }

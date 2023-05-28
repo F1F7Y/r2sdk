@@ -86,13 +86,25 @@ void ConCommand::StaticInit(void)
 {
 	//-------------------------------------------------------------------------
 	// ENGINE DLL                                                             |
-	ConCommand::StaticCreate("toggleconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ToggleConsole_f, nullptr);
-	ConCommand::StaticCreate("hideconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_HideConsole_f, nullptr);
-	ConCommand::StaticCreate("showconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ShowConsole_f, nullptr);
 
 	//-------------------------------------------------------------------------
 	// TIER0                                                                  |
 	ConCommand::StaticCreate("sig_getadr", "Logs the sigscan results to the console.", FCVAR_DONTRECORD/*FCVAR_DEVELOPMENTONLY | FCVAR_HIDDEN*/, SIG_GetAdr_f, nullptr);
+
+	//-------------------------------------------------------------------------
+	// SERVER DLL                                                             |
+	ConCommand::StaticCreate("script", "Run input code as SERVER script on the VM.", FCVAR_GAMEDLL | FCVAR_CHEAT, SQVM_ServerScript_f, nullptr);
+
+	//-------------------------------------------------------------------------
+	// CLIENT DLL                                                             |
+	ConCommand::StaticCreate("script_client", "Run input code as CLIENT script on the VM.", FCVAR_CLIENTDLL | FCVAR_CHEAT, SQVM_ClientScript_f, nullptr);
+
+	ConCommand::StaticCreate("toggleconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ToggleConsole_f, nullptr);
+	ConCommand::StaticCreate("hideconsole", "Hide the console.", FCVAR_DONTRECORD, Con_HideConsole_f, nullptr);
+	ConCommand::StaticCreate("showconsole", "Show the console.", FCVAR_DONTRECORD, Con_ShowConsole_f, nullptr);
+	//-------------------------------------------------------------------------
+	// UI DLL                                                                 |
+	ConCommand::StaticCreate("script_ui", "Run input code as UI script on the VM.", FCVAR_CLIENTDLL | FCVAR_CHEAT, SQVM_UIScript_f, nullptr);
 }
 
 //-----------------------------------------------------------------------------
