@@ -32,3 +32,42 @@ enum class ScriptContext : int
 	CLIENT,
 	UI,
 };
+
+struct CompileBufferState
+{
+	const SQChar* buffer;
+	const SQChar* bufferPlusLength;
+	const SQChar* bufferAgain;
+
+	CompileBufferState(const std::string& code)
+	{
+		buffer = code.c_str();
+		bufferPlusLength = code.c_str() + code.size();
+		bufferAgain = code.c_str();
+	}
+};
+
+struct SQFuncRegistration
+{
+	const char* squirrelFuncName;
+	const char* cppFuncName;
+	const char* helpText;
+	const char* returnTypeString;
+	const char* argTypes;
+	uint32_t unknown1;
+	uint32_t devLevel;
+	const char* shortNameMaybe;
+	uint32_t unknown2;
+	eSQReturnType returnType;
+	uint32_t* externalBufferPointer;
+	uint64_t externalBufferSize;
+	uint64_t unknown3;
+	uint64_t unknown4;
+	SQFunction funcPtr;
+
+	SQFuncRegistration()
+	{
+		memset(this, 0, sizeof(SQFuncRegistration));
+		this->returnType = eSQReturnType::Default;
+	}
+};

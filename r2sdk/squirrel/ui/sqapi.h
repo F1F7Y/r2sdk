@@ -12,6 +12,21 @@ class VSqapi_UI : public IDetour
 	}
 	virtual void GetFun(void) const
 	{
+		// CORE FUNCS
+		p_sq_registerfunc<ScriptContext::CLIENT> = g_pClientDll->Offset(0x108E0);
+		p_sq_defconst<ScriptContext::CLIENT> = g_pClientDll->Offset(0x12120);
+		p_sq_compilebuffer<ScriptContext::CLIENT> = g_pClientDll->Offset(0x3110);
+		p_sq_call<ScriptContext::CLIENT> = g_pClientDll->Offset(0x8650);
+		p_sq_raiseerror<ScriptContext::CLIENT> = g_pClientDll->Offset(0x8470);
+		p_sq_compilefile<ScriptContext::CLIENT> = g_pClientDll->Offset(0xF950);
+
+		v_sq_registerfunc<ScriptContext::CLIENT> = p_sq_registerfunc<ScriptContext::CLIENT>.RCast<int64_t(*)(CSquirrelVM* sqvm, SQFuncRegistration* funcReg, char unknown)>();
+		v_sq_defconst<ScriptContext::CLIENT> = p_sq_defconst<ScriptContext::CLIENT>.RCast<void(*)(CSquirrelVM* sqvm, const SQChar* name, int value)>();
+		v_sq_compilebuffer<ScriptContext::CLIENT> = p_sq_compilebuffer<ScriptContext::CLIENT>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, CompileBufferState* compileBuffer, const char* file, int a1, SQBool bShouldThrowError)>();
+		v_sq_call<ScriptContext::CLIENT> = p_sq_call<ScriptContext::CLIENT>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, SQInteger iArgs, SQBool bShouldReturn, SQBool bThrowError)>();
+		v_sq_raiseerror<ScriptContext::CLIENT> = p_sq_raiseerror<ScriptContext::CLIENT>.RCast<SQInteger(*)(HSquirrelVM* sqvm, const SQChar* pError)>();
+		v_sq_compilefile<ScriptContext::CLIENT> = p_sq_compilefile<ScriptContext::CLIENT>.RCast<SQBool(*)(CSquirrelVM* sqvm, const char* path, const char* name, int a4)>();
+
 		// ARRAY FUNCS
 		p_sq_newarray<ScriptContext::UI> = g_pClientDll->Offset(0x39F0);
 		p_sq_arrayappend<ScriptContext::UI> = g_pClientDll->Offset(0x3C70);

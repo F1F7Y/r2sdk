@@ -5,6 +5,36 @@
 
 
 /* ==== SQUIRREL ======================================================================================================================================================== */
+/* ==== CORE FUNCS ====================================================================================================================================================== */
+template<ScriptContext context>
+inline CMemory p_sq_registerfunc;
+template<ScriptContext context>
+inline auto v_sq_registerfunc = p_sq_registerfunc<context>.RCast<int64_t(*)(CSquirrelVM* sqvm, SQFuncRegistration* funcReg, char unknown)>();
+
+template<ScriptContext context>
+inline CMemory p_sq_defconst;
+template<ScriptContext context>
+inline auto v_sq_defconst = p_sq_defconst<context>.RCast<void(*)(CSquirrelVM* sqvm, const SQChar* name, int value)>();
+
+template<ScriptContext context>
+inline CMemory p_sq_compilebuffer;
+template<ScriptContext context>
+inline auto v_sq_compilebuffer = p_sq_compilebuffer<context>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, CompileBufferState* compileBuffer, const char* file, int a1, SQBool bShouldThrowError)>();
+
+template<ScriptContext context>
+inline CMemory p_sq_call;
+template<ScriptContext context>
+inline auto v_sq_call = p_sq_call<context>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, SQInteger iArgs, SQBool bShouldReturn, SQBool bThrowError)>();
+
+template<ScriptContext context>
+inline CMemory p_sq_raiseerror;
+template<ScriptContext context>
+inline auto v_sq_raiseerror = p_sq_raiseerror<context>.RCast<SQInteger(*)(HSquirrelVM* sqvm, const SQChar* pError)>();
+
+template<ScriptContext context>
+inline CMemory p_sq_compilefile;
+template<ScriptContext context>
+inline auto v_sq_compilefile = p_sq_compilefile<context>.RCast<SQBool(*)(CSquirrelVM* sqvm, const char* path, const char* name, int a4)>();
 /* ==== ARRAY FUNCS ===================================================================================================================================================== */
 template<ScriptContext context>
 inline CMemory p_sq_newarray;
