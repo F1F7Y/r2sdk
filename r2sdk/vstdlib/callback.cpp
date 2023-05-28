@@ -5,6 +5,7 @@
 //=============================================================================//
 
 #include "callback.h"
+#include "squirrel/squirrelmanager.h"
 
 /*
 =====================
@@ -31,7 +32,7 @@ void SQVM_ServerScript_f(const CCommand& args)
 {
 	if (args.ArgC() >= 2)
 	{
-		//Script_Execute(args.ArgS(), SQCONTEXT::SERVER);
+		g_pSQManager<ScriptContext::SERVER>->ExecuteBuffer(args.ArgS());
 	}
 }
 
@@ -47,7 +48,7 @@ void SQVM_ClientScript_f(const CCommand& args)
 {
 	if (args.ArgC() >= 2)
 	{
-		//Script_Execute(args.ArgS(), SQCONTEXT::CLIENT);
+		g_pSQManager<ScriptContext::CLIENT>->ExecuteBuffer(args.ArgS());
 	}
 }
 
@@ -63,6 +64,6 @@ void SQVM_UIScript_f(const CCommand& args)
 {
 	if (args.ArgC() >= 2)
 	{
-		//Script_Execute(args.ArgS(), SQCONTEXT::UI);
+		g_pSQManager<ScriptContext::UI>->ExecuteBuffer(args.ArgS());
 	}
 }

@@ -19,7 +19,7 @@ inline auto v_sq_defconst = p_sq_defconst<context>.RCast<void(*)(CSquirrelVM* sq
 template<ScriptContext context>
 inline CMemory p_sq_compilebuffer;
 template<ScriptContext context>
-inline auto v_sq_compilebuffer = p_sq_compilebuffer<context>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, CompileBufferState* compileBuffer, const char* file, int a1, SQBool bShouldThrowError)>();
+inline auto v_sq_compilebuffer = p_sq_compilebuffer<context>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, SQBufferState* compileBuffer, const char* file, int a1, SQBool bShouldThrowError)>();
 
 template<ScriptContext context>
 inline CMemory p_sq_call;

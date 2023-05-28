@@ -21,7 +21,7 @@ class VSqapi_SERVER : public IDetour
 
 		v_sq_registerfunc<ScriptContext::SERVER> = p_sq_registerfunc<ScriptContext::SERVER>.RCast<int64_t(*)(CSquirrelVM* sqvm, SQFuncRegistration* funcReg, char unknown)>();
 		v_sq_defconst<ScriptContext::SERVER> = p_sq_defconst<ScriptContext::SERVER>.RCast<void(*)(CSquirrelVM* sqvm, const SQChar* name, int value)>();
-		v_sq_compilebuffer<ScriptContext::SERVER> = p_sq_compilebuffer<ScriptContext::SERVER>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, CompileBufferState* compileBuffer, const char* file, int a1, SQBool bShouldThrowError)>();
+		v_sq_compilebuffer<ScriptContext::SERVER> = p_sq_compilebuffer<ScriptContext::SERVER>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, SQBufferState* compileBuffer, const char* file, int a1, SQBool bShouldThrowError)>();
 		v_sq_call<ScriptContext::SERVER> = p_sq_call<ScriptContext::SERVER>.RCast<SQRESULT(*)(HSquirrelVM* sqvm, SQInteger iArgs, SQBool bShouldReturn, SQBool bThrowError)>();
 		v_sq_raiseerror<ScriptContext::SERVER> = p_sq_raiseerror<ScriptContext::SERVER>.RCast<SQInteger(*)(HSquirrelVM* sqvm, const SQChar* pError)>();
 		v_sq_compilefile<ScriptContext::SERVER> = p_sq_compilefile<ScriptContext::SERVER>.RCast<SQBool(*)(CSquirrelVM* sqvm, const char* path, const char* name, int a4)>();

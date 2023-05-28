@@ -33,13 +33,13 @@ enum class ScriptContext : int
 	UI,
 };
 
-struct CompileBufferState
+struct SQBufferState
 {
 	const SQChar* buffer;
 	const SQChar* bufferPlusLength;
 	const SQChar* bufferAgain;
 
-	CompileBufferState(const std::string& code)
+	SQBufferState(const std::string& code)
 	{
 		buffer = code.c_str();
 		bufferPlusLength = code.c_str() + code.size();
@@ -63,7 +63,7 @@ struct SQFuncRegistration
 	uint64_t externalBufferSize;
 	uint64_t unknown3;
 	uint64_t unknown4;
-	SQFunction funcPtr;
+	void* funcPtr;
 
 	SQFuncRegistration()
 	{

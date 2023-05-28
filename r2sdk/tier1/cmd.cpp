@@ -20,27 +20,27 @@
 //-----------------------------------------------------------------------------
 // Tokenizer class
 //-----------------------------------------------------------------------------
-inline int CCommand::MaxCommandLength()
+int CCommand::MaxCommandLength()
 {
 	return COMMAND_MAX_LENGTH - 1;
 }
-inline int64_t CCommand::ArgC() const
+int64_t CCommand::ArgC() const
 {
 	return m_nArgc;
 }
-inline const char** CCommand::ArgV() const
+const char** CCommand::ArgV() const
 {
 	return m_nArgc ? (const char**)m_ppArgv : NULL;
 }
-inline const char* CCommand::ArgS() const
+const char* CCommand::ArgS() const
 {
 	return m_nArgv0Size ? &m_pArgSBuffer[m_nArgv0Size] : "";
 }
-inline const char* CCommand::GetCommandString() const
+const char* CCommand::GetCommandString() const
 {
 	return m_nArgc ? m_pArgSBuffer : "";
 }
-inline const char* CCommand::Arg(int nIndex) const
+const char* CCommand::Arg(int nIndex) const
 {
 	// FIXME: Many command handlers appear to not be particularly careful
 	// about checking for valid argc range. For now, we're going to
@@ -49,7 +49,7 @@ inline const char* CCommand::Arg(int nIndex) const
 		return "";
 	return m_ppArgv[nIndex];
 }
-inline const char* CCommand::operator[](int nIndex) const
+const char* CCommand::operator[](int nIndex) const
 {
 	return Arg(nIndex);
 }
@@ -93,18 +93,18 @@ void ConCommand::StaticInit(void)
 
 	//-------------------------------------------------------------------------
 	// SERVER DLL                                                             |
-	ConCommand::StaticCreate("script", "Run input code as SERVER script on the VM.", FCVAR_GAMEDLL | FCVAR_CHEAT, SQVM_ServerScript_f, nullptr);
+	ConCommand::StaticCreate("script", "Run input code as SERVER script on the VM.", FCVAR_GAMEDLL | FCVAR_GAMEDLL_FOR_REMOTE_CLIENTS | FCVAR_CHEAT, SQVM_ServerScript_f, nullptr);
 
 	//-------------------------------------------------------------------------
 	// CLIENT DLL                                                             |
-	ConCommand::StaticCreate("script_client", "Run input code as CLIENT script on the VM.", FCVAR_CLIENTDLL | FCVAR_CHEAT, SQVM_ClientScript_f, nullptr);
+	ConCommand::StaticCreate("script_client", "Run input code as CLIENT script on the VM.", FCVAR_CLIENTDLL, SQVM_ClientScript_f, nullptr);
 
 	ConCommand::StaticCreate("toggleconsole", "Show/hide the console.", FCVAR_DONTRECORD, Con_ToggleConsole_f, nullptr);
 	ConCommand::StaticCreate("hideconsole", "Hide the console.", FCVAR_DONTRECORD, Con_HideConsole_f, nullptr);
 	ConCommand::StaticCreate("showconsole", "Show the console.", FCVAR_DONTRECORD, Con_ShowConsole_f, nullptr);
 	//-------------------------------------------------------------------------
 	// UI DLL                                                                 |
-	ConCommand::StaticCreate("script_ui", "Run input code as UI script on the VM.", FCVAR_CLIENTDLL | FCVAR_CHEAT, SQVM_UIScript_f, nullptr);
+	ConCommand::StaticCreate("script_ui", "Run input code as UI script on the VM.", FCVAR_CLIENTDLL, SQVM_UIScript_f, nullptr);
 }
 
 //-----------------------------------------------------------------------------

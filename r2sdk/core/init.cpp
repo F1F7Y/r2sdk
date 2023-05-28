@@ -45,6 +45,7 @@
 #include "squirrel/client/sqapi.h"
 #include "squirrel/server/sqapi.h"
 #include "squirrel/ui/sqapi.h"
+#include "squirrel/squirrelmanager.h"
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -103,6 +104,9 @@ void Systems_Init()
 	//spdlog::info("+---------------------------------------------------------------------+\n");
 
 	//ConVar::StaticInit();
+	g_pSQManager<ScriptContext::CLIENT> = new SquirrelManager<ScriptContext::CLIENT>;
+	g_pSQManager<ScriptContext::SERVER> = new SquirrelManager<ScriptContext::SERVER>;
+	g_pSQManager<ScriptContext::UI> = new SquirrelManager<ScriptContext::UI>;
 }
 
 //////////////////////////////////////////////////////////////////////////

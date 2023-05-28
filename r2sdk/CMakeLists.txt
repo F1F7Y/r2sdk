@@ -117,7 +117,7 @@ add_library(r2sdk SHARED "common/GameUI/IGameConsole.h"
                          "windows/console.cpp"
                          "windows/console.h"
                          "windows/loadlibrary.cpp"
-                         "windows/loadlibrary.h" "squirrel/sqapi.h" "squirrel/client/sqapi.h" "squirrel/server/sqapi.h" "squirrel/ui/sqapi.h")
+                         "windows/loadlibrary.h" "squirrel/sqapi.h" "squirrel/client/sqapi.h" "squirrel/server/sqapi.h" "squirrel/ui/sqapi.h" "public/isquirrelmanager.h" "squirrel/squirrelmanager.h" "squirrel/squirrelmanager.cpp" "squirrel/sqinit.h" "squirrel/sqinit.cpp")
 
 target_link_libraries(r2sdk detours spdlog libcurl dbghelp wsock32 ws2_32)
 

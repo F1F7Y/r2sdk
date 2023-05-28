@@ -67,12 +67,6 @@ enum class cmd_source_t : int
 //-----------------------------------------------------------------------------
 class CCommand
 {
-private:
-	enum
-	{
-		COMMAND_MAX_ARGC = 64,
-		COMMAND_MAX_LENGTH = 512,
-	};
 public:
 	CCommand() = delete;
 
@@ -86,13 +80,18 @@ public:
 	static int MaxCommandLength();
 
 private:
+	enum
+	{
+		COMMAND_MAX_ARGC = 64,
+		COMMAND_MAX_LENGTH = 512,
+	};
+
 	int64_t m_nArgc;
 	int64_t m_nArgv0Size;
 	char m_pArgSBuffer[COMMAND_MAX_LENGTH];
 	char m_pArgvBuffer[COMMAND_MAX_LENGTH];
 	const char* m_ppArgv[COMMAND_MAX_ARGC];
 };
-
 //-----------------------------------------------------------------------------
 // Purpose: The base console invoked command/cvar interface
 //-----------------------------------------------------------------------------

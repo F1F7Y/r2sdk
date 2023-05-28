@@ -13,7 +13,7 @@ class VSQVM_CLIENT : public IDetour
 	virtual void GetFun(void) const
 	{
 		p_CSquirrelVM_Init<ScriptContext::CLIENT> = g_pClientDll->Offset(0x26130);
-		v_CSquirrelVM_Init<ScriptContext::CLIENT> = p_CSquirrelVM_Init<ScriptContext::CLIENT>.RCast<CSquirrelVM*(*)(CSquirrelVM*, ScriptContext)>();
+		v_CSquirrelVM_Init<ScriptContext::CLIENT> = p_CSquirrelVM_Init<ScriptContext::CLIENT>.RCast<CSquirrelVM*(*)(void*, ScriptContext)>();
 	}
 	virtual void GetVar(void) const { }
 	virtual void GetCon(void) const { }
