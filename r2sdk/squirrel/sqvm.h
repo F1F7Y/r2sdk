@@ -1,7 +1,7 @@
 #pragma once
 
-#include "sqdatatypes.h"
-#include "sqclasstypes.h"
+#include "squirrel/sqdatatypes.h"
+#include "squirrel/sqclasstypes.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
